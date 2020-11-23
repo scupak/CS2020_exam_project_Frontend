@@ -398,7 +398,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-ProjectFrontend/ProjectFrontendAngular/src/environments/environment.ts
-ProjectFrontend/ProjectFrontendAngular/src/environments/environment.prod.ts
-CS2020-exam-project-Frontend/src/environments/environment.ts
-CS2020-exam-project-Frontend/src/environments/environment.prod.ts
+
