@@ -1,5 +1,5 @@
 
-export class Patient
+export interface Patient
 {
   patientFirstName: string;
   patientLastName: string;
