@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {Patient} from '../shared/Patient';
+import {HttpClient} from '@angular/common/http';
+import {PatientService} from '../shared/patient.service';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-patient-list',
@@ -7,9 +12,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientListComponent implements OnInit {
 
-  constructor() { }
+  patientsArray: Patient[] = [];
+  patient$: Observable<Patient>;
 
-  ngOnInit(): void {
+  constructor(private patientService: PatientService) {
   }
 
+  ngOnInit(): void {
+    this.patient$ = this.patientService.getPatient();
+  }
 }

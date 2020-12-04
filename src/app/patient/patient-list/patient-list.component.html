@@ -1,1 +1,4 @@
-<p>patient-list works!</p>
+<div *ngif="patient$ | async as Patient">
+  <p *ngFor="let Patient of patientsArray"></p>
+</div>
+<p>Patient-List Works, apparently</p>
