@@ -5,7 +5,7 @@
 }
 
 /* Style the links inside the navigation bar */
-.topnav a, h1 {
+.topnav a, h2 {
   float: left;
   color: #f2f2f2;
   text-align: center;
@@ -25,5 +25,25 @@
   background-color: #2D5A87;
   color: white;
 }
+
+#title {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#title:hover{
+  background-color: #336699;
+  overflow: hidden;
+}
+
+
+
+
+
+
 
 
