@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'CS2020-exam-project-Frontend';
+  title = 'Lægehus booking system';
 }
