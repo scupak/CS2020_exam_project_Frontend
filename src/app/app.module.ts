@@ -3,10 +3,20 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { HomeScreenComponent } from './home/home-screen/home-screen.component';
+import { DoctorListComponent } from './doctor/doctor-list/doctor-list.component';
+import { PatientListComponent } from './patient/patient-list/patient-list.component';
+import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ToolbarComponent,
+    HomeScreenComponent,
+    DoctorListComponent,
+    PatientListComponent,
+    AppointmentListComponent
   ],
   imports: [
     BrowserModule,
