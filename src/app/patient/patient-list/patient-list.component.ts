@@ -19,6 +19,6 @@ export class PatientListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.patient$ = this.patientService.getPatient();
+   //this.patient$ = this.patientService.getPatient();
   }
 }
