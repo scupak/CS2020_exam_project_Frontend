@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { Doctor } from '../shared/doctor.model';
 import { DoctorService } from '../shared/doctor.service';
 import { Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {catchError, map, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-doctor-detail',
@@ -12,16 +12,24 @@ import { catchError, map, tap } from 'rxjs/operators';
   styleUrls: ['./doctor-detail.component.scss']
 })
 export class DoctorDetailComponent implements OnInit {
-product$: Observable<Doctor>;
+doctor$: Observable<Doctor>;
+id: number;
   constructor(private route: ActivatedRoute,
-              private doctorService: DoctorService) { }
+              private doctorService: DoctorService,
+              private router: Router) { }
 
   ngOnInit(): void {
+    this.id = +this.route.snapshot.paramMap.get('id');
     this.getDoctorById();
   }
 
   private getDoctorById(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.product$ = this.doctorService.GetById(id);
+    this.doctor$ = this.doctorService.GetById(this.id);
+  }
+
+  deleteDoctor(): void {
+    this.doctorService.remove(this.id).pipe(take(1)).subscribe(() => {
+      this.router.navigateByUrl('/doctor-list');
+    });
   }
 }

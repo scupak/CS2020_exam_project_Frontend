@@ -1,1 +1,9 @@
-<p>doctor-detail works!</p>
+<h2>Doctor</h2>
+<p *ngIf="doctor$ | async as doctor">
+  Name: {{doctor.firstName}} {{doctor.lastName}} <br>
+  Email: {{doctor.emailAddress}} <br>
+  Phone number: {{doctor.phoneNumber}}
+</p>
+<button routerLink= "/doctor-list">Back</button>
+  <button (click)="deleteDoctor()">Delete</button>
+
