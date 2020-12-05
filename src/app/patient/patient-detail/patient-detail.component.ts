@@ -3,6 +3,7 @@ import {Patient} from '../shared/Patient';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PatientService} from '../shared/patient.service';
 import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-patient-detail',
@@ -32,6 +33,17 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
   getPatientById(): void
   {
     const id = this.route.snapshot.paramMap.get('id');
-    this.subscription = this.patientService.getPatientById(id).subscribe(patient => {this.patient = patient; }, error => {this.errorMsg = error.message; });
+    this.subscription = this.patientService
+      .getPatientById(id)
+      .subscribe(patient => {this.patient = patient; }, error => {this.errorMsg = error.message; });
+  }
+
+  deletePatient(): void {
+      this.patientService.removePatient(this.patient.patientCPR).pipe(take(1)).subscribe( () => {
+
+        this.router.navigateByUrl('/patinet-list');
+      });
+
+
   }
 }
