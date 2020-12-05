@@ -1,1 +1,15 @@
 <p>patient-list works!</p>
+
+<div *ngIf=" !err && patients$ | async ">
+  <ul >
+  <li *ngFor=" let Patient of patients$ | async "  >
+    <p><a routerLink="/patient-detail/{{Patient.patientCPR}}">{{  Patient.patientCPR }} , {{  Patient.patientFirstName }} , {{  Patient.patientLastName }} ,{{  Patient.patientEmail }}, {{  Patient.patientPhone }} </a></p>
+  </li>
+
+
+  </ul>
+
+</div>
+<p *ngIf="err">oh no... {{err}}</p>
+
+
