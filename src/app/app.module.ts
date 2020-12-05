@@ -10,6 +10,7 @@ import { HomeScreenComponent } from './home/home-screen/home-screen.component';
 import { DoctorListComponent } from './doctor/doctor-list/doctor-list.component';
 import { PatientListComponent } from './patient/patient-list/patient-list.component';
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
+import { DoctorDetailComponent } from './doctor/doctor-detail/doctor-detail.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { AppointmentListComponent } from './appointment/appointment-list/appoint
     HomeScreenComponent,
     DoctorListComponent,
     PatientListComponent,
-    AppointmentListComponent
+    AppointmentListComponent,
+    DoctorDetailComponent
   ],
   imports: [
     BrowserModule,

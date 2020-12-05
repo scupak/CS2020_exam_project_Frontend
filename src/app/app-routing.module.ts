@@ -4,10 +4,12 @@ import { HomeScreenComponent } from './home/home-screen/home-screen.component';
 import { DoctorListComponent } from './doctor/doctor-list/doctor-list.component';
 import { PatientListComponent } from './patient/patient-list/patient-list.component';
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
+import { DoctorDetailComponent } from './doctor/doctor-detail/doctor-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeScreenComponent},
   { path: 'doctor-list', component: DoctorListComponent},
+  { path: 'doctor-detail/:id', component: DoctorDetailComponent},
   { path: 'patient-list', component: PatientListComponent},
   { path: 'appointment-list', component: AppointmentListComponent},
   {path: '**', redirectTo: ''}
