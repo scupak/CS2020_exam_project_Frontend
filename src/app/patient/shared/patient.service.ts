@@ -31,4 +31,9 @@ export class PatientService {
     return this.http.get<Patient>(environment.webAPI_URL + 'Patients/' + id);
   }
 
+  removePatient(id: string): Observable<Patient>
+  {
+    return this.http.delete<Patient>(environment.webAPI_URL + 'Patients/' + id);
+  }
+
 }
