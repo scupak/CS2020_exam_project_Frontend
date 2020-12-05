@@ -1,0 +1,11 @@
+<h2>Doctors</h2>
+<div class="container">
+  <div class="row">
+    <ul *ngIf="(doctors$ | async)">
+      <li *ngFor="let doctor of doctors$ | async">
+        <a routerLink="/doctor-detail/{{doctor.doctorId}}">{{doctor.firstName}} {{doctor.lastName}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<button routerLink="/doctor-create/">Create new doctor</button>
