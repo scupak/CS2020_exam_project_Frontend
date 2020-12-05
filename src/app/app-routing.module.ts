@@ -12,7 +12,7 @@ import {PatientUpdateComponent} from './patient/patient-update/patient-update.co
 import {DoctorUpdateComponent} from './doctor/doctor-update/doctor-update.component';
 
 const routes: Routes = [
-  { path: '', component: HomeScreenComponent},
+  { path: 'home', component: HomeScreenComponent},
   { path: 'doctor-list', component: DoctorListComponent},
   { path: 'doctor-detail/:id', component: DoctorDetailComponent},
   {path: 'doctor-create', component: DoctorCreateComponent},
@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'patient-creator', component: PatientCreatorComponent},
   { path: 'patient-detail/:id', component: PatientDetailComponent},
   { path: 'patient-update/:id', component: PatientUpdateComponent},
-  {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({
