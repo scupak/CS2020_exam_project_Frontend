@@ -6,6 +6,7 @@ import { PatientListComponent } from './patient/patient-list/patient-list.compon
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
 import {PatientCreatorComponent} from './patient/patient-creator/patient-creator.component';
 import {PatientDetailComponent} from './patient/patient-detail/patient-detail.component';
+import {PatientUpdateComponent} from './patient/patient-update/patient-update.component';
 
 const routes: Routes = [
   { path: '', component: HomeScreenComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'appointment-list', component: AppointmentListComponent},
   { path: 'patient-creator', component: PatientCreatorComponent},
   { path: 'patient-detail/:id', component: PatientDetailComponent},
+  { path: 'patient-update/:id', component: PatientUpdateComponent},
   {path: '**', redirectTo: ''}
 ];
 
