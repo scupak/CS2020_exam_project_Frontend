@@ -31,7 +31,7 @@ export class DoctorCreateComponent implements OnInit {
     });
   }
   // Getters for easy access to form fields
-  get firsName(): AbstractControl { return this.doctorForm.get('firstName'); }
+  get firstName(): AbstractControl { return this.doctorForm.get('firstName'); }
   get lastName(): AbstractControl { return this.doctorForm.get('lastName'); }
   get emailAddress(): AbstractControl { return this.doctorForm.get('emailAddress'); }
   get phoneNumber(): AbstractControl { return this.doctorForm.get('phoneNumber'); }
