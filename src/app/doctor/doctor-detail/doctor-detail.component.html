@@ -2,7 +2,8 @@
 <p *ngIf="doctor$ | async as doctor">
   Name: {{doctor.firstName}} {{doctor.lastName}} <br>
   Email: {{doctor.emailAddress}} <br>
-  Phone number: {{doctor.phoneNumber}}
+  Phone number: {{doctor.phoneNumber}} <br>
+  Administrator: {{doctor.isAdmin ? "yes":"No"}}
 </p>
 <button routerLink= "/doctor-list">Back</button>
   <button (click)="deleteDoctor()">Delete</button>
