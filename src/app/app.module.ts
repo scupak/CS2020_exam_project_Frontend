@@ -10,6 +10,9 @@ import { HomeScreenComponent } from './home/home-screen/home-screen.component';
 import { DoctorListComponent } from './doctor/doctor-list/doctor-list.component';
 import { PatientListComponent } from './patient/patient-list/patient-list.component';
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
+import { DoctorDetailComponent } from './doctor/doctor-detail/doctor-detail.component';
+import { DoctorCreateComponent } from './doctor/doctor-create/doctor-create.component';
+import { DoctorUpdateComponent } from './doctor/doctor-update/doctor-update.component';
 import { PatientCreatorComponent } from './patient/patient-creator/patient-creator.component';
 import { PatientDetailComponent } from './patient/patient-detail/patient-detail.component';
 import { PatientUpdateComponent } from './patient/patient-update/patient-update.component';
@@ -23,6 +26,9 @@ import { PatientUpdateComponent } from './patient/patient-update/patient-update.
     DoctorListComponent,
     PatientListComponent,
     AppointmentListComponent,
+    DoctorDetailComponent,
+    DoctorCreateComponent,
+    DoctorUpdateComponent,
     PatientCreatorComponent,
     PatientDetailComponent,
     PatientUpdateComponent
