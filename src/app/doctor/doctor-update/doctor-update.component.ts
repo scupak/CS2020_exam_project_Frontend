@@ -64,7 +64,7 @@ export class DoctorUpdateComponent implements OnInit {
   private updateDoctor(doctor: Doctor): void {
     this.doctorService.edit(doctor).pipe(take(1)).subscribe(
       success => {
-        this.errormessage = 'Success!';
+        this.router.navigateByUrl('/doctor-list');
       },
       error => {
         this.errormessage = error.message;

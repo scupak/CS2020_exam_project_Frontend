@@ -32,4 +32,5 @@ id: number;
       this.router.navigateByUrl('/doctor-list');
     });
   }
+
 }
