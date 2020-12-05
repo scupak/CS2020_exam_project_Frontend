@@ -12,6 +12,7 @@ import { PatientListComponent } from './patient/patient-list/patient-list.compon
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
 import { DoctorDetailComponent } from './doctor/doctor-detail/doctor-detail.component';
 import { DoctorCreateComponent } from './doctor/doctor-create/doctor-create.component';
+import { DoctorUpdateComponent } from './doctor/doctor-update/doctor-update.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { DoctorCreateComponent } from './doctor/doctor-create/doctor-create.comp
     PatientListComponent,
     AppointmentListComponent,
     DoctorDetailComponent,
-    DoctorCreateComponent
+    DoctorCreateComponent,
+    DoctorUpdateComponent
   ],
   imports: [
     BrowserModule,
