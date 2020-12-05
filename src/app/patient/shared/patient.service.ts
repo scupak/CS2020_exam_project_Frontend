@@ -16,4 +16,14 @@ export class PatientService {
     return this.http.get<Patient[]>(environment.webAPI_URL + 'Patients');
   }
 
+  addPatient(patient: Patient): Observable<Patient>
+  {
+    return this.http.post<Patient>(environment.webAPI_URL + 'Patients', patient);
+  }
+
+  updatePatient(patient: Patient): Observable<Patient>
+  {
+    return this.http.put<Patient>(environment.webAPI_URL + 'Patients', patient);
+  }
+
 }
