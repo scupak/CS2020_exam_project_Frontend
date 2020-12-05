@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {PatientService} from '../shared/patient.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Patient} from '../shared/Patient';
+import {catchError, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-patient-list',
@@ -10,12 +11,19 @@ import {Patient} from '../shared/Patient';
 })
 export class PatientListComponent implements OnInit {
   patients$: Observable<Patient[]>;
-
+  err: string;
   constructor(private patientservice: PatientService) { }
 
   ngOnInit(): void {
 
-    this.patients$ = this.patientservice.getPatient();
+    this.patients$ = this.patientservice.getPatient().pipe(
+
+      tap(() => this.err = undefined ),
+      catchError(err => {
+        this.err = err.message;
+        return of([]);
+      })
+    );
 
   }
 

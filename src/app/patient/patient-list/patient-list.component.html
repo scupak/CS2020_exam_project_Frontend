@@ -1,6 +1,6 @@
 <p>patient-list works!</p>
 
-<div *ngIf="(patients$ | async)">
+<div *ngIf=" !err && patients$ | async ">
   <ul >
   <li *ngFor=" let Patient of patients$ | async "  >
     <p> {{  Patient.patientCPR }} , {{  Patient.patientEmail }} , {{  Patient.patientFirstName }} , {{  Patient.patientLastName }} , {{  Patient.patientPhone }} </p>
@@ -11,3 +11,6 @@
   </ul>
 
 </div>
+<p *ngIf="err">oh oh... {{err}}</p>
+
+
