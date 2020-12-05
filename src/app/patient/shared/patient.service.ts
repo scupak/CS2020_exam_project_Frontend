@@ -26,4 +26,9 @@ export class PatientService {
     return this.http.put<Patient>(environment.webAPI_URL + 'Patients', patient);
   }
 
+  getPatientById(id: string): Observable<Patient>
+  {
+    return this.http.get<Patient>(environment.webAPI_URL + 'Patients/' + id);
+  }
+
 }
