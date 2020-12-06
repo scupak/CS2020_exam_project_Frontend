@@ -27,7 +27,7 @@ export class DoctorCreateComponent implements OnInit {
       lastName: ['', Validators.required],
       emailAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
-      isAdmin: ['']
+      isAdmin: [false]
     });
   }
   // Getters for easy access to form fields
