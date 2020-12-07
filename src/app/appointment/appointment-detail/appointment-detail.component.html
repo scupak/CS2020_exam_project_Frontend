@@ -1,0 +1,5 @@
+<p>appointment-detail works!</p>
+
+<div>
+  <p *ngIf="appointment">{{ appointment.PK_AppointmentId }}">{{ appointment.AppointmentDateTime }} , {{ appointment.DurationInMin }} , {{ appointment.Description }} , {{ appointment.FK_DoctorId }} , {{ appointment.FK_PatientCPR }}<button class="btn" routerLink="/appointment-update/{{appointment.PK_AppointmentId}}">Update</button> <button class="btn btn-danger" (click)="deleteAppointment()">delete</button></p>
+</div>

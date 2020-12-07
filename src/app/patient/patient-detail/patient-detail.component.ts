@@ -41,7 +41,7 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
   deletePatient(): void {
       this.patientService.removePatient(this.patient.patientCPR).pipe(take(1)).subscribe( () => {
 
-        this.router.navigateByUrl('/patinet-list');
+        this.router.navigateByUrl('/patient-list');
       });
 
 
