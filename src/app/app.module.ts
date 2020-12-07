@@ -18,6 +18,7 @@ import { PatientDetailComponent } from './patient/patient-detail/patient-detail.
 import { PatientUpdateComponent } from './patient/patient-update/patient-update.component';
 import { AppointmentDetailComponent } from './appointment/appointment-detail/appointment-detail.component';
 import { AppointmentCreatorComponent } from './appointment/appointment-creator/appointment-creator.component';
+import {DatePipe} from '@angular/common';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { AppointmentCreatorComponent } from './appointment/appointment-creator/a
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
