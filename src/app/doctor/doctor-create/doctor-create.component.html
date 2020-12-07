@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
       <label>Email address</label>
-      <input type="text" formControlName="emailAddress" class="form-control" required/>
+      <input type="text" formControlName="doctorEmailAddress" class="form-control" required/>
       <div *ngIf="emailAddress.invalid && submitted" class="alert-danger">
         <div *ngIf="emailAddress.errors.required">A valid email address is required</div>
       </div>
