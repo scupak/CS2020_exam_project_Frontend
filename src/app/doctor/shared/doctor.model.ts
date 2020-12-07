@@ -1,7 +1,7 @@
-export interface Doctor {doctorId: number;
+export interface Doctor {
   firstName: string;
   lastName: string;
-  emailAddress: string;
+  doctorEmailAddress: string;
   phoneNumber: string;
   isAdmin: boolean;
 }

@@ -3,7 +3,7 @@
   <div class="row">
     <ul *ngIf="(doctors$ | async)">
       <li *ngFor="let doctor of doctors$ | async">
-        <a routerLink="/doctor-detail/{{doctor.doctorId}}">{{doctor.firstName}} {{doctor.lastName}}</a>
+        <a routerLink="/doctor-detail/{{doctor.doctorEmailAddress}}">{{doctor.firstName}} {{doctor.lastName}}, {{doctor.doctorEmailAddress}}</a>
       </li>
     </ul>
   </div>

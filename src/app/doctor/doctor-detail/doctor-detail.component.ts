@@ -13,22 +13,22 @@ import {catchError, map, take, tap} from 'rxjs/operators';
 })
 export class DoctorDetailComponent implements OnInit {
 doctor$: Observable<Doctor>;
-id: number;
+email: string;
   constructor(private route: ActivatedRoute,
               private doctorService: DoctorService,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.id = +this.route.snapshot.paramMap.get('id');
+    this.email = this.route.snapshot.paramMap.get('id');
     this.getDoctorById();
   }
 
   private getDoctorById(): void {
-    this.doctor$ = this.doctorService.GetById(this.id);
+    this.doctor$ = this.doctorService.GetById(this.email);
   }
 
   deleteDoctor(): void {
-    this.doctorService.remove(this.id).pipe(take(1)).subscribe(() => {
+    this.doctorService.remove(this.email).pipe(take(1)).subscribe(() => {
       this.router.navigateByUrl('/doctor-list');
     });
   }

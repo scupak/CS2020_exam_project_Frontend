@@ -32,15 +32,15 @@ export class DoctorUpdateComponent implements OnInit {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       phoneNumber: new FormControl('' , Validators.required),
-      emailAddress: new FormControl('', Validators.required),
-      isAdmin: new FormControl('')
+      doctorEmailAddress: new FormControl('', Validators.required),
+      isAdmin: new FormControl(false)
     });
   }
 // Getters for easy access to form fields
   get firstName(): AbstractControl  { return this.UpdateForm.get('firstName'); }
   get lastName(): AbstractControl  { return this.UpdateForm.get('lastName'); }
   get phoneNumber(): AbstractControl  { return this.UpdateForm.get('phoneNumber'); }
-  get emailAddress(): AbstractControl { return this.UpdateForm.get('emailAddress'); }
+  get emailAddress(): AbstractControl { return this.UpdateForm.get('doctorEmailAddress'); }
   get isAdmin(): AbstractControl{return this.UpdateForm.get('isAdmin'); }
 
   onSubmit(): void {
@@ -55,7 +55,7 @@ export class DoctorUpdateComponent implements OnInit {
 
     const doctor = this.UpdateForm.value;
 
-    doctor.doctorId = this.preiuosDoctor.doctorId;
+    doctor.doctorEmailAddress = this.preiuosDoctor.doctorEmailAddress;
 
     this.updateDoctor(doctor);
     // this.router.navigate(['']);
@@ -75,7 +75,7 @@ export class DoctorUpdateComponent implements OnInit {
   private getDoctor(): void {
     this.Doctor$ = this.route.paramMap.pipe(take(1),
       switchMap(params => {
-        const id = +params.get('id');
+        const id = params.get('id');
         return this.doctorService.GetById(id);
       }),
       tap(doctor => {

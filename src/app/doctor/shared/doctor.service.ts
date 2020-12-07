@@ -17,8 +17,8 @@ export class DoctorService {
     return this.http.get<Doctor[]>(this.doctorsApiUrl);
   }
 
-  GetById(id: number): Observable<Doctor>{
-    return this.http.get<Doctor>(this.doctorsApiUrl + '/' + id);
+  GetById(email: string): Observable<Doctor>{
+    return this.http.get<Doctor>(this.doctorsApiUrl + '/' + email);
   }
 
   create(doctor: Doctor): Observable<Doctor>{
@@ -29,7 +29,7 @@ export class DoctorService {
     return this.http.put<Doctor>(this.doctorsApiUrl, doctor);
   }
 
-  remove(id: number): Observable<Doctor>{
-    return this.http.delete<Doctor>(this.doctorsApiUrl + '/' + id);
+  remove(email: string): Observable<Doctor>{
+    return this.http.delete<Doctor>(this.doctorsApiUrl + '/' + email);
   }
 }
