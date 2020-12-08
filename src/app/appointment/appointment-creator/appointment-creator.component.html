@@ -1,19 +1,8 @@
 <p>appointment-creator works!</p>
 
-
+<ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
+<ngb-timepicker [(ngModel)]="timeModel"></ngb-timepicker>
 <form [formGroup]="appointmentForm" (ngSubmit)="save()">
-  <div class="form-group">
-    <label>AppointmentDateTime</label>
-    <input type="date" formControlName="AppointmentDateTime" class="form-control" required/>
-    <div *ngIf="AppointmentDateTime.invalid && submitted" class="alert-danger">
-      <div *ngIf="AppointmentDateTime.errors.required">AppointmentDateTime is required</div>
-    </div>
-    <div class="form-group">
-      <label>AppointmentTime</label>
-      <input type="time" formControlName="AppointmentTime" class="form-control" required/>
-      <div *ngIf="AppointmentTime.invalid && submitted" class="alert-danger">
-        <div *ngIf="AppointmentTime.errors.required">AppointmentTime is required</div>
-      </div>
     <div class="form-group">
       <label>DurationInMin</label>
       <input type="number" formControlName="DurationInMin" class="form-control" required/>
@@ -42,8 +31,6 @@
         </div>
       </div>
     </div>
-    </div>
-  </div>
   <div class="form-group">
     <button class="btn btn-primary">Create</button>
     <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />

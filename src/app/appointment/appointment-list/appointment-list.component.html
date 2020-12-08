@@ -1,4 +1,4 @@
-<p>appointment-list works!</p>
+<h2>Appointments</h2>
 <div *ngIf=" !err && appointment$ | async ">
   <ul >
     <li *ngFor=" let Appointment of appointment$ | async "  >
@@ -7,8 +7,8 @@
 
 
   </ul>
-  
+
 
 </div>
-<button class="btn" routerLink="/appointment-creator">Add appointment</button>
+<button class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
 <p *ngIf="err">oh no... {{err}}</p>
