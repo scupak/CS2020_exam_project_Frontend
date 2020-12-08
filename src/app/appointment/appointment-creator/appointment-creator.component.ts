@@ -51,12 +51,12 @@ export class AppointmentCreatorComponent implements OnInit {
     console.log(this.dateModel.month);
     console.log(this.dateModel.day);
     const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
-    console.log(datetime);
-
+    console.log(datetime + 'det er rigtig');
+/*
     datetime.setFullYear(this.dateModel.year);
     datetime.setMonth(this.dateModel.month);
     datetime.setDate(this.dateModel.day);
-    console.log(datetime.getMonth());
+    console.log(datetime.getMonth());*/
 
  debugger;
     if (this.appointmentForm.invalid) {
@@ -66,8 +66,11 @@ export class AppointmentCreatorComponent implements OnInit {
 
     // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
 
+    const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+
+    console.log(datetime1 + 'det er det andet');
     const appointment = { appointmentId: 0,
-                          appointmentDateTime: datetime,
+                          appointmentDateTime: datetime1,
                           durationInMin: this.DurationInMin.value,
                           description: this.Description.value,
                           patientCpr: this.FK_PatientCPR.value,
