@@ -50,7 +50,7 @@ export class PatientCreatorComponent implements OnInit {
         this.errormessage = 'Success';
       } ,
       error => {
-        this.errormessage = error.message;
+        this.errormessage = error.error;
         this.loading = false;
       }
     );
