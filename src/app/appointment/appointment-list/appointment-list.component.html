@@ -2,7 +2,7 @@
 <div *ngIf=" !err && appointment$ | async ">
   <ul >
     <li *ngFor=" let Appointment of appointment$ | async "  >
-      <p><a routerLink="/appointment-detail/{{ Appointment.PK_AppointmentId }}">{{ Appointment.AppointmentDateTime }} , {{ Appointment.DurationInMin }}</a> </p>
+      <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
     </li>
 
 

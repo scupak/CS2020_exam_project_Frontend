@@ -40,7 +40,7 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteAppointment(): void {
-    this.appointmentService.removeAppointment(this.appointment.PK_AppointmentId).pipe(take(1)).subscribe( () => {
+    this.appointmentService.removeAppointment(this.appointment.appointmentId).pipe(take(1)).subscribe( () => {
 
       this.router.navigateByUrl('/appointment-list');
     });
