@@ -66,7 +66,7 @@ export class AppointmentCreatorComponent implements OnInit {
 
     // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
 
-    const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+    const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);
 
     console.log(datetime1 + 'det er det andet');
     const appointment = { appointmentId: 0,
