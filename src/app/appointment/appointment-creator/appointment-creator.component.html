@@ -4,10 +4,16 @@
 <form [formGroup]="appointmentForm" (ngSubmit)="save()">
   <div class="form-group">
     <label>AppointmentDateTime</label>
-    <input type="datetime-local" formControlName="AppointmentDateTime" class="form-control" required/>
+    <input type="date" formControlName="AppointmentDateTime" class="form-control" required/>
     <div *ngIf="AppointmentDateTime.invalid && submitted" class="alert-danger">
       <div *ngIf="AppointmentDateTime.errors.required">AppointmentDateTime is required</div>
     </div>
+    <div class="form-group">
+      <label>AppointmentTime</label>
+      <input type="time" formControlName="AppointmentTime" class="form-control" required/>
+      <div *ngIf="AppointmentTime.invalid && submitted" class="alert-danger">
+        <div *ngIf="AppointmentTime.errors.required">AppointmentTime is required</div>
+      </div>
     <div class="form-group">
       <label>DurationInMin</label>
       <input type="number" formControlName="DurationInMin" class="form-control" required/>
@@ -35,6 +41,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
   <div class="form-group">

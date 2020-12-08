@@ -12,6 +12,7 @@ import {DatePipe} from '@angular/common';
 export class AppointmentCreatorComponent implements OnInit {
   appointmentForm = new FormGroup( {
     AppointmentDateTime: new FormControl('', Validators.required),
+    AppointmentTime: new FormControl('', Validators.required),
     DurationInMin: new FormControl('', Validators.required),
     Description: new FormControl('' , Validators.required),
     FK_PatientCPR: new FormControl('', Validators.required),
@@ -27,6 +28,7 @@ export class AppointmentCreatorComponent implements OnInit {
 
   // Getters for easy access to form fields
   get AppointmentDateTime(): AbstractControl { return this.appointmentForm.get('AppointmentDateTime'); }
+  get AppointmentTime(): AbstractControl { return this.appointmentForm.get('AppointmentTime'); }
   get DurationInMin(): AbstractControl { return this.appointmentForm.get('DurationInMin'); }
   get Description(): AbstractControl { return this.appointmentForm.get('Description'); }
   get FK_PatientCPR(): AbstractControl { return this.appointmentForm.get('FK_PatientCPR'); }
@@ -38,11 +40,13 @@ export class AppointmentCreatorComponent implements OnInit {
 
   save(): void {
     this.submitted = true;
-
+    console.log(this.AppointmentDateTime.value);
+    console.log(this.AppointmentTime.value);
     // stop here if form is invalid
     if (this.appointmentForm.invalid) {
       return;
     }
+
     this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
     const appointment = { PK_AppointmentId: 0,
                           AppointmentDateTime: this.AppointmentDateTime.value,
