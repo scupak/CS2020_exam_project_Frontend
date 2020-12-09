@@ -1,4 +1,4 @@
-<p>patient-list works!</p>
+<h2>Patients</h2>
 
 <div *ngIf=" !err && patients$ | async ">
   <ul >
@@ -9,9 +9,10 @@
 
   </ul>
 
-  <button class="btn" routerLink="/patient-creator">Add patient</button>
+
 
 </div>
+<button class="btn btn-primary" routerLink="/patient-creator">Add patient</button>
 <p *ngIf="err">oh no... {{err}}</p>
 
 

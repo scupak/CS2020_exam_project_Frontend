@@ -1,14 +1,14 @@
 <h2>Doctor</h2>
 <p *ngIf="doctor$ | async as doctor">
   Name: {{doctor.firstName}} {{doctor.lastName}} <br>
-  Email: {{doctor.emailAddress}} <br>
+  Email: {{doctor.doctorEmailAddress}} <br>
   Phone number: {{doctor.phoneNumber}} <br>
   Administrator: {{doctor.isAdmin ? "yes":"No"}}
 </p>
 <div *ngIf="doctor$ | async as doctor">
   <button routerLink= "/doctor-list">Back</button>
   <button (click)="deleteDoctor()">Delete</button>
-  <button routerLink="/doctor-update/{{doctor.doctorId}}">Update</button>
+  <button routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
 </div>
 
 

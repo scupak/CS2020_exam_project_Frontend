@@ -11,7 +11,7 @@ export class PatientService {
 
   constructor(private http: HttpClient) { }
 
-  getPatient(): Observable<Patient[]>
+  getPatients(): Observable<Patient[]>
   {
     return this.http.get<Patient[]>(environment.webAPI_URL + 'Patients');
   }

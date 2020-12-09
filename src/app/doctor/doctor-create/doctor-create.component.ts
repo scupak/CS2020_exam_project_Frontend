@@ -25,15 +25,15 @@ export class DoctorCreateComponent implements OnInit {
     this.doctorForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      emailAddress: ['', Validators.required],
+      doctorEmailAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
-      isAdmin: ['']
+      isAdmin: [false]
     });
   }
   // Getters for easy access to form fields
   get firstName(): AbstractControl { return this.doctorForm.get('firstName'); }
   get lastName(): AbstractControl { return this.doctorForm.get('lastName'); }
-  get emailAddress(): AbstractControl { return this.doctorForm.get('emailAddress'); }
+  get emailAddress(): AbstractControl { return this.doctorForm.get('doctorEmailAddress'); }
   get phoneNumber(): AbstractControl { return this.doctorForm.get('phoneNumber'); }
   get isAdmin(): AbstractControl { return this.doctorForm.get('isAdmin'); }
 
@@ -46,6 +46,7 @@ export class DoctorCreateComponent implements OnInit {
     this.loading = true;
     const doctor = this.doctorForm.value;
     this.doctorService.create(doctor)
+      .pipe(take(1))
       .subscribe(
         success => {
           this.router.navigateByUrl('/doctor-list');

@@ -1,1 +1,14 @@
-<p>appointment-list works!</p>
+<h2>Appointments</h2>
+<div *ngIf=" !err && appointment$ | async ">
+  <ul >
+    <li *ngFor=" let Appointment of appointment$ | async "  >
+      <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+    </li>
+
+
+  </ul>
+
+
+</div>
+<button class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
+<p *ngIf="err">oh no... {{err}}</p>
