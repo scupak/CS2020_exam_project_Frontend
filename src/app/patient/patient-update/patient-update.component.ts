@@ -59,7 +59,7 @@ export class PatientUpdateComponent implements OnInit {
   private updatePatient(patient: Patient): void {
     this.patientService.updatePatient(patient).pipe(take(1)).subscribe(
       success => {
-        this.errormessage = 'Succes!';
+        this.errormessage = 'Success!';
       },
       error => {
         this.errormessage = error.message;
