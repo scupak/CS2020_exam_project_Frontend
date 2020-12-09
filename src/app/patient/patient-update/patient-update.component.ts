@@ -16,7 +16,7 @@ export class PatientUpdateComponent implements OnInit {
   UpdateForm: FormGroup;
   submitted = false;
   errormessage = '';
-  previusPatient: Patient;
+  previousPatient: Patient;
   patient$: Observable<Patient>;
 
   constructor(private formBuilder: FormBuilder, private patientService: PatientService, private route: ActivatedRoute, private router: Router ) { }
@@ -50,7 +50,7 @@ export class PatientUpdateComponent implements OnInit {
 
     const patient = this.UpdateForm.value;
 
-    patient.patientCPR = this.previusPatient.patientCPR;
+    patient.patientCPR = this.previousPatient.patientCPR;
 
     this.updatePatient(patient);
     // this.router.navigate(['']);
@@ -74,7 +74,7 @@ export class PatientUpdateComponent implements OnInit {
         return this.patientService.getPatientById(id);
       }),
       tap(patient => {
-        this.previusPatient = patient;
+        this.previousPatient = patient;
         this.UpdateForm.patchValue(patient);
       }));
 
