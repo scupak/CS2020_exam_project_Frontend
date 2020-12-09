@@ -17,8 +17,8 @@ import {DoctorService} from '../../doctor/shared/doctor.service';
   styleUrls: ['./appointment-creator.component.scss']
 })
 export class AppointmentCreatorComponent implements OnInit {
-  patinetobservable$: Observable<Patient[]>;
-  doctorbservable$: Observable<Doctor[]>;
+  patientObservable$: Observable<Patient[]>;
+  doctorObservable$: Observable<Doctor[]>;
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
@@ -46,7 +46,7 @@ export class AppointmentCreatorComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.patinetobservable$ = this.patientService.getPatients().pipe(
+    this.patientObservable$ = this.patientService.getPatients().pipe(
 
       tap(() => this.err = undefined ),
       catchError(err => {
@@ -56,7 +56,7 @@ export class AppointmentCreatorComponent implements OnInit {
       })
     );
 
-    this.doctorbservable$ = this.doctorService.GetAll().pipe(
+    this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
       tap(() => this.err = undefined ),
       catchError(err => {
@@ -93,7 +93,6 @@ export class AppointmentCreatorComponent implements OnInit {
     if (this.appointmentForm.invalid) {
       return;
     }
-
     // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
 
    // const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);

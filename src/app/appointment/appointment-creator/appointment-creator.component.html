@@ -1,4 +1,4 @@
-<div *ngIf =" !err && patinetobservable$ | async" >
+<div *ngIf =" !err && patientObservable$ && doctorObservable$ | async" >
 <p>appointment-creator works!</p>
 
 <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
@@ -21,8 +21,8 @@
           <label>FK_PatientCPR</label>
           <br>
           <select formControlName="FK_PatientCPR"  >
-            <option [ngValue]="null">Don't show</option>
-            <option *ngFor=" let patient of patinetobservable$ | async "
+            <option [ngValue]="null">Unassigned Patient</option>
+            <option *ngFor=" let patient of patientObservable$ | async "
                     [value]="patient.patientCPR">
               {{patient.patientCPR}} {{patient.patientFirstName}}
             </option>
@@ -32,10 +32,14 @@
           </div>
           <div class="form-group">
             <label>FK_DoctorId</label>
-            <input type="text" formControlName="FK_DoctorId" class="form-control" />
-            <div *ngIf="FK_DoctorId.invalid && submitted" class="alert-danger">
-              <div *ngIf="FK_DoctorId.errors.required">FK_DoctorId is required</div>
-            </div>
+            <br>
+            <select formControlName="FK_DoctorId"  >
+              <option [ngValue]="null">Unassigned Doctor</option>
+              <option *ngFor=" let doctor of doctorObservable$ | async "
+                      [value]="doctor.doctorEmailAddress">
+                {{doctor.firstName}} {{doctor.lastName}}
+              </option>
+            </select>
           </div>
         </div>
       </div>
@@ -44,7 +48,6 @@
     <button class="btn btn-primary">Create</button>
     <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
   </div>
-
 </form>
 </div>
 <div *ngIf="errormessage" class="alert-danger">{{errormessage}}</div>

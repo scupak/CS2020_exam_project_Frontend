@@ -4,7 +4,10 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {AppointmentService} from '../shared/appointment.service';
 import {DatePipe} from '@angular/common';
 import * as moment from 'moment';
-import {take} from 'rxjs/operators';
+import {switchMap, take, tap} from 'rxjs/operators';
+import {Appointment} from '../shared/Appointment';
+import {Observable} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-appointment-update',
@@ -15,6 +18,8 @@ export class AppointmentUpdateComponent implements OnInit {
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
+  AppointmentObservable$: Observable<Appointment>;
+  previousAppointment: Appointment;
 
   appointmentForm = new FormGroup( {
     DurationInMin: new FormControl('', Validators.required),
@@ -26,7 +31,7 @@ export class AppointmentUpdateComponent implements OnInit {
   loading = false;
   errormessage = '';
 
-  constructor(private appointmentService: AppointmentService, private datePipe: DatePipe, private calendar: NgbCalendar ) { }
+  constructor(private appointmentService: AppointmentService, private datePipe: DatePipe, private calendar: NgbCalendar, private route: ActivatedRoute) { }
 
 
 
@@ -48,7 +53,7 @@ export class AppointmentUpdateComponent implements OnInit {
       return;
     }
     const date = moment().date(this.dateModel.day).month(this.dateModel.month - 1).year(this.dateModel.year).hour(this.timeModel.hour + 1).minute(this.timeModel.minute).second(0).toDate();
-    const appointment = { appointmentId: 0,
+    const appointment = { appointmentId: this.previousAppointment.appointmentId,
       appointmentDateTime: date ,
       durationInMin: this.DurationInMin.value,
       description: this.Description.value,
@@ -59,7 +64,7 @@ export class AppointmentUpdateComponent implements OnInit {
 
     this.loading = true;
     this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
-      succes => {
+      success => {
         this.loading = false;
         this.errormessage = 'Success';
       } ,
@@ -70,5 +75,24 @@ export class AppointmentUpdateComponent implements OnInit {
     );
   }
 
+  getAppointment(): void
+  {
+    this.AppointmentObservable$ = this.route.paramMap.pipe(take(1),
+      switchMap(params => {
+        const id = +params.get('id');
+        return this.appointmentService.getAppointmentById(id);
+      }),
+    tap(appointment => {
+      this.previousAppointment = appointment;
+      this.appointmentForm.patchValue(appointment);
+
+      this.timeModel.hour = appointment.appointmentDateTime.getHours();
+      this.timeModel.minute = appointment.appointmentDateTime.getMinutes();
+
+      this.dateModel.day = appointment.appointmentDateTime.getDay();
+      this.dateModel.month = appointment.appointmentDateTime.getMonth();
+      this.dateModel.year = appointment.appointmentDateTime.getFullYear();
+    }));
+  }
 
 }
