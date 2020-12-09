@@ -20,6 +20,7 @@ import { AppointmentDetailComponent } from './appointment/appointment-detail/app
 import { AppointmentCreatorComponent } from './appointment/appointment-creator/appointment-creator.component';
 import {DatePipe} from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppointmentUpdateComponent } from './appointment/appointment-update/appointment-update.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     PatientDetailComponent,
     PatientUpdateComponent,
     AppointmentDetailComponent,
-    AppointmentCreatorComponent
+    AppointmentCreatorComponent,
+    AppointmentUpdateComponent
   ],
   imports: [
     BrowserModule,
