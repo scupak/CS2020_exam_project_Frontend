@@ -1,1 +1,58 @@
-<p>appointment-update works!</p>
+<div *ngIf =" !err && patientObservable$ && doctorObservable$ | async" >
+  <p>appointment-update!</p>
+
+  <ngb-datepicker #dp [(ngModel)]="dateModel" [startDate]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
+  <ngb-timepicker [(ngModel)]="timeModel"></ngb-timepicker>
+
+  <form [formGroup]="appointmentForm" (ngSubmit)="save()" >
+    <div class="form-group">
+      <label>DurationInMin</label>
+      <input type="number" formControlName="DurationInMin" class="form-control" required/>
+      <div *ngIf="DurationInMin.invalid && submitted" class="alert-danger">
+        <div *ngIf="DurationInMin.errors.required">DurationInMin is required</div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" formControlName="Description" class="form-control" />
+        <div *ngIf="Description.invalid && submitted" class="alert-danger">
+          <div *ngIf="Description.errors.required">Description is required</div>
+        </div>
+        <div class="form-group">
+          <label>FK_PatientCPR</label>
+          <br>
+          <select formControlName="FK_PatientCPR"  >
+            <option [ngValue]="null">Unassigned Patient</option>
+            <option *ngFor=" let patient of patientObservable$ | async "
+                    [value]="patient.patientCPR">
+              {{patient.patientCPR}} {{patient.patientFirstName}}
+            </option>
+          </select>
+          <div *ngIf="FK_PatientCPR.invalid && submitted" class="alert-danger">
+            <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
+          </div>
+          <div class="form-group">
+            <label>FK_DoctorId</label>
+            <br>
+            <select formControlName="FK_DoctorId"  >
+              <option [ngValue]="null">Unassigned Doctor</option>
+              <option *ngFor=" let doctor of doctorObservable$ | async "
+                      [value]="doctor.doctorEmailAddress">
+                {{doctor.firstName}} {{doctor.lastName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary">Save</button>
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div>
+  </form>
+</div>
+<div *ngIf="errormessage" class="alert-danger">{{errormessage}}</div>
+
+<div>
+  <p *ngIf="previousAppointment">{{ previousAppointment.appointmentId }}">{{ previousAppointment.appointmentDateTime }} , {{ previousAppointment.durationInMin }} , {{ previousAppointment.description }} , {{ previousAppointment.doctorEmailAddress }} , {{ previousAppointment.patientCpr }}</p>
+</div>
+
