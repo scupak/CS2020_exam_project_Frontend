@@ -16,7 +16,7 @@ export class PatientListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.patients$ = this.patientservice.getPatient().pipe(
+    this.patients$ = this.patientservice.getPatients().pipe(
 
       tap(() => this.err = undefined ),
       catchError(err => {

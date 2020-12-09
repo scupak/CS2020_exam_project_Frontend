@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {take} from 'rxjs/operators';
+import {catchError, take, tap} from 'rxjs/operators';
 import {AppointmentService} from '../shared/appointment.service';
 import {DatePipe} from '@angular/common';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import {Observable, of} from 'rxjs';
+import {Patient} from '../../patient/shared/Patient';
+import {Doctor} from '../../doctor/shared/doctor.model';
+import {PatientService} from '../../patient/shared/patient.service';
+import {DoctorService} from '../../doctor/shared/doctor.service';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -12,9 +17,12 @@ import * as moment from 'moment';
   styleUrls: ['./appointment-creator.component.scss']
 })
 export class AppointmentCreatorComponent implements OnInit {
+  patinetobservable$: Observable<Patient[]>;
+  doctorbservable$: Observable<Doctor[]>;
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
+  err: any;
 
   appointmentForm = new FormGroup( {
     DurationInMin: new FormControl('', Validators.required),
@@ -26,7 +34,7 @@ export class AppointmentCreatorComponent implements OnInit {
   loading = false;
   errormessage = '';
 
-  constructor(private appointmentService: AppointmentService, private datePipe: DatePipe, private calendar: NgbCalendar ) { }
+  constructor(private appointmentService: AppointmentService, private patientService: PatientService, private doctorService: DoctorService, private datePipe: DatePipe, private calendar: NgbCalendar ) { }
 
 
 
@@ -38,6 +46,25 @@ export class AppointmentCreatorComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.patinetobservable$ = this.patientService.getPatients().pipe(
+
+      tap(() => this.err = undefined ),
+      catchError(err => {
+        this.err = err.message;
+        this.errormessage = err.message;
+        return of([]);
+      })
+    );
+
+    this.doctorbservable$ = this.doctorService.GetAll().pipe(
+
+      tap(() => this.err = undefined ),
+      catchError(err => {
+        this.err = err.message;
+        this.errormessage = err.message;
+        return of([]);
+      })
+    );
   }
 
   save(): void {
