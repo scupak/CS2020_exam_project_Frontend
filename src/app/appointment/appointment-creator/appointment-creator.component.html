@@ -11,7 +11,7 @@
       </div>
       <div class="form-group">
         <label>Description</label>
-        <input type="text" formControlName="Description" class="form-control" required/>
+        <input type="text" formControlName="Description" class="form-control" />
         <div *ngIf="Description.invalid && submitted" class="alert-danger">
           <div *ngIf="Description.errors.required">Description is required</div>
         </div>

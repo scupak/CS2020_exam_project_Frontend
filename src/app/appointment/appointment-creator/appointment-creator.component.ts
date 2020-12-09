@@ -4,6 +4,7 @@ import {take} from 'rxjs/operators';
 import {AppointmentService} from '../shared/appointment.service';
 import {DatePipe} from '@angular/common';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -17,7 +18,7 @@ export class AppointmentCreatorComponent implements OnInit {
 
   appointmentForm = new FormGroup( {
     DurationInMin: new FormControl('', Validators.required),
-    Description: new FormControl('' , Validators.required),
+    Description: new FormControl('' ),
     FK_PatientCPR: new FormControl('' ),
     FK_DoctorId: new FormControl('' )
   });
@@ -41,42 +42,49 @@ export class AppointmentCreatorComponent implements OnInit {
 
   save(): void {
     this.submitted = true;
+
+    /*
     console.log(this.dateModel);
-    console.log(this.timeModel);
+    console.log(this.timeModel);*/
 
 
     // new Date ( year, month, date[, hour, minute, second, millisecond ])
-
+/*
     console.log(this.dateModel.year);
     console.log(this.dateModel.month);
-    console.log(this.dateModel.day);
-    const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
-    console.log(datetime + 'det er rigtig');
+    console.log(this.dateModel.day);*/
+
+    //const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+   // console.log(datetime + 'det er rigtig');
 /*
     datetime.setFullYear(this.dateModel.year);
     datetime.setMonth(this.dateModel.month);
     datetime.setDate(this.dateModel.day);
     console.log(datetime.getMonth());*/
 
- debugger;
+
     if (this.appointmentForm.invalid) {
       return;
     }
 
-
     // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
 
-    const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);
+   // const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);
 
-    console.log(datetime1 + 'det er det andet');
+
+    // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
+    const date = moment().date(this.dateModel.day).month(this.dateModel.month - 1).year(this.dateModel.year).hour(this.timeModel.hour + 1).minute(this.timeModel.minute).second(0).toDate();
     const appointment = { appointmentId: 0,
-                          appointmentDateTime: datetime1,
+                          appointmentDateTime: date ,
                           durationInMin: this.DurationInMin.value,
                           description: this.Description.value,
                           patientCpr: this.FK_PatientCPR.value,
                           doctorEmailAddress: this.FK_DoctorId.value,
                           doctor: null,
                           patient: null};
+
+
+   // console.log(appointment.appointmentDateTime + 'date i appointment');
 
     this.loading = true;
     this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
