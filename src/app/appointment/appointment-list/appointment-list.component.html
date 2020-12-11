@@ -1,7 +1,7 @@
 <h2>Appointments</h2>
 <div *ngIf=" !err && appointment$ | async ">
   <ul >
-    <li *ngFor=" let Appointment of appointment$ | async "  >
+    <li *ngFor=" let Appointment of appointments "  >
       <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
     </li>
 

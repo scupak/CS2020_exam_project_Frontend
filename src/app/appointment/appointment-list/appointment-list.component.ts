@@ -3,6 +3,8 @@ import {Observable, of} from 'rxjs';
 import {AppointmentService} from '../../appointment/shared/appointment.service';
 import {catchError, tap} from 'rxjs/operators';
 import {Appointment} from '../shared/Appointment';
+import {FilteredListModel} from '../../shared/filter/filteredListModel';
+import {FilterModel} from '../../shared/filter/filter.model';
 
 @Component({
   selector: 'app-appointment-list',
@@ -11,19 +13,20 @@ import {Appointment} from '../shared/Appointment';
 })
 export class AppointmentListComponent implements OnInit {
 
-  appointment$: Observable<Appointment[]>;
-  err: string;
+  appointment$: Observable<FilteredListModel<Appointment>>;
+  appointments: Appointment[];
+
+  err: any;
   constructor(private appointmentservice: AppointmentService) { }
 
   ngOnInit(): void {
 
     this.appointment$ = this.appointmentservice.getAppointments().pipe(
 
-      tap(() => this.err = undefined ),
-      catchError(err => {
-        this.err = err.message;
-        return of([]);
-      })
+      tap(filteredList => {
+        this.appointments = filteredList.list;
+      }),
+      catchError(this.err)
     );
 
   }

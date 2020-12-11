@@ -20,9 +20,9 @@
         <div class="form-group" *ngIf="patientObservable$ | async">
           <label>FK_PatientCPR</label>
           <br>
-          <select formControlName="FK_PatientCPR"  >
+          <select formControlName="FK_PatientCPR" class="form-control">
             <option [ngValue]="null">Unassigned Patient</option>
-            <option *ngFor=" let patient of patientObservable$"
+            <option *ngFor=" let patient of patients"
                     [value]="patient.patientCPR">
               {{patient.patientCPR}} {{patient.patientFirstName}}
             </option>
@@ -30,16 +30,19 @@
           <div *ngIf="FK_PatientCPR.invalid && submitted" class="alert-danger">
             <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="doctorObservable$ | async">
             <label>FK_DoctorId</label>
             <br>
-            <select formControlName="FK_DoctorId"  >
+            <select formControlName="FK_DoctorId" class="form-control" required>
               <option [ngValue]="null">Unassigned Doctor</option>
-              <option *ngFor=" let doctor of doctorObservable$ | async "
+              <option *ngFor=" let doctor of doctors"
                       [value]="doctor.doctorEmailAddress">
                 {{doctor.firstName}} {{doctor.lastName}}
               </option>
             </select>
+            <div *ngIf="FK_DoctorId.invalid && submitted" class="alert-danger">
+              <div *ngIf="FK_DoctorId.errors.required">doctor is required</div>
+            </div>
           </div>
         </div>
       </div>

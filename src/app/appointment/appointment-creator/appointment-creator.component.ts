@@ -21,16 +21,18 @@ import {FilterModel} from '../../shared/filter/filter.model';
 export class AppointmentCreatorComponent implements OnInit {
   patientObservable$: Observable<FilteredListModel<Patient>>;
   doctorObservable$: Observable<FilteredListModel<Doctor>>;
+  patients: Patient[];
+  doctors: Doctor[];
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
   err: any;
 
   appointmentForm = new FormGroup( {
-    DurationInMin: new FormControl('', Validators.required),
+    DurationInMin: new FormControl('15', Validators.required),
     Description: new FormControl('' ),
     FK_PatientCPR: new FormControl('' ),
-    FK_DoctorId: new FormControl('' )
+    FK_DoctorId: new FormControl('', Validators.required)
   });
   submitted = false;
   loading = false;
@@ -54,13 +56,17 @@ constructor(private appointmentService: AppointmentService,
   ngOnInit(): void {
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
-      tap(() => this.err = undefined ),
+      tap(filteredList => {
+        this.patients = filteredList.list;
+      }),
       catchError(this.err)
     );
 
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
-      tap(() => this.err = undefined ),
+      tap(filteredList => {
+        this.doctors = filteredList.list;
+      }),
       catchError(this.err)
     );
   }

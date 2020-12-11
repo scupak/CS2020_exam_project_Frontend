@@ -1,5 +1,13 @@
-<p>appointment-detail works!</p>
 
-<div>
-  <p *ngIf="appointment">{{ appointment.appointmentId }}">{{ appointment.appointmentDateTime }} , {{ appointment.durationInMin }} , {{ appointment.description }} , {{ appointment.doctorEmailAddress }} , {{ appointment.patientCpr }}<button class="btn" routerLink="/appointment-update/{{appointment.appointmentId}}">Update</button> <button class="btn btn-danger" (click)="deleteAppointment()">delete</button></p>
+<div *ngIf="appointment">
+  <p>
+    Id: {{ appointment.appointmentId }} <br>
+    Date and time: {{ appointment.appointmentDateTime }} <br>
+    Duration in minutes: {{ appointment.durationInMin }} <br>
+    Descrpition: {{ appointment.description }} <br>
+    Doctor email address: {{ appointment.doctorEmailAddress }} <br>
+    Patient Cpr: {{ appointment.patientCpr }}</p>
+  <button class="btn btn-primary margin-left" routerLink="/appointment-update/{{appointment.appointmentId}}">Update</button>
+  <button class="btn btn-danger margin-left" (click)="deleteAppointment()">delete</button>
+  <button class="btn btn-secondary margin-left" routerLink="/appointment-list">back</button>
 </div>
