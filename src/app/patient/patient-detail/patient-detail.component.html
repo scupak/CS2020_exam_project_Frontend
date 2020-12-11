@@ -1,6 +1,12 @@
-<p>patient-detail works!</p>
 
-<div>
-<p *ngIf="patient">{{patient.patientCPR}} {{patient.patientFirstName}} {{patient.patientLastName}} {{patient.patientEmail}} {{patient.patientPhone}} <button class="btn" routerLink="/patient-update/{{patient.patientCPR}}">Update</button> <button class="btn btn-danger" (click)="deletePatient()">delete</button></p>
+<div *ngIf="patient">
+<p >
+  CPR: {{patient.patientCPR}} <br>
+  Name: {{patient.patientFirstName}} {{patient.patientLastName}} <br>
+  Email: {{patient.patientEmail}} <br>
+  phone: {{patient.patientPhone}} <br>
+  </p>
 </div>
-
+<button class="btn btn-primary margin-left" routerLink="/patient-update/{{patient.patientCPR}}">Update</button>
+<button class="btn btn-danger margin-left" (click)="deletePatient()">Delete</button>
+<button class="btn btn-secondary margin-left" routerLink="/patient-list/">Back</button>

@@ -6,9 +6,9 @@
   Administrator: {{doctor.isAdmin ? "yes":"No"}}
 </p>
 <div *ngIf="doctor$ | async as doctor">
-  <button routerLink= "/doctor-list">Back</button>
-  <button (click)="deleteDoctor()">Delete</button>
-  <button routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
+  <button class="btn btn-secondary margin-left" routerLink= "/doctor-list">Back</button>
+  <button class="btn btn-danger margin-left" (click)="deleteDoctor()">Delete</button>
+  <button class="btn btn-primary margin-left" routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
 </div>
 
 
