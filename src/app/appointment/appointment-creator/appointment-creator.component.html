@@ -17,12 +17,12 @@
         <div *ngIf="Description.invalid && submitted" class="alert-danger">
           <div *ngIf="Description.errors.required">Description is required</div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="patientObservable$ | async">
           <label>FK_PatientCPR</label>
           <br>
           <select formControlName="FK_PatientCPR"  >
             <option [ngValue]="null">Unassigned Patient</option>
-            <option *ngFor=" let patient of patientObservable$ | async "
+            <option *ngFor=" let patient of patientObservable$"
                     [value]="patient.patientCPR">
               {{patient.patientCPR}} {{patient.patientFirstName}}
             </option>

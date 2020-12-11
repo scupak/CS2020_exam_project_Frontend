@@ -10,6 +10,8 @@ import {Patient} from '../../patient/shared/Patient';
 import {Doctor} from '../../doctor/shared/doctor.model';
 import {PatientService} from '../../patient/shared/patient.service';
 import {DoctorService} from '../../doctor/shared/doctor.service';
+import {FilteredListModel} from '../../shared/filter/filteredListModel';
+import {FilterModel} from '../../shared/filter/filter.model';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -17,8 +19,8 @@ import {DoctorService} from '../../doctor/shared/doctor.service';
   styleUrls: ['./appointment-creator.component.scss']
 })
 export class AppointmentCreatorComponent implements OnInit {
-  patientObservable$: Observable<Patient[]>;
-  doctorObservable$: Observable<Doctor[]>;
+  patientObservable$: Observable<FilteredListModel<Patient>>;
+  doctorObservable$: Observable<FilteredListModel<Doctor>>;
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
@@ -34,7 +36,11 @@ export class AppointmentCreatorComponent implements OnInit {
   loading = false;
   errormessage = '';
 
-  constructor(private appointmentService: AppointmentService, private patientService: PatientService, private doctorService: DoctorService, private datePipe: DatePipe, private calendar: NgbCalendar ) { }
+constructor(private appointmentService: AppointmentService,
+            private patientService: PatientService,
+            private doctorService: DoctorService,
+            private datePipe: DatePipe,
+            private calendar: NgbCalendar ) { }
 
 
 
@@ -49,21 +55,13 @@ export class AppointmentCreatorComponent implements OnInit {
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
       tap(() => this.err = undefined ),
-      catchError(err => {
-        this.err = err.message;
-        this.errormessage = err.message;
-        return of([]);
-      })
+      catchError(this.err)
     );
 
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
       tap(() => this.err = undefined ),
-      catchError(err => {
-        this.err = err.message;
-        this.errormessage = err.message;
-        return of([]);
-      })
+      catchError(this.err)
     );
   }
 
@@ -81,7 +79,7 @@ export class AppointmentCreatorComponent implements OnInit {
     console.log(this.dateModel.month);
     console.log(this.dateModel.day);*/
 
-    //const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+    // const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
    // console.log(datetime + 'det er rigtig');
 /*
     datetime.setFullYear(this.dateModel.year);
@@ -99,7 +97,15 @@ export class AppointmentCreatorComponent implements OnInit {
 
 
     // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
-    const date = moment().date(this.dateModel.day).month(this.dateModel.month - 1).year(this.dateModel.year).hour(this.timeModel.hour + 1).minute(this.timeModel.minute).second(0).toDate();
+    const date = moment()
+      .date(this.dateModel.day)
+      .month(this.dateModel.month - 1)
+      .year(this.dateModel.year)
+      .hour(this.timeModel.hour + 1)
+      .minute(this.timeModel.minute)
+      .second(0)
+      .toDate();
+
     const appointment = { appointmentId: 0,
                           appointmentDateTime: date ,
                           durationInMin: this.DurationInMin.value,

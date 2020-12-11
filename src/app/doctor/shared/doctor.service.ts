@@ -3,7 +3,9 @@ import {Doctor} from './doctor.model';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable, of} from 'rxjs';
-import {observableToBeFn} from 'rxjs/internal/testing/TestScheduler';
+import {FilteredListModel} from '../../shared/filter/filteredListModel';
+import {Appointment} from '../../appointment/shared/Appointment';
+import {FilterModel} from '../../shared/filter/filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,28 @@ export class DoctorService {
 
   constructor(private http: HttpClient) { }
 
-  GetAll(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(this.doctorsApiUrl);
+  GetAll(filter?: FilterModel): Observable<FilteredListModel<Doctor>> {
+    let url = environment.webAPI_URL + 'Doctors' + '?';
+
+    if (filter && filter.orderDirection?.length > 0 && filter.orderProperty?.length > 0)
+    {
+      url = url
+        + 'orderDirection=' + filter.orderDirection
+        + '&orderProperty=' + filter.orderProperty + '&';
+    }
+    if (filter && filter.itemsPrPage > 0 && filter.currentPage > 0)
+    {
+      url = url
+        + 'ItemsPrPage=' + filter.itemsPrPage
+        + '&CurrentPage=' + filter.currentPage + '&';
+    }
+    if (filter && filter.searchField?.length > 0 && filter.searchText?.length > 0)
+    {
+      url = url
+        + 'searchField=' + filter.searchText
+        + '&searchText=' + filter.searchField + '&';
+    }
+    return this.http.get<FilteredListModel<Doctor>>(url);
   }
 
   GetById(email: string): Observable<Doctor>{
