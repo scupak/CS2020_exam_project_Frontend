@@ -6,4 +6,5 @@ export interface Patient
   patientPhone: string;
   patientEmail: string;
   patientCPR: string;
+  password?: string;
 }
