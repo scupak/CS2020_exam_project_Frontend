@@ -4,4 +4,5 @@ export interface Doctor {
   doctorEmailAddress: string;
   phoneNumber: string;
   isAdmin: boolean;
+  password?: string;
 }

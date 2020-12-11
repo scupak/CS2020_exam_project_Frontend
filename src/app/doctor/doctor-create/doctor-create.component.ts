@@ -27,7 +27,8 @@ export class DoctorCreateComponent implements OnInit {
       lastName: ['', Validators.required],
       doctorEmailAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
-      isAdmin: [false]
+      isAdmin: [false],
+      password: ['', Validators.required]
     });
   }
   // Getters for easy access to form fields
@@ -36,6 +37,7 @@ export class DoctorCreateComponent implements OnInit {
   get emailAddress(): AbstractControl { return this.doctorForm.get('doctorEmailAddress'); }
   get phoneNumber(): AbstractControl { return this.doctorForm.get('phoneNumber'); }
   get isAdmin(): AbstractControl { return this.doctorForm.get('isAdmin'); }
+  get password(): AbstractControl { return this.doctorForm.get('password'); }
 
   onSubmit(): void {
     this.submitted = true;

@@ -14,7 +14,8 @@ export class PatientCreatorComponent implements OnInit {
     patientLastName: new FormControl('', Validators.required),
     patientPhone: new FormControl('' , Validators.required),
     patientEmail: new FormControl('', Validators.required),
-    patientCPR: new FormControl('' , Validators.required)
+    patientCPR: new FormControl('' , Validators.required),
+    password: new FormControl('' , Validators.required)
   });
   submitted = false;
   loading = false;
@@ -30,6 +31,7 @@ export class PatientCreatorComponent implements OnInit {
   get patientPhone(): AbstractControl { return this.patientForm.get('patientPhone'); }
   get patientEmail(): AbstractControl { return this.patientForm.get('patientEmail'); }
   get patientCPR(): AbstractControl { return this.patientForm.get('patientCPR'); }
+  get password(): AbstractControl { return this.patientForm.get('password'); }
 
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class PatientCreatorComponent implements OnInit {
       return;
     }
     const patient = this.patientForm.value;
+
 
     this.loading = true;
     this.patientService.addPatient(patient).pipe(take(1)).subscribe(
