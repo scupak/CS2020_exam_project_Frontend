@@ -17,18 +17,22 @@ export class AppointmentListComponent implements OnInit {
   appointments: Appointment[];
 
   err: any;
+  filter: FilterModel = {currentPage: 1, itemsPrPage: 1};
   constructor(private appointmentservice: AppointmentService) { }
 
   ngOnInit(): void {
+    this.getAppointments();
+  }
 
-    this.appointment$ = this.appointmentservice.getAppointments().pipe(
+  getAppointments(): void
+  {
+    this.appointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
 
       tap(filteredList => {
         this.appointments = filteredList.list;
       }),
       catchError(this.err)
     );
-
   }
 
 }
