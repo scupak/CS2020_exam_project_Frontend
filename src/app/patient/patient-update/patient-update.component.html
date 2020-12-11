@@ -25,6 +25,13 @@
             <div *ngIf="patientEmail.errors.required">patientEmail is required</div>
           </div>
         </div>
+        <div class="form-group">
+          <label>password</label>
+          <input type="text" formControlName="password" class="form-control" required/>
+          <div *ngIf="password.invalid && submitted" class="alert-danger">
+            <div *ngIf="password.errors.required">password is required</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
