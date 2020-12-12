@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, of, Subscription} from 'rxjs';
 import {AppointmentService} from '../../appointment/shared/appointment.service';
 import {catchError, take, tap} from 'rxjs/operators';
 import {Appointment} from '../shared/Appointment';
@@ -26,6 +26,7 @@ export class AppointmentListComponent implements OnInit {
   date: {year: number, month: number};
   err: any;
   errorMessage: string;
+  subscription: Subscription;
   submitted = false;
   loading = false;
   FromDate: Date;
@@ -60,7 +61,7 @@ export class AppointmentListComponent implements OnInit {
     this.getAppointments();
   }
 
-  getAppointments(currentPage: number = 0): void
+  getAppointments(): void
   {
     this.appointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
 
@@ -72,6 +73,7 @@ export class AppointmentListComponent implements OnInit {
         this.err = err.error ?? err.message;
         return of(this.filteredList);
       }));
+
   }
 
   openDatepicker(d1: NgbInputDatepicker): void {
@@ -81,7 +83,10 @@ export class AppointmentListComponent implements OnInit {
   closeDatepicker(d1: NgbInputDatepicker): void {
     d1.open();
   }
-  search(): void{
+  search(currentPage: number = 0): void{
+    if (currentPage > 0) {
+      this.FilterForm.patchValue({currentPage});
+    }
     this.submitted = true;
     if (this.orderStopDateTime !== undefined && this.orderStartDateTime !== undefined)
     {
@@ -89,7 +94,7 @@ export class AppointmentListComponent implements OnInit {
         .date(this.orderStartDateTime.day)
         .month(this.orderStartDateTime.month - 1)
         .year(this.orderStartDateTime.year)
-        .hour(1)
+        .hour(0)
         .minute(0)
         .second(0)
         .toDate();
@@ -104,20 +109,20 @@ export class AppointmentListComponent implements OnInit {
         .toDate();
 
       this.filter =
-        { currentPage: 1,
-          itemsPrPage: 10,
+        { currentPage: this.currentPage,
+          itemsPrPage: this.itemsPrPage,
           orderDirection: this.orderDirection.value,
           orderProperty: this.orderProperty.value,
           searchField: this.searchField.value,
           searchText: this.searchText.value,
-          orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDThh:mm:ss'),
-          orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDThh:mm:ss')
+          orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDTHH:mm:ss'),
+          orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDTHH:mm:ss')
         };
     }
     else {
       this.filter =
-        { currentPage: 1,
-          itemsPrPage: 10,
+        { currentPage: this.currentPage,
+          itemsPrPage: this.itemsPrPage,
           orderDirection: this.orderDirection.value,
           orderProperty: this.orderProperty.value,
           searchField: this.searchField.value,
