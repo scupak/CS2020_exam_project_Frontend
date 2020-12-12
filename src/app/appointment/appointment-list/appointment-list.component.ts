@@ -24,8 +24,7 @@ export class AppointmentListComponent implements OnInit {
   orderStopDateTime: NgbDateStruct;
   count: number;
   date: {year: number, month: number};
-  err: any;
-  errorMessage: string;
+  error: any;
   subscription: Subscription;
   submitted = false;
   loading = false;
@@ -69,8 +68,8 @@ export class AppointmentListComponent implements OnInit {
         this.count = filteredList.totalCount;
         this.appointments = filteredList.list;
       }),
-      catchError(err => {
-        this.err = err.error ?? err.message;
+      catchError(error => {
+        this.error = error.error ?? error.message;
         return of(this.filteredList);
       }));
 

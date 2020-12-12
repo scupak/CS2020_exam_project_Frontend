@@ -55,19 +55,12 @@ export class AppointmentService {
       + 'orderStartDateTime=' + filter.orderStartDateTime
       + '&orderStopDateTime=' + filter.orderStopDateTime + '&';
     }
-    return this.http.get<FilteredListModel<Appointment>>(url).pipe(
-      catchError(err => {
-        return of(this.filteredList);
-      }));
+    return this.http.get<FilteredListModel<Appointment>>(url);
   }
 
   addAppointment(appointment: Appointment): Observable<Appointment>
   {
-    return this.http.post<Appointment>(environment.webAPI_URL + 'Appointments', appointment).pipe(
-      catchError(err => {
-        this.appointment.doctorEmailAddress = err.message;
-        return of(this.appointment);
-  }));
+    return this.http.post<Appointment>(environment.webAPI_URL + 'Appointments', appointment);
   }
 
   updateAppointment(appointment: Appointment): Observable<Appointment>

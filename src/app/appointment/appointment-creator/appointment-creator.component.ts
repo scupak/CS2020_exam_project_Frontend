@@ -13,6 +13,7 @@ import {DoctorService} from '../../doctor/shared/doctor.service';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {Router} from '@angular/router';
+import {Appointment} from '../shared/Appointment';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -27,7 +28,23 @@ export class AppointmentCreatorComponent implements OnInit {
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
-  err: any;
+  error: any;
+  filter: FilterModel = {};
+  patientFilteredList: FilteredListModel<Patient> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+  doctorFilteredList: FilteredListModel<Doctor> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+  appointment: Appointment = {appointmentDateTime: new Date(),
+    appointmentId: 1,
+    description: 'Error',
+    doctorEmailAddress: 'Error',
+    durationInMin: 15,
+    patientCpr: '',
+  };
 
   appointmentForm = new FormGroup( {
     DurationInMin: new FormControl('15', Validators.required),
@@ -36,8 +53,6 @@ export class AppointmentCreatorComponent implements OnInit {
     FK_DoctorId: new FormControl('', Validators.required)
   });
   submitted = false;
-  loading = false;
-  errormessage = '';
 
 constructor(private appointmentService: AppointmentService,
             private patientService: PatientService,
@@ -61,7 +76,10 @@ constructor(private appointmentService: AppointmentService,
       tap(filteredList => {
         this.patients = filteredList.list;
       }),
-      catchError(this.err)
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.patientFilteredList);
+      })
     );
 
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
@@ -69,7 +87,10 @@ constructor(private appointmentService: AppointmentService,
       tap(filteredList => {
         this.doctors = filteredList.list;
       }),
-      catchError(this.err)
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.doctorFilteredList);
+      })
     );
   }
 
@@ -107,7 +128,7 @@ constructor(private appointmentService: AppointmentService,
     // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
     if (this.dateModel === undefined)
     {
-      this.errormessage = 'Appointment needs a date';
+      this.error = 'Appointment needs a date';
       return;
     }
     const date = moment()
@@ -130,24 +151,14 @@ constructor(private appointmentService: AppointmentService,
 
 
    // console.log(appointment.appointmentDateTime + 'date i appointment');
-
-    this.loading = true;
     this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
-      succes => {
-        this.loading = false;
-        if (succes.description !== 'Error')
-        {
-          this.errormessage = 'Success';
-          this.router.navigateByUrl('/appointment-list');
-        }
-        else {
-          this.errormessage = succes.doctorEmailAddress;
-          this.loading = false;
-        }
+      success => {
+        this.error = 'Success';
+        this.router.navigateByUrl('/appointment-list');
       } ,
       error => {
-        this.errormessage = error.message;
-        this.loading = false;
+        this.error = error.error ?? error.message;
+        return of(this.appointment);
       }
     );
   }
