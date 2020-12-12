@@ -22,6 +22,7 @@ import {DatePipe} from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentUpdateComponent } from './appointment/appointment-update/appointment-update.component';
 import { LoginScreenComponent } from './login/login-screen/login-screen.component';
+import {LoginGuard} from './shared/authentication/_guards/Login.guard';
 
 
 @NgModule({
@@ -51,7 +52,7 @@ import { LoginScreenComponent } from './login/login-screen/login-screen.componen
     NgbModule,
     FormsModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
