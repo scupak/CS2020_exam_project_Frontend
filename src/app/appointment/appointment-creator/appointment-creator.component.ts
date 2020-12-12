@@ -100,6 +100,8 @@ export class AppointmentCreatorComponent implements OnInit {
 
     // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
     const date = moment().date(this.dateModel.day).month(this.dateModel.month - 1).year(this.dateModel.year).hour(this.timeModel.hour + 1).minute(this.timeModel.minute).second(0).toDate();
+
+
     const appointment = { appointmentId: 0,
                           appointmentDateTime: date ,
                           durationInMin: this.DurationInMin.value,

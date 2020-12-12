@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -80,6 +80,15 @@ export class AuthService {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
       return currentUser.username;
+    } else {
+      return null;
+    }
+  }
+
+  getRole(): string {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      return currentUser.role;
     } else {
       return null;
     }

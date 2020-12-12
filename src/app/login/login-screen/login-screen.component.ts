@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-login-screen',
