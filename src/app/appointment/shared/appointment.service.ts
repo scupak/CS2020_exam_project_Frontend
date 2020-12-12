@@ -31,8 +31,8 @@ export class AppointmentService {
     if (filter && filter.searchField?.length > 0 && filter.searchText?.length > 0)
     {
       url = url
-      + 'searchField=' + filter.searchText
-      + '&searchText=' + filter.searchField + '&';
+      + 'searchField=' + filter.searchField
+      + '&searchText=' + filter.searchText + '&';
     }
     if (filter && filter.orderStartDateTime != null && filter.orderStopDateTime != null)
     {

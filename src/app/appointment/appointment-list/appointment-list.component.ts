@@ -9,6 +9,7 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {DatePipe} from '@angular/common';
 import {NgbDateStruct, NgbCalendar, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import {DEBUG} from '@angular/compiler-cli/src/ngtsc/logging/src/console_logger';
 
 @Component({
   selector: 'app-appointment-list',
@@ -26,8 +27,8 @@ export class AppointmentListComponent implements OnInit {
   err: any;
   submitted = false;
   loading = false;
-  toDate: Date;
-  fromDate: Date;
+  FromDate: Date;
+  ToDate: Date;
   filter: FilterModel = {currentPage: 1, itemsPrPage: 10};
   FilterForm = new FormGroup({
     itemsPrPage: new FormControl(''),
@@ -76,43 +77,54 @@ export class AppointmentListComponent implements OnInit {
   }
   search(): void{
     this.submitted = true;
-    const fromDate = moment()
-      .date(this.orderStartDateTime.day)
-      .month(this.orderStartDateTime.month - 1)
-      .year(this.orderStartDateTime.year)
-      .hour(0)
-      .minute(0)
-      .second(0)
-      .toDate();
+    if (this.orderStopDateTime !== undefined || this.orderStartDateTime !== undefined)
+    {
+      this.FromDate = moment()
+        .date(this.orderStartDateTime.day)
+        .month(this.orderStartDateTime.month - 1)
+        .year(this.orderStartDateTime.year)
+        .hour(1)
+        .minute(0)
+        .second(0)
+        .toDate();
 
-    const toDate = moment()
-      .date(this.orderStopDateTime.day)
-      .month(this.orderStopDateTime.month - 1)
-      .year(this.orderStopDateTime.year)
-      .hour(23)
-      .minute(59)
-      .second(59)
-      .toDate();
+      this.ToDate = moment()
+        .date(this.orderStopDateTime.day)
+        .month(this.orderStopDateTime.month - 1)
+        .year(this.orderStopDateTime.year)
+        .hour(23)
+        .minute(59)
+        .second(59)
+        .toDate();
 
-    this.fromDate = fromDate;
-    this.toDate = toDate;
-
-    this.filter =
-      { currentPage: this.currentPage,
-        itemsPrPage: this.itemsPrPage,
-        orderDirection: this.orderDirection.value,
-        orderProperty: this.orderProperty.value,
-        searchField: this.searchField.value,
-        searchText: this.searchText.value,
-        orderStartDateTime: this.fromDate,
-        orderStopDateTime: this.toDate
-      };
+      this.filter =
+        { currentPage: 1,
+          itemsPrPage: 10,
+          orderDirection: this.orderDirection.value,
+          orderProperty: this.orderProperty.value,
+          searchField: this.searchField.value,
+          searchText: this.searchText.value,
+          orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDThh:mm:ss'),
+          orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDThh:mm:ss')
+        };
+    }
+    else {
+      this.filter =
+        { currentPage: 1,
+          itemsPrPage: 10,
+          orderDirection: this.orderDirection.value,
+          orderProperty: this.orderProperty.value,
+          searchField: this.searchField.value,
+          searchText: this.searchText.value
+        };
+    }
     if (this.filter.currentPage <= 0){
       this.filter.currentPage = 1;
     }
     if (this.filter.itemsPrPage <= 0){
       this.filter.itemsPrPage = 1;
     }
+
     this.getAppointments();
   }
 }

@@ -6,6 +6,6 @@ export interface FilterModel
   searchField?: string;
   itemsPrPage?: number;
   currentPage?: number;
-  orderStartDateTime?: Date;
-  orderStopDateTime?: Date;
+  orderStartDateTime?: string;
+  orderStopDateTime?: string;
 }
