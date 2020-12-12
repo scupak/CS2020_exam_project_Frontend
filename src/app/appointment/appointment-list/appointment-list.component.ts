@@ -25,6 +25,7 @@ export class AppointmentListComponent implements OnInit {
   count: number;
   date: {year: number, month: number};
   err: any;
+  errorMessage: string;
   submitted = false;
   loading = false;
   FromDate: Date;
@@ -63,7 +64,7 @@ export class AppointmentListComponent implements OnInit {
         this.count = filteredList.totalCount;
         this.appointments = filteredList.list;
       }),
-      catchError(this.err)
+      catchError(err => { this.err = err.error ?? err.message; return of([]);
     );
   }
 
