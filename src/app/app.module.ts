@@ -23,6 +23,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentUpdateComponent } from './appointment/appointment-update/appointment-update.component';
 import { LoginScreenComponent } from './login/login-screen/login-screen.component';
 import {LoginGuard} from './shared/authentication/_guards/Login.guard';
+import {DoctorGuard} from './shared/authentication/_guards/doctor.guard';
+import {AdminGuard} from './shared/authentication/_guards/admin.guard';
+import {AuthService} from './shared/authentication/auth.service';
 
 
 @NgModule({
@@ -52,7 +55,7 @@ import {LoginGuard} from './shared/authentication/_guards/Login.guard';
     NgbModule,
     FormsModule
   ],
-  providers: [DatePipe, LoginGuard],
+  providers: [DatePipe, LoginGuard, DoctorGuard, AdminGuard, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

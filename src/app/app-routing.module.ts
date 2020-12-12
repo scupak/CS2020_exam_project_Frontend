@@ -15,16 +15,18 @@ import {AppointmentCreatorComponent} from './appointment/appointment-creator/app
 import {AppointmentUpdateComponent} from './appointment/appointment-update/appointment-update.component';
 import {LoginScreenComponent} from './login/login-screen/login-screen.component';
 import {LoginGuard} from './shared/authentication/_guards/Login.guard';
-
+import {DoctorGuard} from './shared/authentication/_guards/doctor.guard';
+import {AdminGuard} from './shared/authentication/_guards/admin.guard';
+//AdminGuard, LoginGuard, DoctorGuard - Operators form the canActivate command..
 const routes: Routes = [
   { path: 'home', component: HomeScreenComponent},
   { path: 'login', component: LoginScreenComponent },
   { path: 'doctor-list', component: DoctorListComponent , canActivate: [LoginGuard]},
   { path: 'doctor-detail/:id', component: DoctorDetailComponent , canActivate: [LoginGuard]},
-  {path: 'doctor-create', component: DoctorCreateComponent , canActivate: [LoginGuard]},
+  {path: 'doctor-create', component: DoctorCreateComponent , canActivate: [LoginGuard, AdminGuard]},
   {path: 'doctor-update/:id', component: DoctorUpdateComponent , canActivate: [LoginGuard]},
-  { path: 'patient-list', component: PatientListComponent , canActivate: [LoginGuard]},
-  { path: 'patient-creator', component: PatientCreatorComponent , canActivate: [LoginGuard]},
+  { path: 'patient-list', component: PatientListComponent , canActivate: [LoginGuard, DoctorGuard]},
+  { path: 'patient-creator', component: PatientCreatorComponent , canActivate: [LoginGuard, DoctorGuard]},
   { path: 'patient-detail/:id', component: PatientDetailComponent , canActivate: [LoginGuard]},
   { path: 'patient-update/:id', component: PatientUpdateComponent , canActivate: [LoginGuard]},
   { path: 'appointment-list', component: AppointmentListComponent , canActivate: [LoginGuard]},
