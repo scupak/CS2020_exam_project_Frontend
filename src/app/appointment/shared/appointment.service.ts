@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Appointment} from '../../appointment/shared/Appointment';
 import {environment} from '../../../environments/environment';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import {FilteredListModel} from '../../shared/filter/filteredListModel';
 export class AppointmentService {
 
   constructor(private http: HttpClient) { }
+
 
   getAppointments(filter?: FilterModel): Observable<FilteredListModel<Appointment>>
   {

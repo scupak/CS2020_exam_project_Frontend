@@ -39,7 +39,7 @@ import { AppointmentUpdateComponent } from './appointment/appointment-update/app
     PatientUpdateComponent,
     AppointmentDetailComponent,
     AppointmentCreatorComponent,
-    AppointmentUpdateComponent
+    AppointmentUpdateComponent,
   ],
   imports: [
     BrowserModule,
