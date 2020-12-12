@@ -130,9 +130,15 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
     this.appointmentService.updateAppointment(appointment).pipe(take(1)).subscribe(
       success => {
         this.loading = false;
-        this.id = +this.route.snapshot.paramMap.get('id');
-        this.router.navigateByUrl('/appointment-detail/' + this.id);
-
+        if (success.description !== 'Error')
+        {
+          this.id = +this.route.snapshot.paramMap.get('id');
+          this.router.navigateByUrl('/appointment-detail/' + this.id);
+        }
+        else {
+          this.errormessage = success.doctorEmailAddress;
+          this.loading = false;
+        }
       } ,
       error => {
         this.errormessage = error.message;

@@ -5,6 +5,7 @@ import {Appointment} from '../../appointment/shared/Appointment';
 import {environment} from '../../../environments/environment';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
+import {catchError, tap} from 'rxjs/operators';
 
 
 @Injectable({
@@ -14,6 +15,18 @@ export class AppointmentService {
 
   constructor(private http: HttpClient) { }
 
+  filter: FilterModel = {currentPage: 1, itemsPrPage: 10};
+  filteredList: FilteredListModel<Appointment> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+  appointment: Appointment = {appointmentDateTime: new Date(),
+    appointmentId: 1,
+    description: 'Error',
+    doctorEmailAddress: 'Error',
+    durationInMin: 15,
+    patientCpr: '',
+  };
 
   getAppointments(filter?: FilterModel): Observable<FilteredListModel<Appointment>>
   {
@@ -42,26 +55,45 @@ export class AppointmentService {
       + 'orderStartDateTime=' + filter.orderStartDateTime
       + '&orderStopDateTime=' + filter.orderStopDateTime + '&';
     }
-    return this.http.get<FilteredListModel<Appointment>>(url);
+    return this.http.get<FilteredListModel<Appointment>>(url).pipe(
+      catchError(err => {
+        return of(this.filteredList);
+      }));
   }
 
   addAppointment(appointment: Appointment): Observable<Appointment>
   {
-    return this.http.post<Appointment>(environment.webAPI_URL + 'Appointments', appointment);
+    return this.http.post<Appointment>(environment.webAPI_URL + 'Appointments', appointment).pipe(
+      catchError(err => {
+        this.appointment.doctorEmailAddress = err.message;
+        return of(this.appointment);
+  }));
   }
 
   updateAppointment(appointment: Appointment): Observable<Appointment>
   {
-    return this.http.put<Appointment>(environment.webAPI_URL + 'Appointments', appointment);
+    return this.http.put<Appointment>(environment.webAPI_URL + 'Appointments', appointment).pipe(
+      catchError(err => {
+        this.appointment.doctorEmailAddress = err.message;
+        return of(this.appointment);
+      }));
   }
 
   getAppointmentById(id: number): Observable<Appointment>
   {
-    return this.http.get<Appointment>(environment.webAPI_URL + 'Appointments/' + id);
+    return this.http.get<Appointment>(environment.webAPI_URL + 'Appointments/' + id).pipe(
+      catchError(err => {
+        this.appointment.doctorEmailAddress = err.message;
+        return of(this.appointment);
+      }));
   }
 
   removeAppointment(id: number): Observable<Appointment>
   {
-    return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id);
+    return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id).pipe(
+      catchError(err => {
+        this.appointment.doctorEmailAddress = err.message;
+        return of(this.appointment);
+      }));
   }
 }

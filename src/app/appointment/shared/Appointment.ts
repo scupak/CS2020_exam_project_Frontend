@@ -8,8 +8,8 @@ export interface Appointment
   durationInMin: number;
   description: string;
   patientCpr: string;
-  doctorEmailAddress: number;
-  doctor: Doctor;
-  patient: Patient;
+  doctorEmailAddress: string;
+  doctor?: Doctor;
+  patient?: Patient;
 
 }

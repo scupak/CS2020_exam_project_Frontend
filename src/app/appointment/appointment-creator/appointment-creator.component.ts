@@ -12,6 +12,7 @@ import {PatientService} from '../../patient/shared/patient.service';
 import {DoctorService} from '../../doctor/shared/doctor.service';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -42,7 +43,8 @@ constructor(private appointmentService: AppointmentService,
             private patientService: PatientService,
             private doctorService: DoctorService,
             private datePipe: DatePipe,
-            private calendar: NgbCalendar ) { }
+            private calendar: NgbCalendar,
+            private router: Router) { }
 
 
 
@@ -103,6 +105,11 @@ constructor(private appointmentService: AppointmentService,
 
 
     // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
+    if (this.dateModel === undefined)
+    {
+      this.errormessage = 'Appointment needs a date';
+      return;
+    }
     const date = moment()
       .date(this.dateModel.day)
       .month(this.dateModel.month - 1)
@@ -128,7 +135,15 @@ constructor(private appointmentService: AppointmentService,
     this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
       succes => {
         this.loading = false;
-        this.errormessage = 'Success';
+        if (succes.description !== 'Error')
+        {
+          this.errormessage = 'Success';
+          this.router.navigateByUrl('/appointment-list');
+        }
+        else {
+          this.errormessage = succes.doctorEmailAddress;
+          this.loading = false;
+        }
       } ,
       error => {
         this.errormessage = error.message;

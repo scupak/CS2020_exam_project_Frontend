@@ -31,6 +31,10 @@ export class AppointmentListComponent implements OnInit {
   FromDate: Date;
   ToDate: Date;
   filter: FilterModel = {currentPage: 1, itemsPrPage: 10};
+  filteredList: FilteredListModel<Appointment> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
   FilterForm = new FormGroup({
     itemsPrPage: new FormControl(''),
     currentPage: new FormControl(''),
@@ -56,7 +60,7 @@ export class AppointmentListComponent implements OnInit {
     this.getAppointments();
   }
 
-  getAppointments(): void
+  getAppointments(currentPage: number = 0): void
   {
     this.appointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
 
@@ -64,10 +68,11 @@ export class AppointmentListComponent implements OnInit {
         this.count = filteredList.totalCount;
         this.appointments = filteredList.list;
       }),
-      catchError(err => { this.err = err.error ?? err.message; return of([]);
-    );
+      catchError(err => {
+        this.err = err.error ?? err.message;
+        return of(this.filteredList);
+      }));
   }
-
 
   openDatepicker(d1: NgbInputDatepicker): void {
     d1.close();
@@ -78,7 +83,7 @@ export class AppointmentListComponent implements OnInit {
   }
   search(): void{
     this.submitted = true;
-    if (this.orderStopDateTime !== undefined || this.orderStartDateTime !== undefined)
+    if (this.orderStopDateTime !== undefined && this.orderStartDateTime !== undefined)
     {
       this.FromDate = moment()
         .date(this.orderStartDateTime.day)

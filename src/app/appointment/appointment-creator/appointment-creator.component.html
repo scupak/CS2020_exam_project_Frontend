@@ -1,5 +1,4 @@
 <div *ngIf =" !err && patientObservable$ && doctorObservable$ | async" >
-<p>appointment-creator works!</p>
 
 <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
 <ngb-timepicker [(ngModel)]="timeModel"></ngb-timepicker>
