@@ -13,9 +13,11 @@ import {DoctorUpdateComponent} from './doctor/doctor-update/doctor-update.compon
 import {AppointmentDetailComponent} from './appointment/appointment-detail/appointment-detail.component';
 import {AppointmentCreatorComponent} from './appointment/appointment-creator/appointment-creator.component';
 import {AppointmentUpdateComponent} from './appointment/appointment-update/appointment-update.component';
+import {LoginScreenComponent} from './login/login-screen/login-screen.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeScreenComponent},
+  { path: 'login', component: LoginScreenComponent },
   { path: 'doctor-list', component: DoctorListComponent},
   { path: 'doctor-detail/:id', component: DoctorDetailComponent},
   {path: 'doctor-create', component: DoctorCreateComponent},
