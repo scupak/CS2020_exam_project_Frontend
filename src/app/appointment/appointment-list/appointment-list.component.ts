@@ -26,7 +26,9 @@ export class AppointmentListComponent implements OnInit {
   err: any;
   submitted = false;
   loading = false;
-  filter: FilterModel = {currentPage: 1, itemsPrPage: 1};
+  toDate: Date;
+  fromDate: Date;
+  filter: FilterModel = {currentPage: 1, itemsPrPage: 10};
   FilterForm = new FormGroup({
     itemsPrPage: new FormControl(''),
     currentPage: new FormControl(''),
@@ -78,13 +80,23 @@ export class AppointmentListComponent implements OnInit {
       .date(this.orderStartDateTime.day)
       .month(this.orderStartDateTime.month - 1)
       .year(this.orderStartDateTime.year)
+      .hour(0)
+      .minute(0)
+      .second(0)
       .toDate();
 
     const toDate = moment()
       .date(this.orderStopDateTime.day)
       .month(this.orderStopDateTime.month - 1)
       .year(this.orderStopDateTime.year)
+      .hour(23)
+      .minute(59)
+      .second(59)
       .toDate();
+
+    this.fromDate = fromDate;
+    this.toDate = toDate;
+
     this.filter =
       { currentPage: this.currentPage,
         itemsPrPage: this.itemsPrPage,
@@ -92,8 +104,8 @@ export class AppointmentListComponent implements OnInit {
         orderProperty: this.orderProperty.value,
         searchField: this.searchField.value,
         searchText: this.searchText.value,
-        orderStartDateTime: fromDate,
-        orderStopDateTime: toDate
+        orderStartDateTime: this.fromDate,
+        orderStopDateTime: this.toDate
       };
     if (this.filter.currentPage <= 0){
       this.filter.currentPage = 1;

@@ -1,4 +1,25 @@
 <h2>Appointments</h2>
+<div [formGroup]="FilterForm">
+<div class="parent">
+  <div class="child inline-block-child margin-left">
+    <div class="form-group">
+      <label>SearchText</label>
+      <input type="text" formControlName="searchText" class="form-control" />
+    </div>
+  </div>
+    <div class="child inline-block-child margin-left">
+    <div class="form-group">
+      <label>SearchField</label>
+      <br>
+      <select formControlName="searchField" class="form-control">
+        <option [value]="'DurationInMin'">DurationInMin</option>
+        <option [value]="'Description'">Description</option>
+        <option [value]="'DoctorEmailAddress'">DoctorEmailAddress</option>
+        <option [value]="'PatientCpr'">PatientCpr</option>
+      </select>
+    </div>
+  </div>
+</div>
 <div class="parent">
   <div class="child inline-block-child margin-left">
     <label>From Date</label>
@@ -30,7 +51,33 @@
 </form>
 </div>
 </div>
-
+<div class="parent">
+  <div class="child inline-block-child margin-left">
+    <div class="form-group">
+      <label>OrderProperty</label>
+      <br>
+      <select formControlName="orderProperty" class="form-control">
+        <option [value]="'DurationInMin'">DurationInMin</option>
+        <option [value]="'PatientCpr'">PatientCpr</option>
+        <option [value]="'AppointmentDateTime'">AppointmentDate</option>
+      </select>
+    </div>
+  </div>
+  <div class="child inline-block-child margin-left">
+    <div class="form-group">
+      <label>OrderDirection</label>
+      <br>
+      <select formControlName="orderDirection" class="form-control">
+        <option [value]="'ASC'">Ascending</option>
+        <option [value]="'DEC'">Descending</option>
+      </select>
+    </div>
+  </div>
+  <div class="child inline-block-child margin-left">
+    <button class="btn btn-primary" (click)="search()">Search</button>
+  </div>
+</div>
+</div>
 <div *ngIf=" !err && appointment$ | async else loading">
   <ul>
     <li *ngFor=" let Appointment of appointments "  >
