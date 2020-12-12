@@ -19,13 +19,17 @@ export class AppointmentListComponent implements OnInit {
 
   appointment$: Observable<FilteredListModel<Appointment>>;
   appointments: Appointment[];
-  datePicker1Model: NgbDateStruct;
-  datePicker2Model: NgbDateStruct;
+  orderStartDateTime: NgbDateStruct;
+  orderStopDateTime: NgbDateStruct;
   count: number;
   date: {year: number, month: number};
   err: any;
+  submitted = false;
+  loading = false;
   filter: FilterModel = {currentPage: 1, itemsPrPage: 1};
   FilterForm = new FormGroup({
+    itemsPrPage: new FormControl(''),
+    currentPage: new FormControl(''),
     orderDirection: new FormControl(''),
     orderProperty: new FormControl(''),
     searchField: new FormControl(''),
@@ -35,6 +39,10 @@ export class AppointmentListComponent implements OnInit {
               private datePipe: DatePipe,
               private calendar: NgbCalendar) { }
 
+  get searchText(): AbstractControl { return this.FilterForm.get('searchText'); }
+  get searchField(): AbstractControl { return this.FilterForm.get('searchField'); }
+  get orderProperty(): AbstractControl { return this.FilterForm.get('orderProperty'); }
+  get orderDirection(): AbstractControl { return this.FilterForm.get('orderDirection'); }
   get itemsPrPage(): number { return (this.FilterForm.value as FilterModel).itemsPrPage; }
   get currentPage(): number { return (this.FilterForm.value as FilterModel).currentPage; }
   get maxPages(): number { return Math.ceil(this.count / this.itemsPrPage); }
@@ -44,11 +52,12 @@ export class AppointmentListComponent implements OnInit {
     this.getAppointments();
   }
 
-  getAppointments(currentPage: number = 0): void
+  getAppointments(): void
   {
     this.appointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
 
       tap(filteredList => {
+        this.count = filteredList.totalCount;
         this.appointments = filteredList.list;
       }),
       catchError(this.err)
@@ -62,5 +71,36 @@ export class AppointmentListComponent implements OnInit {
 
   closeDatepicker(d1: NgbInputDatepicker): void {
     d1.open();
+  }
+  search(): void{
+    this.submitted = true;
+    const fromDate = moment()
+      .date(this.orderStartDateTime.day)
+      .month(this.orderStartDateTime.month - 1)
+      .year(this.orderStartDateTime.year)
+      .toDate();
+
+    const toDate = moment()
+      .date(this.orderStopDateTime.day)
+      .month(this.orderStopDateTime.month - 1)
+      .year(this.orderStopDateTime.year)
+      .toDate();
+    this.filter =
+      { currentPage: this.currentPage,
+        itemsPrPage: this.itemsPrPage,
+        orderDirection: this.orderDirection.value,
+        orderProperty: this.orderProperty.value,
+        searchField: this.searchField.value,
+        searchText: this.searchText.value,
+        orderStartDateTime: fromDate,
+        orderStopDateTime: toDate
+      };
+    if (this.filter.currentPage <= 0){
+      this.filter.currentPage = 1;
+    }
+    if (this.filter.itemsPrPage <= 0){
+      this.filter.itemsPrPage = 1;
+    }
+    this.getAppointments();
   }
 }

@@ -1,11 +1,12 @@
 <h2>Appointments</h2>
 <div class="parent">
-  <div class="child inline-block-child">
+  <div class="child inline-block-child margin-left">
+    <label>From Date</label>
 <form class="form-inline">
   <div class="form-group">
     <div class="input-group">
-      <input class="form-control " placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="datePicker1Model" ngbDatepicker #d1="ngbDatepicker">
+      <input class="form-control " placeholder="mm-dd-yyyy"
+             name="dp" [(ngModel)]="orderStartDateTime" ngbDatepicker #d1="ngbDatepicker">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"></button>
       </div>
@@ -14,12 +15,13 @@
 </form>
   </div>
 
-  <div class="child inline-block-child">
+  <div class="child inline-block-child margin-left">
+    <label>To Date</label>
 <form class="form-inline">
   <div class="form-group">
     <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="datePicker2Model" ngbDatepicker #d2="ngbDatepicker">
+      <input class="form-control" placeholder="mm-dd-yyyy"
+             name="dp" [(ngModel)]="orderStopDateTime" ngbDatepicker #d2="ngbDatepicker">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"></button>
       </div>
@@ -29,7 +31,7 @@
 </div>
 </div>
 
-<div *ngIf=" !err && appointment$ | async ">
+<div *ngIf=" !err && appointment$ | async else loading">
   <ul>
     <li *ngFor=" let Appointment of appointments "  >
       <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
@@ -37,4 +39,11 @@
   </ul>
 </div>
 <button class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
+<h1 *ngIf="!appointments || appointments.length < 1">
+  No appointments Found
+</h1>
 <p *ngIf="err">oh no... {{err}}</p>
+
+<ng-template #loading>
+  <p>Loading data...</p>
+</ng-template>
