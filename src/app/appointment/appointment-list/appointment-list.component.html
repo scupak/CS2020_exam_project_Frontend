@@ -44,7 +44,7 @@
       <input class="form-control" placeholder="mm-dd-yyyy"
              name="dp" [(ngModel)]="orderStopDateTime" ngbDatepicker #d2="ngbDatepicker">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"></button>
+        <button  class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"></button>
       </div>
     </div>
   </div>
@@ -87,35 +87,35 @@
   <div [formGroup]="FilterForm">
   <div class="one-liner">
     <div *ngIf="1 < currentPage">
-      <button (click)="search(1)">{{1}}</button>
+      <button class="btn btn-primary" (click)="search(1)">{{1}}</button>
     </div>
     <div *ngIf="2 < currentPage">
-      <button (click)="search(2)">{{2}}</button>
+      <button class="btn btn-primary" (click)="search(2)">{{2}}</button>
     </div>
     <div *ngIf="3 < currentPage">
-      <button (click)="search(3)">{{3}}</button>
+      <button class="btn btn-primary" (click)="search(3)">{{3}}</button>
     </div>
     <div *ngIf="currentPage > 1">
-      <button (click)="search(currentPage - 1)">Previous</button>
+      <button class="btn btn-primary" (click)="search(currentPage - 1)">Previous</button>
     </div>
     <div style="font-weight: bold; margin-left: 10px; margin-right: 10px">{{currentPage}}</div>
     <div *ngIf="currentPage < maxPages">
-      <button (click)="search(currentPage + 1)">Next</button>
+      <button class="btn btn-primary" (click)="search(currentPage + 1)">Next</button>
     </div>
     <div *ngIf="maxPages - 2> currentPage">
-      <button (click)="search(maxPages - 2)">{{maxPages - 2}}</button>
+      <button class="btn btn-primary" (click)="search(maxPages - 2)">{{maxPages - 2}}</button>
     </div>
     <div *ngIf="maxPages - 1 > currentPage">
-      <button (click)="search(maxPages - 1)">{{maxPages - 1}}</button>
+      <button class="btn btn-primary" (click)="search(maxPages - 1)">{{maxPages - 1}}</button>
     </div>
     <div *ngIf="maxPages > currentPage">
-      <button (click)="search(maxPages)">{{maxPages}}</button>
+      <button class="btn btn-primary" (click)="search(maxPages)">{{maxPages}}</button>
     </div>
   </div>
   <div>Showing page {{currentPage}} of {{maxPages}}</div>
   <label>
     ItemsPrPage:
-    <select (ngModelChange)="search(currentPage)" formControlName="itemsPrPage" id="itemsPrPage" >
+    <select (ngModelChange)="search(currentPage)" formControlName="itemsPrPage" class="form-group" >
       <option  [value]="5">5</option>
       <option  [value]="10">10</option>
       <option  [value]="25">25</option>
