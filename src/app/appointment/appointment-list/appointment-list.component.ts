@@ -126,7 +126,7 @@ export class AppointmentListComponent implements OnInit {
           orderDirection: this.orderDirection.value,
           orderProperty: this.orderProperty.value,
           searchField: this.searchField.value,
-          searchText: this.searchText.value
+          searchText: this.searchText.value,
         };
     }
     if (this.filter.currentPage <= 0){

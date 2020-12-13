@@ -43,11 +43,17 @@ export class AppointmentService {
       + 'ItemsPrPage=' + filter.itemsPrPage
       + '&CurrentPage=' + filter.currentPage + '&';
     }
-    if (filter && filter.searchField?.length > 0 && filter.searchText?.length > 0)
+    if (filter && filter.searchField?.length > 0)
     {
       url = url
       + 'searchField=' + filter.searchField
       + '&searchText=' + filter.searchText + '&';
+    }
+    if (filter && filter.searchField2?.length > 0)
+    {
+      url = url
+        + 'searchField2=' + filter.searchField2
+        + '&searchText2=' + filter.searchText2 + '&';
     }
     if (filter && filter.orderStartDateTime != null && filter.orderStopDateTime != null)
     {
