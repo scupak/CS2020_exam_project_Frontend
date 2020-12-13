@@ -1,5 +1,5 @@
-<div *ngIf =" !err && patientObservable$ && doctorObservable$ | async" >
-  <p>appointment-update!</p>
+<div class="col-md-6 col-md-offset-3">
+<div *ngIf ="patientObservable$ && doctorObservable$ | async else loading" >
 
   <ngb-datepicker #dp [(ngModel)]="dateModel" [startDate]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
   <ngb-timepicker [(ngModel)]="timeModel"></ngb-timepicker>
@@ -17,12 +17,12 @@
         <div *ngIf="Description.invalid && submitted" class="alert-danger">
           <div *ngIf="Description.errors.required">Description is required</div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="patientObservable$ | async">
           <label>FK_PatientCPR</label>
           <br>
-          <select formControlName="FK_PatientCPR"  >
+          <select formControlName="FK_PatientCPR" class="form-control" >
             <option [ngValue]="null">Unassigned Patient</option>
-            <option *ngFor=" let patient of patientObservable$ | async "
+            <option *ngFor=" let patient of patientList "
                     [value]="patient.patientCPR">
               {{patient.patientCPR}} {{patient.patientFirstName}}
             </option>
@@ -30,29 +30,34 @@
           <div *ngIf="FK_PatientCPR.invalid && submitted" class="alert-danger">
             <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="doctorObservable$ | async">
             <label>FK_DoctorId</label>
             <br>
-            <select formControlName="FK_DoctorId"  >
+            <select formControlName="FK_DoctorId" class="form-control" required>
               <option [ngValue]="null">Unassigned Doctor</option>
-              <option *ngFor=" let doctor of doctorObservable$ | async "
+              <option *ngFor=" let doctor of doctorList "
                       [value]="doctor.doctorEmailAddress">
                 {{doctor.firstName}} {{doctor.lastName}}
               </option>
             </select>
+            <div *ngIf="FK_DoctorId.invalid && submitted" class="alert-danger">
+              <div *ngIf="FK_DoctorId.errors.required">FK_Doctor is required</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary">Save</button>
-      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <button class="btn btn-primary margin-left">Save</button>
+      <button (click)="back()" class="btn btn-secondary margin-left">Back</button>
     </div>
   </form>
 </div>
-<div *ngIf="errormessage" class="alert-danger">{{errormessage}}</div>
+<div class="alert-danger" *ngIf="error">{{error}}</div>
 
-<div>
-  <p *ngIf="previousAppointment">{{ previousAppointment.appointmentId }}">{{ previousAppointment.appointmentDateTime }} , {{ previousAppointment.durationInMin }} , {{ previousAppointment.description }} , {{ previousAppointment.doctorEmailAddress }} , {{ previousAppointment.patientCpr }}</p>
+<ng-template #loading>
+  <p>Loading data...</p> <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+</ng-template>
 </div>
+
 

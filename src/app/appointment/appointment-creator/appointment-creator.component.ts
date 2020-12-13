@@ -10,6 +10,10 @@ import {Patient} from '../../patient/shared/Patient';
 import {Doctor} from '../../doctor/shared/doctor.model';
 import {PatientService} from '../../patient/shared/patient.service';
 import {DoctorService} from '../../doctor/shared/doctor.service';
+import {FilteredListModel} from '../../shared/filter/filteredListModel';
+import {FilterModel} from '../../shared/filter/filter.model';
+import {Router} from '@angular/router';
+import {Appointment} from '../shared/Appointment';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -17,24 +21,45 @@ import {DoctorService} from '../../doctor/shared/doctor.service';
   styleUrls: ['./appointment-creator.component.scss']
 })
 export class AppointmentCreatorComponent implements OnInit {
-  patientObservable$: Observable<Patient[]>;
-  doctorObservable$: Observable<Doctor[]>;
+  patientObservable$: Observable<FilteredListModel<Patient>>;
+  doctorObservable$: Observable<FilteredListModel<Doctor>>;
+  patients: Patient[];
+  doctors: Doctor[];
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
-  err: any;
+  error: any;
+  filter: FilterModel = {};
+  patientFilteredList: FilteredListModel<Patient> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+  doctorFilteredList: FilteredListModel<Doctor> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+  appointment: Appointment = {appointmentDateTime: new Date(),
+    appointmentId: 1,
+    description: 'Error',
+    doctorEmailAddress: 'Error',
+    durationInMin: 15,
+    patientCpr: '',
+  };
 
   appointmentForm = new FormGroup( {
-    DurationInMin: new FormControl('', Validators.required),
+    DurationInMin: new FormControl('15', Validators.required),
     Description: new FormControl('' ),
     FK_PatientCPR: new FormControl('' ),
-    FK_DoctorId: new FormControl('' )
+    FK_DoctorId: new FormControl('', Validators.required)
   });
   submitted = false;
-  loading = false;
-  errormessage = '';
 
-  constructor(private appointmentService: AppointmentService, private patientService: PatientService, private doctorService: DoctorService, private datePipe: DatePipe, private calendar: NgbCalendar ) { }
+constructor(private appointmentService: AppointmentService,
+            private patientService: PatientService,
+            private doctorService: DoctorService,
+            private datePipe: DatePipe,
+            private calendar: NgbCalendar,
+            private router: Router) { }
 
 
 
@@ -48,21 +73,25 @@ export class AppointmentCreatorComponent implements OnInit {
   ngOnInit(): void {
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
-      tap(() => this.err = undefined ),
-      catchError(err => {
-        this.err = err.message;
-        this.errormessage = err.message;
-        return of([]);
+      tap(filteredList => {
+        this.error = undefined;
+        this.patients = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.patientFilteredList);
       })
     );
 
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
-      tap(() => this.err = undefined ),
-      catchError(err => {
-        this.err = err.message;
-        this.errormessage = err.message;
-        return of([]);
+      tap(filteredList => {
+        this.error = 'Success';
+        this.doctors = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.doctorFilteredList);
       })
     );
   }
@@ -81,7 +110,7 @@ export class AppointmentCreatorComponent implements OnInit {
     console.log(this.dateModel.month);
     console.log(this.dateModel.day);*/
 
-    //const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+    // const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
    // console.log(datetime + 'det er rigtig');
 /*
     datetime.setFullYear(this.dateModel.year);
@@ -99,7 +128,20 @@ export class AppointmentCreatorComponent implements OnInit {
 
 
     // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
-    const date = moment().date(this.dateModel.day).month(this.dateModel.month - 1).year(this.dateModel.year).hour(this.timeModel.hour + 1).minute(this.timeModel.minute).second(0).toDate();
+    if (this.dateModel === undefined)
+    {
+      this.error = 'Appointment needs a date';
+      return;
+    }
+    const date = moment()
+      .date(this.dateModel.day)
+      .month(this.dateModel.month - 1)
+      .year(this.dateModel.year)
+      .hour(this.timeModel.hour + 1)
+      .minute(this.timeModel.minute)
+      .second(0)
+      .toDate();
+
     const appointment = { appointmentId: 0,
                           appointmentDateTime: date ,
                           durationInMin: this.DurationInMin.value,
@@ -111,16 +153,14 @@ export class AppointmentCreatorComponent implements OnInit {
 
 
    // console.log(appointment.appointmentDateTime + 'date i appointment');
-
-    this.loading = true;
     this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
-      succes => {
-        this.loading = false;
-        this.errormessage = 'Success';
+      success => {
+        this.error = undefined;
+        this.router.navigateByUrl('/appointment-list');
       } ,
       error => {
-        this.errormessage = error.message;
-        this.loading = false;
+        this.error = error.error ?? error.message;
+        return of(this.appointment);
       }
     );
   }

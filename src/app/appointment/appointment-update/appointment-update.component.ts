@@ -7,11 +7,14 @@ import * as moment from 'moment';
 import {catchError, switchMap, take, tap} from 'rxjs/operators';
 import {Appointment} from '../shared/Appointment';
 import {Observable, of, Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Patient} from '../../patient/shared/Patient';
 import {Doctor} from '../../doctor/shared/doctor.model';
 import {PatientService} from '../../patient/shared/patient.service';
 import {DoctorService} from '../../doctor/shared/doctor.service';
+import {FilteredListModel} from '../../shared/filter/filteredListModel';
+import {FilterModel} from '../../shared/filter/filter.model';
+import validate = WebAssembly.validate;
 
 @Component({
   selector: 'app-appointment-update',
@@ -24,23 +27,48 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
   date: {year: number, month: number};
   AppointmentObservable$: Observable<Appointment>;
   previousAppointment: Appointment;
-  patientObservable$: Observable<Patient[]>;
-  doctorObservable$: Observable<Doctor[]>;
+  patientObservable$: Observable<FilteredListModel<Patient>>;
+  doctorObservable$: Observable<FilteredListModel<Doctor>>;
+  doctorList: Doctor[];
+  patientList: Patient[];
+  Errorappointment: Appointment = {appointmentDateTime: new Date(),
+    appointmentId: 1,
+    description: 'Error',
+    doctorEmailAddress: 'Error',
+    durationInMin: 15,
+    patientCpr: '',
+  };
 
+  filter: FilterModel = {};
+  PatientFilteredList: FilteredListModel<Patient> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+ DoctorFilteredList: FilteredListModel<Doctor> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
   appointmentForm = new FormGroup( {
     DurationInMin: new FormControl('', Validators.required),
     Description: new FormControl('' ),
     FK_PatientCPR: new FormControl('' ),
-    FK_DoctorId: new FormControl('' )
+    FK_DoctorId: new FormControl('' , Validators.required)
   });
   submitted = false;
   loading = false;
   errormessage = '';
-  err: any;
+  error: any;
   subscription: Subscription;
   id: number;
 
-  constructor(private appointmentService: AppointmentService, private datePipe: DatePipe, private calendar: NgbCalendar, private route: ActivatedRoute,  private patientService: PatientService, private doctorService: DoctorService, private formBuilder: FormBuilder ) { }
+  constructor(private appointmentService: AppointmentService,
+              private datePipe: DatePipe,
+              private calendar: NgbCalendar,
+              private route: ActivatedRoute,
+              private patientService: PatientService,
+              private doctorService: DoctorService,
+              private formBuilder: FormBuilder,
+              private router: Router) { }
 
 
 
@@ -61,32 +89,32 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
       DurationInMin: ['', Validators.required],
       Description: ['', ],
       FK_PatientCPR: ['', ],
-      FK_DoctorId: ['', ],
+      FK_DoctorId: ['', Validators.required],
     });
 
 
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
-      tap(() => {
-        this.err = undefined;
-
-
-      } ),
-      catchError(err => {
-        this.err = err.message;
-        this.errormessage = err.message;
-        return of([]);
+      tap(filteredList => {
+        this.error = undefined;
+        this.patientList = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.PatientFilteredList);
       })
     );
 
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
-      tap(() => this.err = undefined ),
-      catchError(err => {
-        this.err = err.message;
-        this.errormessage = err.message;
-        return of([]);
-      })
+      tap(filteredList => {
+        this.error = undefined;
+        this.doctorList = filteredList.list;
+      } ),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.DoctorFilteredList);
+    })
     );
 
     this.getAppointment();
@@ -103,7 +131,15 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
       return;
     }
 
-    const date = moment().date(this.dateModel.day).month(this.dateModel.month - 1).year(this.dateModel.year).hour(this.timeModel.hour + 1).minute(this.timeModel.minute).second(0).toDate();
+    const date = moment()
+      .date(this.dateModel.day)
+      .month(this.dateModel.month - 1)
+      .year(this.dateModel.year)
+      .hour(this.timeModel.hour + 1)
+      .minute(this.timeModel.minute)
+      .second(0).
+      toDate();
+
     const appointment = { appointmentId: this.previousAppointment.appointmentId,
       appointmentDateTime: date ,
       durationInMin: this.DurationInMin.value,
@@ -117,12 +153,14 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
     this.loading = true;
     this.appointmentService.updateAppointment(appointment).pipe(take(1)).subscribe(
       success => {
+        this.error = undefined;
         this.loading = false;
-        this.errormessage = 'Success';
+        this.id = +this.route.snapshot.paramMap.get('id');
+        this.router.navigateByUrl('/appointment-detail/' + this.id);
       } ,
       error => {
-        this.errormessage = error.message;
-        this.loading = false;
+        this.error = error.error ?? error.message;
+        return of(this.Errorappointment);
       }
     );
   }
@@ -133,6 +171,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
     this.subscription = this.appointmentService
       .getAppointmentById(this.id)
       .subscribe(appointment => {
+        this.error = undefined;
         this.previousAppointment = appointment;
         this.appointmentForm.patchValue({
           DurationInMin: appointment.durationInMin,
@@ -164,7 +203,10 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
 
 
         },
-          error => {this.errormessage = error.message; });
+          error => {
+            this.error = error.error ?? error.message;
+            return of(this.Errorappointment);
+      });
 
 /*
     console.log('stuff');
@@ -202,4 +244,8 @@ this.AppointmentObservable$ = this.route.paramMap.pipe(take(1),
   }
 
 
+  back(): void {
+    this.id = +this.route.snapshot.paramMap.get('id');
+    this.router.navigateByUrl('/appointment-detail/' + this.id);
+  }
 }
