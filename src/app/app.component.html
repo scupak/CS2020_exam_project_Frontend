@@ -1,6 +1,6 @@
 <div class="site">
-  <app-toolbar></app-toolbar>
+  <app-toolbar [childItem]="parentItem"></app-toolbar>
   <div class="site-content">
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="onActivate()"> </router-outlet>
   </div>
 </div>
