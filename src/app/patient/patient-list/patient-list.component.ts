@@ -3,6 +3,7 @@ import {PatientService} from '../shared/patient.service';
 import {Observable, of} from 'rxjs';
 import {Patient} from '../shared/Patient';
 import {catchError, tap} from 'rxjs/operators';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-patient-list',
@@ -12,10 +13,12 @@ import {catchError, tap} from 'rxjs/operators';
 export class PatientListComponent implements OnInit {
   patients$: Observable<Patient[]>;
   err: string;
-  constructor(private patientservice: PatientService) { }
+  role = '';
+  constructor(private patientservice: PatientService , private authService: AuthService) { }
 
   ngOnInit(): void {
 
+    this.role = this.authService.getRole();
     this.patients$ = this.patientservice.getPatients().pipe(
 
       tap(() => this.err = undefined ),

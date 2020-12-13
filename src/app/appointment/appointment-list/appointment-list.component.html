@@ -10,5 +10,5 @@
 
 
 </div>
-<button class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
+<button *ngIf="role == 'Doctor' || role == 'Administrator'" class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
 <p *ngIf="err">oh no... {{err}}</p>

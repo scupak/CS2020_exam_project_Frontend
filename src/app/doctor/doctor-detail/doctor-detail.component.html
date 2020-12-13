@@ -7,8 +7,8 @@
 </p>
 <div *ngIf="doctor$ | async as doctor">
   <button routerLink= "/doctor-list">Back</button>
-  <button (click)="deleteDoctor()">Delete</button>
-  <button routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
+  <button *ngIf=" role == 'Administrator'" (click)="deleteDoctor()">Delete</button>
+  <button *ngIf=" role == 'Administrator'" routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
 </div>
 
 

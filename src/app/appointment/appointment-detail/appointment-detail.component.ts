@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {AppointmentService} from '../shared/appointment.service';
 import {Appointment} from '../shared/Appointment';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -16,14 +17,17 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   errorMsg: '';
   subscription: Subscription;
   id: number;
+  role = '';
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private appointmentService: AppointmentService) { }
+              private appointmentService: AppointmentService,
+              private authService: AuthService) { }
 
   ngOnInit(): void
   {
     this.getAppointmentById();
+    this.role = this.authService.getRole();
   }
 
   ngOnDestroy(): void

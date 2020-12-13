@@ -8,4 +8,4 @@
     </ul>
   </div>
 </div>
-<button class="btn btn-primary" routerLink="/doctor-create/">Create new doctor</button>
+<button *ngIf="role == 'Administrator'" class="btn btn-primary" routerLink="/doctor-create/">Create new doctor</button>

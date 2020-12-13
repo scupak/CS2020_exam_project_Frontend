@@ -5,6 +5,7 @@ import { Doctor } from '../shared/doctor.model';
 import { DoctorService } from '../shared/doctor.service';
 import { Observable } from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-doctor-detail',
@@ -14,13 +15,16 @@ import {catchError, map, take, tap} from 'rxjs/operators';
 export class DoctorDetailComponent implements OnInit {
 doctor$: Observable<Doctor>;
 email: string;
+  role = '';
   constructor(private route: ActivatedRoute,
               private doctorService: DoctorService,
-              private router: Router) { }
+              private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit(): void {
     this.email = this.route.snapshot.paramMap.get('id');
     this.getDoctorById();
+    this.role = this.authService.getRole();
   }
 
   private getDoctorById(): void {

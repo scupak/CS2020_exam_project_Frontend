@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {AppointmentService} from '../../appointment/shared/appointment.service';
 import {catchError, tap} from 'rxjs/operators';
 import {Appointment} from '../shared/Appointment';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -13,10 +14,13 @@ export class AppointmentListComponent implements OnInit {
 
   appointment$: Observable<Appointment[]>;
   err: string;
-  constructor(private appointmentservice: AppointmentService) { }
+  role = '';
+  constructor(private appointmentservice: AppointmentService, private authService: AuthService) { }
+
 
   ngOnInit(): void {
 
+    this.role = this.authService.getRole();
     this.appointment$ = this.appointmentservice.getAppointments().pipe(
 
       tap(() => this.err = undefined ),
