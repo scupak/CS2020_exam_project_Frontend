@@ -9,8 +9,9 @@ import {Observable} from 'rxjs';
 })
 
 export class ToolbarComponent implements OnInit {
-  @Input() childItem: string;
+  @Input() UserName: string;
   User: string;
+  @Input() role: string;
 
   constructor( private authService: AuthService) { }
 

@@ -3,7 +3,8 @@
   <a id="title">Lægehuset Nr. Nebel</a>
   <a routerLink="/home" routerLinkActive="active">Home</a>
   <a routerLink="/doctor-list" routerLinkActive="active">Doctors</a>
-  <a routerLink="/patient-list" routerLinkActive="active">Patients</a>
+  <a *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/patient-list" routerLinkActive="active">Patients</a>
   <a routerLink="/appointment-list" routerLinkActive="active">Appointments</a>
-  <p>{{childItem}}</p>
+  <p style="padding-right: 20px; color: white; line-height: 5px; padding-top: 12px" align="right">Hej {{UserName}}!</p>
+  <p style="padding-right: 20px; color: white; line-height: 5px" align="right">Din rolle er {{role}}</p>
 </div>
