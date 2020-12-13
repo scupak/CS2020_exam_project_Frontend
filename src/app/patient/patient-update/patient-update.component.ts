@@ -40,7 +40,8 @@ export class PatientUpdateComponent implements OnInit {
       patientFirstName: new FormControl('', Validators.required),
       patientLastName: new FormControl('', Validators.required),
       patientPhone: new FormControl('' , Validators.required),
-      patientEmail: new FormControl('', Validators.required)
+      patientEmail: new FormControl('', Validators.required),
+      password: new FormControl('' , Validators.required)
     });
   }
 // Getters for easy access to form fields
@@ -48,6 +49,7 @@ export class PatientUpdateComponent implements OnInit {
   get patientLastName(): AbstractControl  { return this.UpdateForm.get('patientLastName'); }
   get patientPhone(): AbstractControl  { return this.UpdateForm.get('patientPhone'); }
   get patientEmail(): AbstractControl { return this.UpdateForm.get('patientEmail'); }
+  get password(): AbstractControl { return this.UpdateForm.get('password'); }
 
   onSubmit(): void {
     this.submitted = true;

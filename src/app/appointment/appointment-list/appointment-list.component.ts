@@ -3,6 +3,7 @@ import {Observable, of, Subscription} from 'rxjs';
 import {AppointmentService} from '../../appointment/shared/appointment.service';
 import {catchError, take, tap} from 'rxjs/operators';
 import {Appointment} from '../shared/Appointment';
+import {AuthService} from '../../shared/authentication/auth.service';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -18,7 +19,8 @@ import {DEBUG} from '@angular/compiler-cli/src/ngtsc/logging/src/console_logger'
 })
 export class AppointmentListComponent implements OnInit {
 
-  appointment$: Observable<FilteredListModel<Appointment>>;
+role = '';  
+appointment$: Observable<FilteredListModel<Appointment>>;
   appointments: Appointment[];
   orderStartDateTime: NgbDateStruct;
   orderStopDateTime: NgbDateStruct;
@@ -45,7 +47,8 @@ export class AppointmentListComponent implements OnInit {
   });
   constructor(private appointmentservice: AppointmentService,
               private datePipe: DatePipe,
-              private calendar: NgbCalendar) { }
+              private calendar: NgbCalendar, 
+              private authService: AuthService) { }
 
   get searchText(): AbstractControl { return this.FilterForm.get('searchText'); }
   get searchField(): AbstractControl { return this.FilterForm.get('searchField'); }
@@ -58,6 +61,7 @@ export class AppointmentListComponent implements OnInit {
   ngOnInit(): void {
     this.FilterForm.patchValue(this.filter);
     this.getAppointments();
+    this.role = this.authService.getRole();
   }
 
   getAppointments(): void

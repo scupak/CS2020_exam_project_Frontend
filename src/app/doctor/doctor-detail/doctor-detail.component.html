@@ -9,8 +9,8 @@
 </p>
 <div *ngIf="doctor$ | async as doctor">
   <button class="btn btn-secondary margin-left" routerLink= "/doctor-list">Back</button>
-  <button class="btn btn-danger margin-left" (click)="deleteDoctor()">Delete</button>
-  <button class="btn btn-primary margin-left" routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
+  <button *ngIf=" role == 'Administrator'"  class="btn btn-danger margin-left" (click)="deleteDoctor()">Delete</button>
+  <button *ngIf=" role == 'Administrator'"  class="btn btn-primary margin-left" routerLink="/doctor-update/{{doctor.doctorEmailAddress}}">Update</button>
 </div>
   <div class="alert-danger" *ngIf="error">{{error}}</div>
   <ng-template #loading>

@@ -98,7 +98,7 @@
     </div>
   </div>
 </div>
-<button class="btn btn-primary" routerLink="/doctor-create/">Create new doctor</button>
+<button *ngIf="role == 'Administrator'" class="btn btn-primary" routerLink="/doctor-create/">Create new doctor</button>
   <h1 *ngIf="!doctorLists || doctorLists.length < 1">
     No doctors Found
   </h1>

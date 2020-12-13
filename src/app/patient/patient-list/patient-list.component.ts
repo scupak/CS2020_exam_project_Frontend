@@ -3,6 +3,7 @@ import {PatientService} from '../shared/patient.service';
 import {Observable, of} from 'rxjs';
 import {Patient} from '../shared/Patient';
 import {catchError, tap} from 'rxjs/operators';
+import {AuthService} from '../../shared/authentication/auth.service';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
@@ -31,8 +32,10 @@ export class PatientListComponent implements OnInit {
   });
   patientList: Patient[];
   submitted = false;
+  role = '';
 
-  constructor(private patientservice: PatientService) { }
+  constructor(private patientservice: PatientService,
+              private authService: AuthService) { }
 
   get searchText(): AbstractControl { return this.FilterForm.get('searchText'); }
   get searchField(): AbstractControl { return this.FilterForm.get('searchField'); }
@@ -45,6 +48,7 @@ export class PatientListComponent implements OnInit {
   ngOnInit(): void {
     this.FilterForm.patchValue(this.filter);
     this.getPatients();
+    this.role = this.authService.getRole();
 
   }
 

@@ -1,19 +1,26 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {Appointment} from '../../appointment/shared/Appointment';
 import {environment} from '../../../environments/environment';
+import {AuthService} from '../../shared/authentication/auth.service';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {catchError, tap} from 'rxjs/operators';
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+    Authorization: 'my-auth-token'
+  })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   filter: FilterModel = {currentPage: 1, itemsPrPage: 10};
   filteredList: FilteredListModel<Appointment> = {
@@ -30,7 +37,8 @@ export class AppointmentService {
 
   getAppointments(filter?: FilterModel): Observable<FilteredListModel<Appointment>>
   {
-    let url = environment.webAPI_URL + 'Appointments' + '?';
+httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());  
+ let url = environment.webAPI_URL + 'Appointments' + '?';
     if (filter && filter.orderDirection?.length > 0 && filter.orderProperty?.length > 0)
     {
       url = url
@@ -61,26 +69,30 @@ export class AppointmentService {
       + 'orderStartDateTime=' + filter.orderStartDateTime
       + '&orderStopDateTime=' + filter.orderStopDateTime + '&';
     }
-    return this.http.get<FilteredListModel<Appointment>>(url);
+    return this.http.get<FilteredListModel<Appointment>>(url ,  httpOptions);
   }
 
   addAppointment(appointment: Appointment): Observable<Appointment>
   {
-    return this.http.post<Appointment>(environment.webAPI_URL + 'Appointments', appointment);
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+    return this.http.post<Appointment>(environment.webAPI_URL + 'Appointments', appointment, httpOptions);
   }
 
   updateAppointment(appointment: Appointment): Observable<Appointment>
   {
-    return this.http.put<Appointment>(environment.webAPI_URL + 'Appointments', appointment);
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+    return this.http.put<Appointment>(environment.webAPI_URL + 'Appointments', appointment, httpOptions);
   }
 
   getAppointmentById(id: number): Observable<Appointment>
   {
-    return this.http.get<Appointment>(environment.webAPI_URL + 'Appointments/' + id);
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+    return this.http.get<Appointment>(environment.webAPI_URL + 'Appointments/' + id, httpOptions);
   }
 
   removeAppointment(id: number): Observable<Appointment>
   {
-    return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id);
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+    return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id, httpOptions);
   }
 }

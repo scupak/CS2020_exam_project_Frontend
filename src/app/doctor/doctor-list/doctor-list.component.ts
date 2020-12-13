@@ -3,6 +3,7 @@ import { Doctor } from '../shared/doctor.model';
 import { DoctorService } from '../shared/doctor.service';
 import {Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import {AuthService} from '../../shared/authentication/auth.service';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {Appointment} from '../../appointment/shared/Appointment';
@@ -16,6 +17,7 @@ import * as moment from 'moment';
 })
 export class DoctorListComponent implements OnInit {
 
+  role = '';
   doctorLists: Doctor[];
   error: any;
   count: number;
@@ -35,7 +37,7 @@ export class DoctorListComponent implements OnInit {
     searchField: new FormControl(''),
     searchText: new FormControl('')
   });
-  constructor(private doctorService: DoctorService) { }
+  constructor(private doctorService: DoctorService, private authService: AuthService) { }
 
   get searchText(): AbstractControl { return this.FilterForm.get('searchText'); }
   get searchField(): AbstractControl { return this.FilterForm.get('searchField'); }
@@ -47,6 +49,7 @@ export class DoctorListComponent implements OnInit {
   ngOnInit(): void {
     this.FilterForm.patchValue(this.filter);
     this.getAllDoctors();
+    this.role = this.authService.getRole();
   }
   getAllDoctors(): void{
     this.doctors$ = this.doctorService.GetAll(this.filter).pipe(

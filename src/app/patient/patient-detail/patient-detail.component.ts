@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PatientService} from '../shared/patient.service';
 import {of, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-patient-detail',
@@ -15,6 +16,7 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
   patient: Patient;
   error: any;
   subscription: Subscription;
+  role = '';
   ErrorPatient: Patient = {
     patientFirstName: 'Error',
     patientLastName: 'Error',
@@ -25,10 +27,12 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private patientService: PatientService) { }
+              private patientService: PatientService ,
+              private authService: AuthService) { }
 
   ngOnInit(): void
   {
+    this.role = this.authService.getRole();
     this.getPatientById();
   }
 

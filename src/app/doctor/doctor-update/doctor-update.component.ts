@@ -40,7 +40,9 @@ export class DoctorUpdateComponent implements OnInit {
       lastName: new FormControl('', Validators.required),
       phoneNumber: new FormControl('' , Validators.required),
       doctorEmailAddress: new FormControl('', Validators.required),
-      isAdmin: new FormControl(false)
+      isAdmin: new FormControl(false),
+      password: new FormControl('', Validators.required)
+
     });
   }
 // Getters for easy access to form fields
@@ -49,6 +51,7 @@ export class DoctorUpdateComponent implements OnInit {
   get phoneNumber(): AbstractControl  { return this.UpdateForm.get('phoneNumber'); }
   get emailAddress(): AbstractControl { return this.UpdateForm.get('doctorEmailAddress'); }
   get isAdmin(): AbstractControl{return this.UpdateForm.get('isAdmin'); }
+  get password(): AbstractControl { return this.UpdateForm.get('password'); }
 
   onSubmit(): void {
     this.submitted = true;

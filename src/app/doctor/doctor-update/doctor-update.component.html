@@ -23,6 +23,13 @@
       </div>
     </div>
     <div class="form-group">
+      <label>Password</label>
+      <input type="text" formControlName="password" class="form-control" required/>
+      <div *ngIf="password.invalid && submitted" class="alert-danger">
+        <div *ngIf="password.errors.required">password is required</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label>Administrator</label>
       <input type="checkbox" formControlName="isAdmin" class="form-control"/>
     </div>

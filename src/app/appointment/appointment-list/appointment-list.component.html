@@ -126,7 +126,7 @@
   </label>
 </div>
 </div>
-<button class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
+<button *ngIf="role == 'Doctor' || role == 'Administrator'" class="btn btn-primary" routerLink="/appointment-creator">Add appointment</button>
 <h1 *ngIf="!appointments || appointments.length < 1">
   No appointments Found
 </h1>

@@ -13,21 +13,26 @@ import {DoctorUpdateComponent} from './doctor/doctor-update/doctor-update.compon
 import {AppointmentDetailComponent} from './appointment/appointment-detail/appointment-detail.component';
 import {AppointmentCreatorComponent} from './appointment/appointment-creator/appointment-creator.component';
 import {AppointmentUpdateComponent} from './appointment/appointment-update/appointment-update.component';
-
+import {LoginScreenComponent} from './login/login-screen/login-screen.component';
+import {LoginGuard} from './shared/authentication/_guards/Login.guard';
+import {DoctorGuard} from './shared/authentication/_guards/doctor.guard';
+import {AdminGuard} from './shared/authentication/_guards/admin.guard';
+//AdminGuard, LoginGuard, DoctorGuard - Operators form the canActivate command..
 const routes: Routes = [
   { path: 'home', component: HomeScreenComponent},
-  { path: 'doctor-list', component: DoctorListComponent},
-  { path: 'doctor-detail/:id', component: DoctorDetailComponent},
-  {path: 'doctor-create', component: DoctorCreateComponent},
-  {path: 'doctor-update/:id', component: DoctorUpdateComponent},
-  { path: 'patient-list', component: PatientListComponent},
-  { path: 'patient-creator', component: PatientCreatorComponent},
-  { path: 'patient-detail/:id', component: PatientDetailComponent},
-  { path: 'patient-update/:id', component: PatientUpdateComponent},
-  { path: 'appointment-list', component: AppointmentListComponent},
-  { path: 'appointment-detail/:id', component: AppointmentDetailComponent},
-  { path: 'appointment-creator', component: AppointmentCreatorComponent},
-  { path: 'appointment-update/:id', component: AppointmentUpdateComponent},
+  { path: 'login', component: LoginScreenComponent },
+  { path: 'doctor-list', component: DoctorListComponent , canActivate: [LoginGuard]},
+  { path: 'doctor-detail/:id', component: DoctorDetailComponent , canActivate: [LoginGuard]},
+  {path: 'doctor-create', component: DoctorCreateComponent , canActivate: [LoginGuard, AdminGuard]},
+  {path: 'doctor-update/:id', component: DoctorUpdateComponent , canActivate: [LoginGuard]},
+  { path: 'patient-list', component: PatientListComponent , canActivate: [LoginGuard, DoctorGuard]},
+  { path: 'patient-creator', component: PatientCreatorComponent , canActivate: [LoginGuard, DoctorGuard]},
+  { path: 'patient-detail/:id', component: PatientDetailComponent , canActivate: [LoginGuard]},
+  { path: 'patient-update/:id', component: PatientUpdateComponent , canActivate: [LoginGuard]},
+  { path: 'appointment-list', component: AppointmentListComponent , canActivate: [LoginGuard]},
+  { path: 'appointment-detail/:id', component: AppointmentDetailComponent , canActivate: [LoginGuard]},
+  { path: 'appointment-creator', component: AppointmentCreatorComponent , canActivate: [LoginGuard]},
+  { path: 'appointment-update/:id', component: AppointmentUpdateComponent , canActivate: [LoginGuard]},
   {path: '**', redirectTo: 'home'}
 ];
 
