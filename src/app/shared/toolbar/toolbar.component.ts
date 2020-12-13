@@ -12,18 +12,21 @@ export class ToolbarComponent implements OnInit {
   @Input() UserName: string;
   User: string;
   @Input() role: string;
+  @Input() firstName: string;
+  changetracket
 
   constructor( private authService: AuthService) { }
 
   ngOnInit(): void {
 
-    //this.User$ = this.authService.getUsernameObservable();
+
 
   }
 
 
   GetUser(): void {
     this.User = 'Username: ' + this.authService.getUsername() + ' Role: ' + this.authService.getRole();
+
 
   }
 

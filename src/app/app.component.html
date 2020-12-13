@@ -1,5 +1,5 @@
 <div class="site">
-  <app-toolbar [UserName]="FirstNameGet" [role]="role"></app-toolbar>
+  <app-toolbar [UserName]="userName" [role]="role" [firstName]="FirstNameGet"></app-toolbar>
   <div class="site-content">
     <router-outlet (activate)="onActivate()"> </router-outlet>
   </div>
