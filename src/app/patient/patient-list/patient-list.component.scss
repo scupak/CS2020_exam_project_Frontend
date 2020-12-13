@@ -1,0 +1,15 @@
+inline-block-child {
+  display: inline-block;
+}
+
+.one-liner > div {
+  float: none;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.margin-left{
+  margin-left: 2px !important;
+}
