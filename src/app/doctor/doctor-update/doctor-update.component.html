@@ -1,6 +1,6 @@
 <div class="col-md-6 col-md-offset-3">
-  <h2>Edit Doctor</h2>
   <form [formGroup]="UpdateForm" (ngSubmit)="onSubmit()" *ngIf="Doctor$ | async">
+    <h2>Edit Doctor: {{emailAddress.value}}</h2>
     <div class="form-group">
       <label>First name</label>
       <input type="text" formControlName="firstName" class="form-control" required/>
@@ -13,13 +13,6 @@
       <input type="text" formControlName="lastName" class="form-control" required/>
       <div *ngIf="lastName.invalid && submitted" class="alert-danger">
         <div *ngIf="lastName.errors.required">A valid last name is required</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Email address</label>
-      <input type="text" formControlName="doctorEmailAddress" class="form-control" required/>
-      <div *ngIf="emailAddress.invalid && submitted" class="alert-danger">
-        <div *ngIf="emailAddress.errors.required">A valid email address is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -41,11 +34,12 @@
       <input type="checkbox" formControlName="isAdmin" class="form-control"/>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary">update</button>
+      <button class="btn btn-primary margin-left">update</button>
+      <button class="btn btn-primary margin-left" routerLink= "/doctor-detail/{{this.Id}}">Back</button>
     </div>
-    <div *ngIf="errormessage" class="alert-danger">{{errormessage}}</div>
+    <div *ngIf="error" class="alert-danger">{{error}}</div>
     <div class="form-group">
-      <button class="btn btn-primary" routerLink= "/doctor-list">Back</button>
+
     </div>
   </form>
 </div>

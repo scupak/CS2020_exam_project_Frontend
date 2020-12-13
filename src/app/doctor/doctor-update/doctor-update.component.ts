@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Doctor} from '../shared/doctor.model';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {DoctorService} from '../shared/doctor.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {catchError, switchMap, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-doctor-update',
@@ -13,11 +13,18 @@ import {switchMap, take, tap} from 'rxjs/operators';
 })
 export class DoctorUpdateComponent implements OnInit {
 
+  Id: string;
   UpdateForm: FormGroup;
   submitted = false;
-  errormessage = '';
+  error: any;
   preiuosDoctor: Doctor;
   Doctor$: Observable<Doctor>;
+  ErrorDoctor: Doctor = {
+    firstName: 'Error',
+    isAdmin: false,
+    lastName: 'Error',
+    phoneNumber: 'Error',
+    doctorEmailAddress: 'Error'};
 
   constructor(private formBuilder: FormBuilder,
               private doctorService: DoctorService,
@@ -67,10 +74,12 @@ export class DoctorUpdateComponent implements OnInit {
   private updateDoctor(doctor: Doctor): void {
     this.doctorService.edit(doctor).pipe(take(1)).subscribe(
       success => {
-        this.router.navigateByUrl('/doctor-list');
+          this.error = undefined;
+          this.router.navigateByUrl('/doctor-detail/' + this.Id);
       },
       error => {
-        this.errormessage = error.message;
+        this.error = error.error ?? error.message;
+        return of(this.ErrorDoctor);
       }
     );
 
@@ -78,12 +87,15 @@ export class DoctorUpdateComponent implements OnInit {
   private getDoctor(): void {
     this.Doctor$ = this.route.paramMap.pipe(take(1),
       switchMap(params => {
-        const id = params.get('id');
-        return this.doctorService.GetById(id);
+        this.Id = params.get('id');
+        return this.doctorService.GetById(this.Id);
       }),
       tap(doctor => {
         this.preiuosDoctor = doctor;
         this.UpdateForm.patchValue(doctor);
+      }), catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.ErrorDoctor);
       }));
 
   }

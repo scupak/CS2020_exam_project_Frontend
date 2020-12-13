@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { Location } from '@angular/common';
 import { Doctor } from '../shared/doctor.model';
 import { DoctorService } from '../shared/doctor.service';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {AuthService} from '../../shared/authentication/auth.service';
 
@@ -16,6 +16,13 @@ export class DoctorDetailComponent implements OnInit {
 doctor$: Observable<Doctor>;
 email: string;
   role = '';
+  ErrorDoctor: Doctor = {
+    firstName: 'Error',
+    isAdmin: false,
+    lastName: 'Error',
+    phoneNumber: 'Error',
+    doctorEmailAddress: 'Error'};
+  error: any;
   constructor(private route: ActivatedRoute,
               private doctorService: DoctorService,
               private router: Router,
@@ -28,12 +35,19 @@ email: string;
   }
 
   private getDoctorById(): void {
-    this.doctor$ = this.doctorService.GetById(this.email);
+    this.doctor$ = this.doctorService.GetById(this.email).pipe(tap(this.error = undefined), catchError(error => {
+      this.error = error.error ?? error.message;
+      return of(this.ErrorDoctor);
+    } ));
   }
 
   deleteDoctor(): void {
     this.doctorService.remove(this.email).pipe(take(1)).subscribe(() => {
+      this.error = undefined;
       this.router.navigateByUrl('/doctor-list');
+    }, error =>  {
+      this.error = error.error ?? error.message;
+      return of(this.ErrorDoctor);
     });
   }
 

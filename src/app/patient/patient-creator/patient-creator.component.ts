@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {PatientService} from '../shared/patient.service';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {take} from 'rxjs/operators';
+import {Doctor} from '../../doctor/shared/doctor.model';
+import {Patient} from '../shared/Patient';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-patient-creator',
@@ -19,9 +22,17 @@ export class PatientCreatorComponent implements OnInit {
   });
   submitted = false;
   loading = false;
-  errormessage = '';
+  error: any;
+  ErrorPatient: Patient = {
+    patientFirstName: 'Error',
+    patientLastName: 'Error',
+    patientPhone: 'Error',
+    patientEmail: 'Error',
+    patientCPR: 'Error'
+  };
 
-  constructor(private patientService: PatientService) { }
+
+  constructor(private patientService: PatientService, private router: Router){ }
 
 
 
@@ -50,10 +61,11 @@ export class PatientCreatorComponent implements OnInit {
     this.patientService.addPatient(patient).pipe(take(1)).subscribe(
       succes => {
         this.loading = false;
-        this.errormessage = 'Success';
+        this.error = undefined;
+        this.router.navigateByUrl('/patient-list');
       } ,
       error => {
-        this.errormessage = error.error;
+        this.error = error.error ?? error.message;
         this.loading = false;
       }
     );

@@ -1,11 +1,109 @@
+<div class="col-md-6 col-md-offset-3">
 <h2>Doctors</h2>
-<div >
-  <div >
-    <ul *ngIf="(doctors$ | async)">
-      <li *ngFor="let doctor of doctors$ | async">
+  <div [formGroup]="FilterForm">
+    <div class="parent">
+      <div class="child inline-block-child margin-left">
+        <div class="form-group">
+          <label>SearchText</label>
+          <input type="text" formControlName="searchText" class="form-control" />
+        </div>
+      </div>
+      <div class="child inline-block-child margin-left">
+        <div class="form-group">
+          <label>SearchField</label>
+          <br>
+          <select formControlName="searchField" class="form-control">
+            <option [value]="'DoctorEmailAddress'">EmailAddress</option>
+            <option [value]="'FirstName'">FirstName</option>
+            <option [value]="'LastName'">LastName</option>
+            <option [value]="'PhoneNumber'">PhoneNumber</option>
+            <option [value]="'IsAdmin'">IsAdmin</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="parent">
+      <div class="child inline-block-child margin-left">
+        <div class="form-group">
+          <label>OrderProperty</label>
+          <br>
+          <select formControlName="orderProperty" class="form-control">
+            <option [value]="'DoctorEmailAddress'">EmailAddress</option>
+            <option [value]="'FirstName'">FirstName</option>
+            <option [value]="'LastName'">LastName</option>
+            <option [value]="'PhoneNumber'">PhoneNumber</option>
+          </select>
+        </div>
+      </div>
+      <div class="child inline-block-child margin-left">
+        <div class="form-group">
+          <label>OrderDirection</label>
+          <br>
+          <select formControlName="orderDirection" class="form-control">
+            <option [value]="'ASC'">Ascending</option>
+            <option [value]="'DEC'">Descending</option>
+          </select>
+        </div>
+      </div>
+      <div class="child inline-block-child margin-left">
+        <button class="btn btn-primary" (click)="search()">Search</button>
+      </div>
+    </div>
+  </div>
+<div>
+  <div *ngIf="doctors$ | async else loading">
+    <ul>
+      <li *ngFor="let doctor of doctorLists">
         <p> <a routerLink="/doctor-detail/{{doctor.doctorEmailAddress}}">{{doctor.firstName}} {{doctor.lastName}}, {{doctor.doctorEmailAddress}}</a> </p>
       </li>
     </ul>
+    <div [formGroup]="FilterForm">
+      <div class="one-liner">
+        <div *ngIf="1 < currentPage">
+          <button class="btn btn-primary" (click)="search(1)">{{1}}</button>
+        </div>
+        <div *ngIf="2 < currentPage">
+          <button class="btn btn-primary" (click)="search(2)">{{2}}</button>
+        </div>
+        <div *ngIf="3 < currentPage">
+          <button class="btn btn-primary" (click)="search(3)">{{3}}</button>
+        </div>
+        <div *ngIf="currentPage > 1">
+          <button class="btn btn-primary" (click)="search(currentPage - 1)">Previous</button>
+        </div>
+        <div style="font-weight: bold; margin-left: 10px; margin-right: 10px">{{currentPage}}</div>
+        <div *ngIf="currentPage < maxPages">
+          <button class="btn btn-primary" (click)="search(currentPage + 1)">Next</button>
+        </div>
+        <div *ngIf="maxPages - 2> currentPage">
+          <button class="btn btn-primary" (click)="search(maxPages - 2)">{{maxPages - 2}}</button>
+        </div>
+        <div *ngIf="maxPages - 1 > currentPage">
+          <button class="btn btn-primary" (click)="search(maxPages - 1)">{{maxPages - 1}}</button>
+        </div>
+        <div *ngIf="maxPages > currentPage">
+          <button class="btn btn-primary" (click)="search(maxPages)">{{maxPages}}</button>
+        </div>
+      </div>
+      <div>Showing page {{currentPage}} of {{maxPages}}</div>
+      <label>
+        ItemsPrPage:
+        <select (ngModelChange)="search(currentPage)" formControlName="itemsPrPage" class="form-group" >
+          <option  [value]="5">5</option>
+          <option  [value]="10">10</option>
+          <option  [value]="25">25</option>
+          <option  [value]="50">50</option>
+        </select>
+      </label>
+    </div>
   </div>
 </div>
 <button *ngIf="role == 'Administrator'" class="btn btn-primary" routerLink="/doctor-create/">Create new doctor</button>
+  <h1 *ngIf="!doctorLists || doctorLists.length < 1">
+    No doctors Found
+  </h1>
+  <div class="alert-danger" *ngIf="error">{{error}}</div>
+  <ng-template #loading>
+    <p>Loading data...</p> <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </ng-template>
+</div>

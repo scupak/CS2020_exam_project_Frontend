@@ -1,6 +1,18 @@
-<p>patient-detail works!</p>
-
-<div>
-<p *ngIf="patient">{{patient.patientCPR}} {{patient.patientFirstName}} {{patient.patientLastName}} {{patient.patientEmail}} {{patient.patientPhone}} <button *ngIf=" role == 'Administrator'" class="btn" routerLink="/patient-update/{{patient.patientCPR}}">Update</button> <button *ngIf="role == 'Administrator'" class="btn btn-danger" (click)="deletePatient()">delete</button></p>
+<div class="col-md-6 col-md-offset-3">
+<div *ngIf="patient else loading">
+<p >
+  CPR: {{patient.patientCPR}} <br>
+  Name: {{patient.patientFirstName}} {{patient.patientLastName}} <br>
+  Email: {{patient.patientEmail}} <br>
+  phone: {{patient.patientPhone}} <br>
+  </p>
+</div>
+<button *ngIf=" role == 'Administrator'" class="btn btn-primary margin-left" routerLink="/patient-update/{{patient.patientCPR}}">Update</button>
+<button *ngIf=" role == 'Administrator'" class="btn btn-danger margin-left" (click)="deletePatient()">Delete</button>
+<button class="btn btn-secondary margin-left" routerLink="/patient-list/">Back</button>
+  <div class="alert-danger" *ngIf="error">{{error}}</div>
+  <ng-template #loading>
+    <p>Loading data...</p> <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </ng-template>
 </div>
 

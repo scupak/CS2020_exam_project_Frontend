@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Patient} from '../shared/Patient';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {PatientService} from '../shared/patient.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {catchError, switchMap, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-patient-update',
@@ -13,17 +13,28 @@ import {switchMap, take, tap} from 'rxjs/operators';
 })
 export class PatientUpdateComponent implements OnInit {
 
+  Id: string;
   UpdateForm: FormGroup;
   submitted = false;
-  errormessage = '';
+  error: any;
   previousPatient: Patient;
   patient$: Observable<Patient>;
+  ErrorPatient: Patient = {
+    patientFirstName: 'Error',
+    patientLastName: 'Error',
+    patientPhone: 'Error',
+    patientEmail: 'Error',
+    patientCPR: 'Error'
+  };
 
-  constructor(private formBuilder: FormBuilder, private patientService: PatientService, private route: ActivatedRoute, private router: Router ) { }
+  constructor(private formBuilder: FormBuilder,
+              private patientService: PatientService,
+              private route: ActivatedRoute,
+              private router: Router ) { }
 
   ngOnInit(): void {
 
-    this.getProduct();
+    this.getPatient();
     //  Initialize the form group
     this.UpdateForm = new FormGroup( {
       patientFirstName: new FormControl('', Validators.required),
@@ -61,24 +72,31 @@ export class PatientUpdateComponent implements OnInit {
   private updatePatient(patient: Patient): void {
     this.patientService.updatePatient(patient).pipe(take(1)).subscribe(
       success => {
-        this.errormessage = 'Success!';
+        this.error = undefined;
+        this.router.navigateByUrl('/patient-detail/' + this.Id);
       },
       error => {
-        this.errormessage = error.message;
+        this.error = error.error ?? error.message;
+        return of(this.ErrorPatient);
       }
     );
 
   }
-  private getProduct(): void {
+  private getPatient(): void {
     this.patient$ = this.route.paramMap.pipe(take(1),
       switchMap(params => {
-        const id = this.route.snapshot.paramMap.get('id');
-        return this.patientService.getPatientById(id);
+        this.Id = this.route.snapshot.paramMap.get('id');
+        return this.patientService.getPatientById(this.Id);
       }),
       tap(patient => {
         this.previousPatient = patient;
         this.UpdateForm.patchValue(patient);
-      }));
+        this.error = undefined;
+      })), catchError(error =>
+    {
+        this.error = error.error ?? error.message;
+        return of(this.ErrorPatient);
+    });
 
   }
 
