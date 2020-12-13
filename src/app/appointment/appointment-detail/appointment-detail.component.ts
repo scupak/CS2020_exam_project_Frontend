@@ -44,7 +44,8 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
     this.subscription = this.appointmentService
       .getAppointmentById(this.id).subscribe(
         appointment => {
-        this.appointment = appointment;
+          this.error = undefined;
+          this.appointment = appointment;
       },
           error => {
           this.error = error.error ?? error.message;
@@ -56,7 +57,7 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   deleteAppointment(): void {
     this.appointmentService.removeAppointment(this.appointment.appointmentId)
       .pipe(take(1)).subscribe( () => {
-
+      this.error = undefined;
       this.router.navigateByUrl('/appointment-list');
     }, error => {
         this.error = error.error ?? error.message;

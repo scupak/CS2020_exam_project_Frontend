@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DoctorService } from '../shared/doctor.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, FormBuilder, AbstractControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { pipe } from 'rxjs';
+import {of, pipe} from 'rxjs';
 import { take } from 'rxjs/operators';
+import {Doctor} from '../shared/doctor.model';
 
 @Component({
   selector: 'app-doctor-create',
@@ -15,7 +16,13 @@ export class DoctorCreateComponent implements OnInit {
   doctorForm: FormGroup;
   submitted = false;
   loading = false;
-  errormessage = '';
+  error: any;
+  ErrorDoctor: Doctor = {
+    firstName: 'Error',
+    isAdmin: false,
+    lastName: 'Error',
+    phoneNumber: 'Error',
+    doctorEmailAddress: 'Error'};
   constructor(private doctorService: DoctorService,
               private router: Router,
               private formBuilder: FormBuilder) { }
@@ -49,11 +56,13 @@ export class DoctorCreateComponent implements OnInit {
       .pipe(take(1))
       .subscribe(
         success => {
+          this.error = undefined;
           this.router.navigateByUrl('/doctor-list');
         },
         error => {
-          this.errormessage = error.message;
+          this.error = error.error ?? error.message;
           this.loading = false;
+          return of(this.ErrorDoctor);
         });
   }
 

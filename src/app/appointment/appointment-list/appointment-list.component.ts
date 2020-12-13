@@ -65,6 +65,7 @@ export class AppointmentListComponent implements OnInit {
     this.appointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
 
       tap(filteredList => {
+        this.error = undefined;
         this.count = filteredList.totalCount;
         this.appointments = filteredList.list;
       }),

@@ -31,17 +31,33 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
   doctorObservable$: Observable<FilteredListModel<Doctor>>;
   doctorList: Doctor[];
   patientList: Patient[];
+  Errorappointment: Appointment = {appointmentDateTime: new Date(),
+    appointmentId: 1,
+    description: 'Error',
+    doctorEmailAddress: 'Error',
+    durationInMin: 15,
+    patientCpr: '',
+  };
 
+  filter: FilterModel = {};
+  PatientFilteredList: FilteredListModel<Patient> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
+ DoctorFilteredList: FilteredListModel<Doctor> = {
+    totalCount: 0,
+    list: [],
+    filterUsed: this.filter};
   appointmentForm = new FormGroup( {
     DurationInMin: new FormControl('', Validators.required),
     Description: new FormControl('' ),
     FK_PatientCPR: new FormControl('' ),
-    FK_DoctorId: new FormControl('' )
+    FK_DoctorId: new FormControl('' , Validators.required)
   });
   submitted = false;
   loading = false;
   errormessage = '';
-  err: any;
+  error: any;
   subscription: Subscription;
   id: number;
 
@@ -80,17 +96,25 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
       tap(filteredList => {
+        this.error = undefined;
         this.patientList = filteredList.list;
       }),
-      catchError(this.err)
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.PatientFilteredList);
+      })
     );
 
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
       tap(filteredList => {
+        this.error = undefined;
         this.doctorList = filteredList.list;
       } ),
-      catchError(this.err)
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.DoctorFilteredList);
+    })
     );
 
     this.getAppointment();
@@ -129,20 +153,14 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
     this.loading = true;
     this.appointmentService.updateAppointment(appointment).pipe(take(1)).subscribe(
       success => {
+        this.error = undefined;
         this.loading = false;
-        if (success.description !== 'Error')
-        {
-          this.id = +this.route.snapshot.paramMap.get('id');
-          this.router.navigateByUrl('/appointment-detail/' + this.id);
-        }
-        else {
-          this.errormessage = success.doctorEmailAddress;
-          this.loading = false;
-        }
+        this.id = +this.route.snapshot.paramMap.get('id');
+        this.router.navigateByUrl('/appointment-detail/' + this.id);
       } ,
       error => {
-        this.errormessage = error.message;
-        this.loading = false;
+        this.error = error.error ?? error.message;
+        return of(this.Errorappointment);
       }
     );
   }
@@ -153,6 +171,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
     this.subscription = this.appointmentService
       .getAppointmentById(this.id)
       .subscribe(appointment => {
+        this.error = undefined;
         this.previousAppointment = appointment;
         this.appointmentForm.patchValue({
           DurationInMin: appointment.durationInMin,
@@ -184,7 +203,10 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
 
 
         },
-          error => {this.errormessage = error.message; });
+          error => {
+            this.error = error.error ?? error.message;
+            return of(this.Errorappointment);
+      });
 
 /*
     console.log('stuff');
@@ -222,4 +244,8 @@ this.AppointmentObservable$ = this.route.paramMap.pipe(take(1),
   }
 
 
+  back(): void {
+    this.id = +this.route.snapshot.paramMap.get('id');
+    this.router.navigateByUrl('/appointment-detail/' + this.id);
+  }
 }

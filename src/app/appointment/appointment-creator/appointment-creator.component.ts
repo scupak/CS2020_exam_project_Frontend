@@ -74,6 +74,7 @@ constructor(private appointmentService: AppointmentService,
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
       tap(filteredList => {
+        this.error = undefined;
         this.patients = filteredList.list;
       }),
       catchError(error => {
@@ -85,6 +86,7 @@ constructor(private appointmentService: AppointmentService,
     this.doctorObservable$ = this.doctorService.GetAll().pipe(
 
       tap(filteredList => {
+        this.error = 'Success';
         this.doctors = filteredList.list;
       }),
       catchError(error => {
@@ -153,7 +155,7 @@ constructor(private appointmentService: AppointmentService,
    // console.log(appointment.appointmentDateTime + 'date i appointment');
     this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
       success => {
-        this.error = 'Success';
+        this.error = undefined;
         this.router.navigateByUrl('/appointment-list');
       } ,
       error => {

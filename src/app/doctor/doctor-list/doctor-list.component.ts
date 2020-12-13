@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Doctor } from '../shared/doctor.model';
 import { DoctorService } from '../shared/doctor.service';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {Appointment} from '../../appointment/shared/Appointment';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-doctor-list',
@@ -16,13 +17,13 @@ import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 export class DoctorListComponent implements OnInit {
 
   doctorLists: Doctor[];
-  err: any;
+  error: any;
   count: number;
   doctors$: Observable<FilteredListModel<Doctor>>;
   submitted = false;
   loading = false;
   filter: FilterModel = {currentPage: 1, itemsPrPage: 10};
-  filteredList: FilteredListModel<Appointment> = {
+  filteredList: FilteredListModel<Doctor> = {
     totalCount: 0,
     list: [],
     filterUsed: this.filter};
@@ -48,11 +49,38 @@ export class DoctorListComponent implements OnInit {
     this.getAllDoctors();
   }
   getAllDoctors(): void{
-    this.doctors$ = this.doctorService.GetAll().pipe(
-      tap(filterList => {
-        this.doctorLists = filterList.list;
-    }), catchError(this.err)
-    );
+    this.doctors$ = this.doctorService.GetAll(this.filter).pipe(
+      tap(filteredList => {
+        this.error = undefined;
+        this.count = filteredList.totalCount;
+        this.doctorLists = filteredList.list;
+    }), catchError(error => {
+        this.error = error.error ?? error.message;
+        return of(this.filteredList);
+      }));
+  }
+
+  search(currentPage: number = 0): void{
+    if (currentPage > 0) {
+      this.FilterForm.patchValue({currentPage});
+    }
+    this.submitted = true;
+    this.filter =
+        { currentPage: this.currentPage,
+          itemsPrPage: this.itemsPrPage,
+          orderDirection: this.orderDirection.value,
+          orderProperty: this.orderProperty.value,
+          searchField: this.searchField.value,
+          searchText: this.searchText.value
+        };
+    if (this.filter.currentPage <= 0){
+      this.filter.currentPage = 1;
+    }
+    if (this.filter.itemsPrPage <= 0){
+      this.filter.itemsPrPage = 1;
+    }
+
+    this.getAllDoctors();
   }
 
 }

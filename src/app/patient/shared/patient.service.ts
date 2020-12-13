@@ -46,49 +46,30 @@ export class PatientService {
     if (filter && filter.searchField?.length > 0 && filter.searchText?.length > 0)
     {
       url = url
-        + 'searchField=' + filter.searchText
-        + '&searchText=' + filter.searchField + '&';
+        + 'searchField=' + filter.searchField
+        + '&searchText=' + filter.searchText + '&';
     }
-    return this.http.get<FilteredListModel<Patient>>(url).pipe(
-      catchError(err => {
-        return of(this.filteredList);
-      }));
+    return this.http.get<FilteredListModel<Patient>>(url);
   }
 
   addPatient(patient: Patient): Observable<Patient>
   {
-    return this.http.post<Patient>(environment.webAPI_URL + 'Patients', patient).pipe(
-      catchError(err => {
-        this.patient.patientFirstName = err.message;
-        return of(this.patient);
-      }));
+    return this.http.post<Patient>(environment.webAPI_URL + 'Patients', patient);
   }
 
   updatePatient(patient: Patient): Observable<Patient>
   {
-    return this.http.put<Patient>(environment.webAPI_URL + 'Patients', patient).pipe(
-      catchError(err => {
-        this.patient.patientFirstName = err.message;
-        return of(this.patient);
-      }));
+    return this.http.put<Patient>(environment.webAPI_URL + 'Patients', patient);
   }
 
   getPatientById(id: string): Observable<Patient>
   {
-    return this.http.get<Patient>(environment.webAPI_URL + 'Patients/' + id).pipe(
-      catchError(err => {
-        this.patient.patientFirstName = err.message;
-        return of(this.patient);
-      }));
+    return this.http.get<Patient>(environment.webAPI_URL + 'Patients/' + id);
   }
 
   removePatient(id: string): Observable<Patient>
   {
-    return this.http.delete<Patient>(environment.webAPI_URL + 'Patients/' + id).pipe(
-      catchError(err => {
-        this.patient.patientFirstName = err.message;
-        return of(this.patient);
-      }));
+    return this.http.delete<Patient>(environment.webAPI_URL + 'Patients/' + id);
   }
 
 }

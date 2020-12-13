@@ -47,44 +47,25 @@ export class DoctorService {
     if (filter && filter.searchField?.length > 0 && filter.searchText?.length > 0)
     {
       url = url
-        + 'searchField=' + filter.searchText
-        + '&searchText=' + filter.searchField + '&';
+        + 'searchField=' + filter.searchField
+        + '&searchText=' + filter.searchText + '&';
     }
-    return this.http.get<FilteredListModel<Doctor>>(url).pipe(
-      catchError(err => {
-        return of(this.filteredList);
-      }));
+    return this.http.get<FilteredListModel<Doctor>>(url);
   }
 
   GetById(email: string): Observable<Doctor>{
-    return this.http.get<Doctor>(this.doctorsApiUrl + '/' + email).pipe(
-      catchError(err => {
-        this.doctor.firstName = err.message;
-        return of(this.doctor);
-      }));
+    return this.http.get<Doctor>(this.doctorsApiUrl + '/' + email);
   }
 
   create(doctor: Doctor): Observable<Doctor>{
-    return this.http.post<Doctor>(this.doctorsApiUrl, doctor).pipe(
-      catchError(err => {
-        this.doctor.firstName = err.message;
-        return of(this.doctor);
-      }));
+    return this.http.post<Doctor>(this.doctorsApiUrl, doctor);
   }
 
   edit(doctor: Doctor): Observable<Doctor>{
-    return this.http.put<Doctor>(this.doctorsApiUrl, doctor).pipe(
-      catchError(err => {
-        this.doctor.firstName = err.message;
-        return of(this.doctor);
-      }));
+    return this.http.put<Doctor>(this.doctorsApiUrl, doctor);
   }
 
   remove(email: string): Observable<Doctor>{
-    return this.http.delete<Doctor>(this.doctorsApiUrl + '/' + email).pipe(
-      catchError(err => {
-        this.doctor.firstName = err.message;
-        return of(this.doctor);
-      }));
+    return this.http.delete<Doctor>(this.doctorsApiUrl + '/' + email);
   }
 }

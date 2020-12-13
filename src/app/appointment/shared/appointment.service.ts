@@ -65,28 +65,16 @@ export class AppointmentService {
 
   updateAppointment(appointment: Appointment): Observable<Appointment>
   {
-    return this.http.put<Appointment>(environment.webAPI_URL + 'Appointments', appointment).pipe(
-      catchError(err => {
-        this.appointment.doctorEmailAddress = err.message;
-        return of(this.appointment);
-      }));
+    return this.http.put<Appointment>(environment.webAPI_URL + 'Appointments', appointment);
   }
 
   getAppointmentById(id: number): Observable<Appointment>
   {
-    return this.http.get<Appointment>(environment.webAPI_URL + 'Appointments/' + id).pipe(
-      catchError(err => {
-        this.appointment.doctorEmailAddress = err.message;
-        return of(this.appointment);
-      }));
+    return this.http.get<Appointment>(environment.webAPI_URL + 'Appointments/' + id);
   }
 
   removeAppointment(id: number): Observable<Appointment>
   {
-    return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id).pipe(
-      catchError(err => {
-        this.appointment.doctorEmailAddress = err.message;
-        return of(this.appointment);
-      }));
+    return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id);
   }
 }
