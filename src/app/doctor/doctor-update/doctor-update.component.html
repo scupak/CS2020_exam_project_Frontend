@@ -27,11 +27,12 @@
       <input type="checkbox" formControlName="isAdmin" class="form-control"/>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary">update</button>
+      <button class="btn btn-primary margin-left">update</button>
+      <button class="btn btn-primary margin-left" routerLink= "/doctor-detail/{{this.Id}}">Back</button>
     </div>
     <div *ngIf="error" class="alert-danger">{{error}}</div>
     <div class="form-group">
-      <button class="btn btn-primary" routerLink= "/doctor-list">Back</button>
+
     </div>
   </form>
 </div>

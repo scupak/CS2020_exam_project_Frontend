@@ -13,6 +13,7 @@ import {catchError, switchMap, take, tap} from 'rxjs/operators';
 })
 export class DoctorUpdateComponent implements OnInit {
 
+  Id: string;
   UpdateForm: FormGroup;
   submitted = false;
   error: any;
@@ -71,7 +72,7 @@ export class DoctorUpdateComponent implements OnInit {
     this.doctorService.edit(doctor).pipe(take(1)).subscribe(
       success => {
           this.error = undefined;
-          this.router.navigateByUrl('/doctor-list');
+          this.router.navigateByUrl('/doctor-detail/' + this.Id);
       },
       error => {
         this.error = error.error ?? error.message;
@@ -83,8 +84,8 @@ export class DoctorUpdateComponent implements OnInit {
   private getDoctor(): void {
     this.Doctor$ = this.route.paramMap.pipe(take(1),
       switchMap(params => {
-        const id = params.get('id');
-        return this.doctorService.GetById(id);
+        this.Id = params.get('id');
+        return this.doctorService.GetById(this.Id);
       }),
       tap(doctor => {
         this.preiuosDoctor = doctor;
