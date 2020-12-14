@@ -30,7 +30,7 @@ export class AppointmentCalendarComponent implements OnInit {
   fridayAppointment$: Observable<FilteredListModel<Appointment>>;
   fridayAppointmentsList: Appointment[];
   filter: FilterModel = {};
-  WeekSelectorDateTime: NgbDateStruct;
+  WeekSelectorDateTime: NgbDate;
   date: {year: number, month: number};
   error: any;
   Errorfilter: FilterModel = {currentPage: 1, itemsPrPage: 10};
