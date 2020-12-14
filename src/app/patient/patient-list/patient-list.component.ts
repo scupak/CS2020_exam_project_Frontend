@@ -62,6 +62,8 @@ export class PatientListComponent implements OnInit {
         this.patientList = filteredList.list;
       }), catchError(error => {
         this.error = error.error ?? error.message;
+        this.count = this.filteredList.totalCount;
+        this.patientList = this.filteredList.list;
         return of(this.filteredList);
       }));
   }

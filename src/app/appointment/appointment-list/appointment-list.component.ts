@@ -75,6 +75,8 @@ appointment$: Observable<FilteredListModel<Appointment>>;
       }),
       catchError(error => {
         this.error = error.error ?? error.message;
+        this.count = this.filteredList.totalCount;
+        this.appointments = this.filteredList.list;
         return of(this.filteredList);
       }));
 

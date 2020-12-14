@@ -30,6 +30,7 @@
           <div *ngIf="FK_PatientCPR.invalid && submitted" class="alert-danger">
             <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
           </div>
+          <div *ngIf="role == 'Administrator'">
           <div class="form-group" *ngIf="doctorObservable$ | async">
             <label>FK_DoctorId</label>
             <br>
@@ -43,6 +44,7 @@
             <div *ngIf="FK_DoctorId.invalid && submitted" class="alert-danger">
               <div *ngIf="FK_DoctorId.errors.required">FK_Doctor is required</div>
             </div>
+          </div>
           </div>
         </div>
       </div>
