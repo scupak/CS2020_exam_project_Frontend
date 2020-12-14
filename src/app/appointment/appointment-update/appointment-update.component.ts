@@ -29,6 +29,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
   previousAppointment: Appointment;
   patientObservable$: Observable<FilteredListModel<Patient>>;
   doctorObservable$: Observable<FilteredListModel<Doctor>>;
+  return: string;
   doctorList: Doctor[];
   patientList: Patient[];
   Errorappointment: Appointment = {appointmentDateTime: new Date(),
@@ -83,6 +84,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
 
     this.dateModel = new NgbDate(2020 , 12, 9);
     this.timeModel = {hour: 13, minute: 30};
+    this.return = this.route.snapshot.paramMap.get('return');
 
     //  Initialize the form group
     this.appointmentForm = this.formBuilder.group({
@@ -156,7 +158,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
         this.error = undefined;
         this.loading = false;
         this.id = +this.route.snapshot.paramMap.get('id');
-        this.router.navigateByUrl('/appointment-detail/' + this.id);
+        this.router.navigateByUrl('/appointment-detail/' + this.id + '/' + this.return);
       } ,
       error => {
         this.error = error.error ?? error.message;
@@ -246,6 +248,6 @@ this.AppointmentObservable$ = this.route.paramMap.pipe(take(1),
 
   back(): void {
     this.id = +this.route.snapshot.paramMap.get('id');
-    this.router.navigateByUrl('/appointment-detail/' + this.id);
+    this.router.navigateByUrl('/appointment-detail/' + this.id + '/' + this.return);
   }
 }

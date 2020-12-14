@@ -19,7 +19,7 @@ import {DEBUG} from '@angular/compiler-cli/src/ngtsc/logging/src/console_logger'
 })
 export class AppointmentListComponent implements OnInit {
 
-role = '';  
+role = '';
 appointment$: Observable<FilteredListModel<Appointment>>;
   appointments: Appointment[];
   orderStartDateTime: NgbDateStruct;
@@ -47,7 +47,7 @@ appointment$: Observable<FilteredListModel<Appointment>>;
   });
   constructor(private appointmentservice: AppointmentService,
               private datePipe: DatePipe,
-              private calendar: NgbCalendar, 
+              private calendar: NgbCalendar,
               private authService: AuthService) { }
 
   get searchText(): AbstractControl { return this.FilterForm.get('searchText'); }

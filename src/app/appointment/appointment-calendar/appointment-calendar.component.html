@@ -12,8 +12,8 @@
   <div *ngIf="mondayAppointment$ | async else loading">
     <ul class="list-group">
       <li class="list-group-item" *ngFor=" let Appointment of mondayAppointmentsList "  >
-        <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
-        <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+        <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+        <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
       </li>
     </ul>
   </div>
@@ -23,8 +23,8 @@
       <div *ngIf="tuesdayAppointment$ | async else loading">
         <ul class="list-group">
           <li class="list-group-item" *ngFor=" let Appointment of tuesdayAppointmentsList "  >
-            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
-            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
           </li>
         </ul>
       </div>
@@ -34,8 +34,8 @@
       <div *ngIf="wednesdayAppointment$ | async else loading">
         <ul class="list-group">
           <li class="list-group-item" *ngFor=" let Appointment of wednesdayAppointmentsList "  >
-            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
-            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
           </li>
         </ul>
       </div>
@@ -45,8 +45,8 @@
       <div *ngIf="thursdayAppointment$ | async else loading">
         <ul class="list-group">
           <li class="list-group-item" *ngFor=" let Appointment of thursdayAppointmentsList "  >
-            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
-            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
           </li>
         </ul>
       </div>
@@ -56,8 +56,8 @@
       <div *ngIf="fridayAppointment$ | async else loading">
         <ul class="list-group">
           <li class="list-group-item" *ngFor=" let Appointment of fridayAppointmentsList "  >
-            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
-            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}/calendar">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
           </li>
         </ul>
       </div>

@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'appointment-list', component: AppointmentListComponent , canActivate: [LoginGuard]},
   { path: 'appointment-detail/:id/:return', component: AppointmentDetailComponent , canActivate: [LoginGuard]},
   { path: 'appointment-creator', component: AppointmentCreatorComponent , canActivate: [LoginGuard]},
-  { path: 'appointment-update/:id', component: AppointmentUpdateComponent , canActivate: [LoginGuard]},
+  { path: 'appointment-update/:id/:return', component: AppointmentUpdateComponent , canActivate: [LoginGuard]},
   { path: 'appointment-calendar', component: AppointmentCalendarComponent, canActivate: [LoginGuard, DoctorGuard]},
   { path: 'appointment-calendar/:id', component: AppointmentCalendarComponent, canActivate: [LoginGuard]},
   {path: '**', redirectTo: 'home'}
