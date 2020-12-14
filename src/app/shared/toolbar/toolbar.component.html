@@ -5,6 +5,7 @@
   <a routerLink="/doctor-list" routerLinkActive="active">Doctors</a>
   <a *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/patient-list" routerLinkActive="active">Patients</a>
   <a routerLink="/appointment-list" routerLinkActive="active">Appointments</a>
+  <a *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/appointment-calendar" routerLinkActive="active">Calendar</a>
   <a *ngIf="UserName == null" routerLink="/login" routerLinkActive="active">login</a>
   <a *ngIf="UserName !== null" routerLink="/login" routerLinkActive="active">logout</a>
   <div >

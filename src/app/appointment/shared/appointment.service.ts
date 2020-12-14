@@ -37,7 +37,7 @@ export class AppointmentService {
 
   getAppointments(filter?: FilterModel): Observable<FilteredListModel<Appointment>>
   {
-httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());  
+httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
  let url = environment.webAPI_URL + 'Appointments' + '?';
     if (filter && filter.orderDirection?.length > 0 && filter.orderProperty?.length > 0)
     {

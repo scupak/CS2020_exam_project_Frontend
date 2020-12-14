@@ -17,6 +17,7 @@ import {LoginScreenComponent} from './login/login-screen/login-screen.component'
 import {LoginGuard} from './shared/authentication/_guards/Login.guard';
 import {DoctorGuard} from './shared/authentication/_guards/doctor.guard';
 import {AdminGuard} from './shared/authentication/_guards/admin.guard';
+import {AppointmentCalendarComponent} from './appointment/appointment-calendar/appointment-calendar.component';
 //AdminGuard, LoginGuard, DoctorGuard - Operators form the canActivate command..
 const routes: Routes = [
   { path: 'home', component: HomeScreenComponent},
@@ -33,6 +34,8 @@ const routes: Routes = [
   { path: 'appointment-detail/:id', component: AppointmentDetailComponent , canActivate: [LoginGuard]},
   { path: 'appointment-creator', component: AppointmentCreatorComponent , canActivate: [LoginGuard]},
   { path: 'appointment-update/:id', component: AppointmentUpdateComponent , canActivate: [LoginGuard]},
+  { path: 'appointment-calendar', component: AppointmentCalendarComponent, canActivate: [LoginGuard, DoctorGuard]},
+  { path: 'appointment-calendar/:id', component: AppointmentCalendarComponent, canActivate: [LoginGuard]},
   {path: '**', redirectTo: 'home'}
 ];
 
