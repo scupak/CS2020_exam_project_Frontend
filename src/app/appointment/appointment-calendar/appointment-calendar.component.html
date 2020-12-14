@@ -1,5 +1,4 @@
 
-<div class="col-md-6 col-md-offset-3">
   <h2>Calendar</h2>
   <label>Week Selection</label>
     <div class="parent">
@@ -9,17 +8,63 @@
   </div>
   <div class="parent">
     <div class="child inline-block-child margin-left">
+      <label>Monday</label>
   <div *ngIf="mondayAppointment$ | async else loading">
-    <ul>
-      <li *ngFor=" let Appointment of mondayAppointmentsList "  >
-        <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor=" let Appointment of mondayAppointmentsList "  >
+        <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+        <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action Taken WhiteText " routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
       </li>
     </ul>
   </div>
     </div>
-  </div>
+    <div class="child inline-block-child margin-left">
+      <label>Tuesday</label>
+      <div *ngIf="tuesdayAppointment$ | async else loading">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor=" let Appointment of tuesdayAppointmentsList "  >
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="child inline-block-child margin-left">
+      <label>Wednesday</label>
+      <div *ngIf="wednesdayAppointment$ | async else loading">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor=" let Appointment of wednesdayAppointmentsList "  >
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="child inline-block-child margin-left">
+      <label>Thursday</label>
+      <div *ngIf="thursdayAppointment$ | async else loading">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor=" let Appointment of thursdayAppointmentsList "  >
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="child inline-block-child margin-left">
+      <label>Friday</label>
+      <div *ngIf="fridayAppointment$ | async else loading">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor=" let Appointment of fridayAppointmentsList "  >
+            <p *ngIf="!Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{Appointment.appointmentId}}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+            <p *ngIf="Appointment.patientCpr"><a class="list-group-item list-group-item-action" routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="errorMessage !== NotFound">
   <div class="alert-danger" *ngIf="error">{{error}}</div>
+    </div>
   <ng-template #loading>
     <p>Loading data...</p> <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
   </ng-template>
-</div>

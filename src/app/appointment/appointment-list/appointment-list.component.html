@@ -86,7 +86,7 @@
 <div *ngIf="appointment$ | async else loading">
   <ul>
     <li *ngFor=" let Appointment of appointments "  >
-      <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
+      <p><a routerLink="/appointment-detail/{{ Appointment.appointmentId }}/list">{{ Appointment.appointmentDateTime }} , {{ Appointment.durationInMin }}</a> </p>
     </li>
   </ul>
   <div [formGroup]="FilterForm">

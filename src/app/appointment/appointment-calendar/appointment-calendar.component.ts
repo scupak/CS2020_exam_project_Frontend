@@ -33,6 +33,13 @@ export class AppointmentCalendarComponent implements OnInit {
   WeekSelectorDateTime: NgbDate;
   date: {year: number, month: number};
   error: any;
+  errorMessage: string;
+  NotFound = 'Could not find entityCould not find appointments that satisfy the filter';
+  Week: number;
+  Monday: Date;
+  FromDateMonday: string;
+  ToDateMonday: string;
+  Date3: string;
   Errorfilter: FilterModel = {currentPage: 1, itemsPrPage: 10};
   ErrorfilteredList: FilteredListModel<Appointment> = {
     totalCount: 0,
@@ -70,15 +77,18 @@ export class AppointmentCalendarComponent implements OnInit {
       .minute(59)
       .second(59)
       .toDate();
-
+    this.Monday = moment(this.FromDate).startOf('isoWeek').toDate();
+    this.FromDateMonday = moment(this.Monday).hour(0).minute(0).second(0).format('YYYY-MM-DDTHH:mm:ss');
+    this.ToDateMonday = moment(this.Monday).hour(23).minute(59).second(59).format('YYYY-MM-DDTHH:mm:ss');
+    // this.Date3 = moment(this.Monday).add(1, 'days').format('YYYY-MM-DDTHH:mm:ss');
     this.filter =
       {
         orderDirection: 'ASC',
         orderProperty: 'AppointmentDateTime',
         searchField: 'DoctorEmailAddress',
         searchText: this.authService.getUsername(),
-        orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDTHH:mm:ss'),
-        orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDTHH:mm:ss')
+        orderStartDateTime: this.FromDateMonday,
+        orderStopDateTime: this.ToDateMonday
       };
 
     this.mondayAppointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
@@ -89,9 +99,99 @@ export class AppointmentCalendarComponent implements OnInit {
       }),
       catchError(error => {
         this.error = error.error ?? error.message;
+        this.errorMessage = this.error;
+        this.mondayAppointmentsList = this.ErrorfilteredList.list;
         return of(this.ErrorfilteredList);
       }));
 
-  }
+    this.filter =
+      {
+        orderDirection: 'ASC',
+        orderProperty: 'AppointmentDateTime',
+        searchField: 'DoctorEmailAddress',
+        searchText: this.authService.getUsername(),
+        orderStartDateTime: moment(this.FromDateMonday).add(1, 'days').format('YYYY-MM-DDTHH:mm:ss'),
+        orderStopDateTime: moment(this.ToDateMonday).add(1, 'days').format('YYYY-MM-DDTHH:mm:ss')
+      };
 
+    this.tuesdayAppointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
+
+      tap(filteredList => {
+        this.error = undefined;
+        this.tuesdayAppointmentsList = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        this.errorMessage = this.error;
+        this.tuesdayAppointmentsList = this.ErrorfilteredList.list;
+        return of(this.ErrorfilteredList);
+      }));
+
+    this.filter =
+      {
+        orderDirection: 'ASC',
+        orderProperty: 'AppointmentDateTime',
+        searchField: 'DoctorEmailAddress',
+        searchText: this.authService.getUsername(),
+        orderStartDateTime: moment(this.FromDateMonday).add(2, 'days').format('YYYY-MM-DDTHH:mm:ss'),
+        orderStopDateTime: moment(this.ToDateMonday).add(2, 'days').format('YYYY-MM-DDTHH:mm:ss')
+      };
+
+    this.wednesdayAppointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
+
+      tap(filteredList => {
+        this.error = undefined;
+        this.wednesdayAppointmentsList = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        this.errorMessage = this.error;
+        this.wednesdayAppointmentsList = this.ErrorfilteredList.list;
+        return of(this.ErrorfilteredList);
+      }));
+    this.filter =
+      {
+        orderDirection: 'ASC',
+        orderProperty: 'AppointmentDateTime',
+        searchField: 'DoctorEmailAddress',
+        searchText: this.authService.getUsername(),
+        orderStartDateTime: moment(this.FromDateMonday).add(3, 'days').format('YYYY-MM-DDTHH:mm:ss'),
+        orderStopDateTime: moment(this.ToDateMonday).add(3, 'days').format('YYYY-MM-DDTHH:mm:ss')
+      };
+
+    this.thursdayAppointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
+
+      tap(filteredList => {
+        this.error = undefined;
+        this.thursdayAppointmentsList = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        this.errorMessage = this.error;
+        this.thursdayAppointmentsList = this.ErrorfilteredList.list;
+        return of(this.ErrorfilteredList);
+      }));
+    this.filter =
+      {
+        orderDirection: 'ASC',
+        orderProperty: 'AppointmentDateTime',
+        searchField: 'DoctorEmailAddress',
+        searchText: this.authService.getUsername(),
+        orderStartDateTime: moment(this.FromDateMonday).add(4, 'days').format('YYYY-MM-DDTHH:mm:ss'),
+        orderStopDateTime: moment(this.ToDateMonday).add(4, 'days').format('YYYY-MM-DDTHH:mm:ss')
+      };
+
+    this.fridayAppointment$ = this.appointmentservice.getAppointments(this.filter).pipe(
+
+      tap(filteredList => {
+        this.error = undefined;
+        this.fridayAppointmentsList = filteredList.list;
+      }),
+      catchError(error => {
+        this.error = error.error ?? error.message;
+        this.errorMessage = this.error;
+        this.fridayAppointmentsList = this.ErrorfilteredList.list;
+        return of(this.ErrorfilteredList);
+      }));
+    }
 }
