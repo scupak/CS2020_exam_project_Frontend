@@ -8,12 +8,18 @@
   <a routerLink="/appointment-calendar" routerLinkActive="active">Calendar</a>
   <a *ngIf="UserName == null" routerLink="/login" routerLinkActive="active">login</a>
   <a *ngIf="UserName !== null" routerLink="/login" routerLinkActive="active">logout</a>
+  <a  *ngIf="role == 'Administrator'" (click)="ActivateGenerator()"  >Activate Generator</a>
+  <a  *ngIf="role == 'Administrator'" (click)="StopGenerator()"  >Deactivate Generator</a>
   <div >
+
 
     <a id="detailLink" *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/doctor-detail/{{UserName}}" routerLinkActive="active">Dine oplysninger</a>
     <a id="detailLink" *ngIf="role == 'Patient'" routerLink="/patient-detail/{{UserName}}" routerLinkActive="active">Dine oplysninger</a>
   <p style="padding-right: 20px; color: white; line-height: 5px; padding-top: 12px" align="right">Hej {{firstName}}!</p>
   <p style="padding-right: 20px; color: white; line-height: 5px" align="right">Din rolle er {{role}}</p>
 
+
   </div>
 </div>
+
+<div *ngIf="role == 'Administrator'"  > <div class="alert-danger" *ngIf="error">{{error}}</div></div>

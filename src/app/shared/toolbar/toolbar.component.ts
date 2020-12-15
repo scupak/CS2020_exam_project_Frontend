@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../authentication/auth.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {AppointmentService} from '../../appointment/shared/appointment.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-toolbar',
@@ -14,12 +16,37 @@ export class ToolbarComponent implements OnInit {
   @Input() role: string;
   @Input() firstName: string;
   changetracket
+  error: any;
 
-  constructor( private authService: AuthService) { }
+  constructor( private authService: AuthService , private appointmentService: AppointmentService) { }
 
   ngOnInit(): void {
 
 
+
+  }
+
+  ActivateGenerator(): void {
+    this.appointmentService.activateGenerator()
+      .pipe(take(1)).subscribe( message => {
+      this.error = message;
+
+    }, error => {
+      this.error = error.error ?? error.message;
+      return of(error.message);
+    });
+
+  }
+
+  StopGenerator(): void {
+    this.appointmentService.stopGenerator()
+      .pipe(take(1)).subscribe( message => {
+      this.error = message;
+
+    }, error => {
+      this.error = error.error ?? error.message;
+      return of(error.message);
+    });
 
   }
 
