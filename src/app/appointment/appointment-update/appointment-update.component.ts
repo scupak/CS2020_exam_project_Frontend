@@ -119,7 +119,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
       } ),
       catchError(error => {
         this.error = error.error ?? error.message;
-        this.patientList = this.PatientFilteredList.list;
+        this.doctorList = this.DoctorFilteredList.list;
         return of(this.DoctorFilteredList);
     })
     );
@@ -131,8 +131,9 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
   }
 
   save(): void {
+    if (this.role !== 'Patient')
+    {
     this.submitted = true;
-
 
     if (this.appointmentForm.invalid) {
       return;
@@ -170,6 +171,38 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
         return of(this.Errorappointment);
       }
     );
+    }else {
+      this.submitted = true;
+
+      if (this.appointmentForm.invalid) {
+        return;
+      }
+
+
+      const appointment = { appointmentId: this.previousAppointment.appointmentId,
+        appointmentDateTime: this.previousAppointment.appointmentDateTime ,
+        durationInMin: this.previousAppointment.durationInMin,
+        description: this.Description.value,
+        patientCpr: this.authService.getUsername(),
+        doctorEmailAddress: this.previousAppointment.doctorEmailAddress,
+        doctor: null,
+        patient: null};
+
+
+      this.loading = true;
+      this.appointmentService.updateAppointment(appointment).pipe(take(1)).subscribe(
+        success => {
+          this.error = undefined;
+          this.loading = false;
+          this.id = +this.route.snapshot.paramMap.get('id');
+          this.router.navigateByUrl('/appointment-detail/' + this.id + '/' + this.return);
+        } ,
+        error => {
+          this.error = error.error ?? error.message;
+          return of(this.Errorappointment);
+        }
+      );
+    }
   }
 
   getAppointment(): void
@@ -243,6 +276,7 @@ this.AppointmentObservable$ = this.route.paramMap.pipe(take(1),
 
     }));
   */
+
   }
 
   ngOnDestroy(): void

@@ -1,22 +1,25 @@
 <div class="col-md-6 col-md-offset-3">
 <div *ngIf ="patientObservable$ && doctorObservable$ | async else loading" >
+  <div *ngIf="role != 'Patient'">
 
   <ngb-datepicker #dp [(ngModel)]="dateModel" [startDate]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
   <ngb-timepicker [(ngModel)]="timeModel"></ngb-timepicker>
-
+  </div>
   <form [formGroup]="appointmentForm" (ngSubmit)="save()" >
-    <div class="form-group">
+    <div class="form-group" *ngIf="role != 'Patient'">
       <label>DurationInMin</label>
       <input type="number" formControlName="DurationInMin" class="form-control" required/>
       <div *ngIf="DurationInMin.invalid && submitted" class="alert-danger">
         <div *ngIf="DurationInMin.errors.required">DurationInMin is required</div>
       </div>
+    </div>
       <div class="form-group">
         <label>Description</label>
         <input type="text" formControlName="Description" class="form-control" />
         <div *ngIf="Description.invalid && submitted" class="alert-danger">
           <div *ngIf="Description.errors.required">Description is required</div>
         </div>
+        <div *ngIf="role != 'Patient'">
         <div class="form-group" *ngIf="patientObservable$ | async">
           <label>FK_PatientCPR</label>
           <br>
@@ -30,6 +33,7 @@
           <div *ngIf="FK_PatientCPR.invalid && submitted" class="alert-danger">
             <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
           </div>
+        </div>
           <div *ngIf="role == 'Administrator'">
           <div class="form-group" *ngIf="doctorObservable$ | async">
             <label>FK_DoctorId</label>
@@ -48,7 +52,6 @@
           </div>
         </div>
       </div>
-    </div>
     <div class="form-group">
       <button class="btn btn-primary margin-left">Save</button>
       <button (click)="back()" class="btn btn-secondary margin-left">Back</button>

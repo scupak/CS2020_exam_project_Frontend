@@ -10,7 +10,6 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {DatePipe} from '@angular/common';
 import {NgbDateStruct, NgbCalendar, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import {DEBUG} from '@angular/compiler-cli/src/ngtsc/logging/src/console_logger';
 
 @Component({
   selector: 'app-appointment-list',
