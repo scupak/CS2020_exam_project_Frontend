@@ -10,7 +10,6 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {DatePipe} from '@angular/common';
 import {NgbDateStruct, NgbCalendar, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import {DEBUG} from '@angular/compiler-cli/src/ngtsc/logging/src/console_logger';
 
 @Component({
   selector: 'app-appointment-list',
@@ -59,9 +58,36 @@ appointment$: Observable<FilteredListModel<Appointment>>;
   get maxPages(): number { return Math.ceil(this.count / this.itemsPrPage); }
 
   ngOnInit(): void {
-    this.FilterForm.patchValue(this.filter);
-    this.getAppointments();
     this.role = this.authService.getRole();
+    if ( this.role === 'Patient') {
+      this.filter =
+        {
+          currentPage: 1,
+          itemsPrPage: 10,
+          searchField2: 'PatientCpr',
+          searchText2: this.authService.getUsername()
+        };
+      this.FilterForm.patchValue(this.filter);
+      this.getAppointments();
+    } else if (this.role === 'Doctor'){
+      this.filter =
+        {
+          currentPage: 1,
+          itemsPrPage: 10,
+          searchField2: 'DoctorEmailAddress',
+          searchText2: this.authService.getUsername()
+        };
+      this.FilterForm.patchValue(this.filter);
+      this.getAppointments();
+    } else {
+      this.filter =
+        {
+          currentPage: 1,
+          itemsPrPage: 10
+        };
+      this.FilterForm.patchValue(this.filter);
+      this.getAppointments();
+    }
   }
 
   fixDate(dateToFix: Date): string
@@ -94,59 +120,178 @@ appointment$: Observable<FilteredListModel<Appointment>>;
   closeDatepicker(d1: NgbInputDatepicker): void {
     d1.open();
   }
-  search(currentPage: number = 0): void{
-    if (currentPage > 0) {
-      this.FilterForm.patchValue({currentPage});
-    }
-    this.submitted = true;
-    if (this.orderStopDateTime !== undefined && this.orderStartDateTime !== undefined)
-    {
-      this.FromDate = moment()
-        .date(this.orderStartDateTime.day)
-        .month(this.orderStartDateTime.month - 1)
-        .year(this.orderStartDateTime.year)
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .toDate();
+  search(currentPage: number = 0): void {
+    if (this.role === 'Patient') {
+      if (currentPage > 0) {
+        this.FilterForm.patchValue({currentPage});
+      }
+      this.submitted = true;
+      if (this.orderStopDateTime !== undefined && this.orderStartDateTime !== undefined) {
+        this.FromDate = moment()
+          .date(this.orderStartDateTime.day)
+          .month(this.orderStartDateTime.month - 1)
+          .year(this.orderStartDateTime.year)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .toDate();
 
-      this.ToDate = moment()
-        .date(this.orderStopDateTime.day)
-        .month(this.orderStopDateTime.month - 1)
-        .year(this.orderStopDateTime.year)
-        .hour(23)
-        .minute(59)
-        .second(59)
-        .toDate();
+        this.ToDate = moment()
+          .date(this.orderStopDateTime.day)
+          .month(this.orderStopDateTime.month - 1)
+          .year(this.orderStopDateTime.year)
+          .hour(23)
+          .minute(59)
+          .second(59)
+          .toDate();
 
-      this.filter =
-        { currentPage: this.currentPage,
-          itemsPrPage: this.itemsPrPage,
-          orderDirection: this.orderDirection.value,
-          orderProperty: this.orderProperty.value,
-          searchField: this.searchField.value,
-          searchText: this.searchText.value,
-          orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDTHH:mm:ss'),
-          orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDTHH:mm:ss')
-        };
-    }
-    else {
-      this.filter =
-        { currentPage: this.currentPage,
-          itemsPrPage: this.itemsPrPage,
-          orderDirection: this.orderDirection.value,
-          orderProperty: this.orderProperty.value,
-          searchField: this.searchField.value,
-          searchText: this.searchText.value,
-        };
-    }
-    if (this.filter.currentPage <= 0){
-      this.filter.currentPage = 1;
-    }
-    if (this.filter.itemsPrPage <= 0){
-      this.filter.itemsPrPage = 1;
-    }
+        this.filter =
+          {
+            currentPage: this.currentPage,
+            itemsPrPage: this.itemsPrPage,
+            orderDirection: this.orderDirection.value,
+            orderProperty: this.orderProperty.value,
+            searchField: this.searchField.value,
+            searchText: this.searchText.value,
+            searchField2: 'PatientCpr',
+            searchText2: this.authService.getUsername(),
+            orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDTHH:mm:ss'),
+            orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDTHH:mm:ss')
+          };
+      } else {
+        this.filter =
+          {
+            currentPage: this.currentPage,
+            itemsPrPage: this.itemsPrPage,
+            orderDirection: this.orderDirection.value,
+            orderProperty: this.orderProperty.value,
+            searchField: this.searchField.value,
+            searchText: this.searchText.value,
+            searchField2: 'PatientCpr',
+            searchText2: this.authService.getUsername()
+          };
+      }
+      if (this.filter.currentPage <= 0) {
+        this.filter.currentPage = 1;
+      }
+      if (this.filter.itemsPrPage <= 0) {
+        this.filter.itemsPrPage = 1;
+      }
 
-    this.getAppointments();
+      this.getAppointments();
+    }else if (this.role === 'Doctor'){
+      if (currentPage > 0) {
+        this.FilterForm.patchValue({currentPage});
+      }
+      this.submitted = true;
+      if (this.orderStopDateTime !== undefined && this.orderStartDateTime !== undefined) {
+        this.FromDate = moment()
+          .date(this.orderStartDateTime.day)
+          .month(this.orderStartDateTime.month - 1)
+          .year(this.orderStartDateTime.year)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .toDate();
+
+        this.ToDate = moment()
+          .date(this.orderStopDateTime.day)
+          .month(this.orderStopDateTime.month - 1)
+          .year(this.orderStopDateTime.year)
+          .hour(23)
+          .minute(59)
+          .second(59)
+          .toDate();
+
+        this.filter =
+          {
+            currentPage: this.currentPage,
+            itemsPrPage: this.itemsPrPage,
+            orderDirection: this.orderDirection.value,
+            orderProperty: this.orderProperty.value,
+            searchField: this.searchField.value,
+            searchText: this.searchText.value,
+            searchField2: 'DoctorEmailAddress',
+            searchText2: this.authService.getUsername(),
+            orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDTHH:mm:ss'),
+            orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDTHH:mm:ss')
+          };
+      } else {
+        this.filter =
+          {
+            currentPage: this.currentPage,
+            itemsPrPage: this.itemsPrPage,
+            orderDirection: this.orderDirection.value,
+            orderProperty: this.orderProperty.value,
+            searchField: this.searchField.value,
+            searchText: this.searchText.value,
+            searchField2: 'DoctorEmailAddress',
+            searchText2: this.authService.getUsername()
+          };
+      }
+      if (this.filter.currentPage <= 0) {
+        this.filter.currentPage = 1;
+      }
+      if (this.filter.itemsPrPage <= 0) {
+        this.filter.itemsPrPage = 1;
+      }
+
+      this.getAppointments();
+    }else {
+      if (currentPage > 0) {
+        this.FilterForm.patchValue({currentPage});
+      }
+      this.submitted = true;
+      if (this.orderStopDateTime !== undefined && this.orderStartDateTime !== undefined) {
+        this.FromDate = moment()
+          .date(this.orderStartDateTime.day)
+          .month(this.orderStartDateTime.month - 1)
+          .year(this.orderStartDateTime.year)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .toDate();
+
+        this.ToDate = moment()
+          .date(this.orderStopDateTime.day)
+          .month(this.orderStopDateTime.month - 1)
+          .year(this.orderStopDateTime.year)
+          .hour(23)
+          .minute(59)
+          .second(59)
+          .toDate();
+
+        this.filter =
+          {
+            currentPage: this.currentPage,
+            itemsPrPage: this.itemsPrPage,
+            orderDirection: this.orderDirection.value,
+            orderProperty: this.orderProperty.value,
+            searchField: this.searchField.value,
+            searchText: this.searchText.value,
+            orderStartDateTime: moment(this.FromDate).format('YYYY-MM-DDTHH:mm:ss'),
+            orderStopDateTime: moment(this.ToDate).format('YYYY-MM-DDTHH:mm:ss')
+          };
+      } else {
+        this.filter =
+          {
+            currentPage: this.currentPage,
+            itemsPrPage: this.itemsPrPage,
+            orderDirection: this.orderDirection.value,
+            orderProperty: this.orderProperty.value,
+            searchField: this.searchField.value,
+            searchText: this.searchText.value
+          };
+      }
+      if (this.filter.currentPage <= 0) {
+        this.filter.currentPage = 1;
+      }
+      if (this.filter.itemsPrPage <= 0) {
+        this.filter.itemsPrPage = 1;
+      }
+
+      this.getAppointments();
+
+    }
   }
 }

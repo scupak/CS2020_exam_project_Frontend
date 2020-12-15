@@ -16,8 +16,8 @@
       <select formControlName="searchField" class="form-control">
         <option [value]="'DurationInMin'">Duration In Minutes</option>
         <option [value]="'Description'">Description</option>
-        <option [value]="'DoctorEmailAddress'">Doctor's Email Address</option>
-        <option [value]="'PatientCpr'">Patient's CPR number</option>
+        <option *ngIf="role != 'Doctor'"  [value]="'DoctorEmailAddress'">Doctor's Email Address</option>
+        <option *ngIf="role == 'Doctor' || role == 'Administrator'" [value]="'PatientCpr'">Patient's CPR number</option>
         <option [value]="''">Unassigned</option>
       </select>
     </div>
@@ -61,7 +61,7 @@
       <br>
       <select formControlName="orderProperty" class="form-control">
         <option [value]="'DurationInMin'">Duration In Minutes</option>
-        <option [value]="'PatientCpr'">Patient's CPR</option>
+        <option *ngIf="role == 'Doctor' || role == 'Administrator'" [value]="'PatientCpr'">Patient's CPR</option>
         <option [value]="'AppointmentDateTime'">Appointment Date</option>
         <option [value]="''">Unassigned</option>
       </select>

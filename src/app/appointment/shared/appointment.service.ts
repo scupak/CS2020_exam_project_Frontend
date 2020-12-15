@@ -95,4 +95,18 @@ httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.
     httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     return this.http.delete<Appointment>(environment.webAPI_URL + 'Appointments/' + id, httpOptions);
   }
+
+  activateGenerator(): Observable<any>
+  {
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+    return this.http.get(environment.webAPI_URL + 'AppointmentGenerator/start', httpOptions);
+
+  }
+
+  stopGenerator(): Observable<any>
+  {
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+    return this.http.get(environment.webAPI_URL + 'AppointmentGenerator/stop', httpOptions);
+
+  }
 }

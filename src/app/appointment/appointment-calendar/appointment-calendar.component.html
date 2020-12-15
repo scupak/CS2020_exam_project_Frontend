@@ -5,6 +5,27 @@
       <div class="child inline-block-child margin-left">
         <ngb-datepicker #dp [(ngModel)]="WeekSelectorDateTime" (navigate)="date = $event.next" (ngModelChange)="getAppointments()"></ngb-datepicker>
       </div>
+      <div class="child inline-block-child margin-left">
+        <div [formGroup]="FilterForm">
+          <div class="parent">
+            <div class="child inline-block-child margin-left">
+              <div class="form-group" *ngIf="doctorObservable$ | async">
+                <label>Choose Doctor</label>
+                <br>
+                <select (ngModelChange)="getAppointments()" formControlName="FK_DoctorId" class="form-control" required>
+                  <option [ngValue]="null">Unassigned Doctor</option>
+                  <option *ngFor=" let doctor of doctorList "
+                          [value]="doctor.doctorEmailAddress">
+                    {{doctor.firstName}} {{doctor.lastName}}
+                  </option>
+                </select>
+                <div *ngIf="FK_DoctorId.invalid" class="alert-danger">
+                  <div *ngIf="FK_DoctorId.errors.required">FK_Doctor is required</div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
   </div>
   <div class="parent" style="padding-left: 200px">
     <div class="child inline-block-child margin-left">
