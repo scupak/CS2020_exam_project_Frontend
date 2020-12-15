@@ -10,16 +10,16 @@
           <div class="parent">
             <div class="child inline-block-child margin-left">
               <div class="form-group" *ngIf="doctorObservable$ | async">
-                <label>FK_DoctorId</label>
+                <label>Choose Doctor</label>
                 <br>
-                <select formControlName="FK_DoctorId" class="form-control" required>
+                <select (ngModelChange)="getAppointments()" formControlName="FK_DoctorId" class="form-control" required>
                   <option [ngValue]="null">Unassigned Doctor</option>
                   <option *ngFor=" let doctor of doctorList "
                           [value]="doctor.doctorEmailAddress">
                     {{doctor.firstName}} {{doctor.lastName}}
                   </option>
                 </select>
-                <div *ngIf="FK_DoctorId.invalid && submitted" class="alert-danger">
+                <div *ngIf="FK_DoctorId.invalid" class="alert-danger">
                   <div *ngIf="FK_DoctorId.errors.required">FK_Doctor is required</div>
                 </div>
               </div>
