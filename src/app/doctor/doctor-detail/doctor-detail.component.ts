@@ -15,6 +15,7 @@ import {AuthService} from '../../shared/authentication/auth.service';
 export class DoctorDetailComponent implements OnInit {
 doctor$: Observable<Doctor>;
 email: string;
+userName: string;
   role = '';
   ErrorDoctor: Doctor = {
     firstName: 'Error',
@@ -32,6 +33,7 @@ email: string;
     this.email = this.route.snapshot.paramMap.get('id');
     this.getDoctorById();
     this.role = this.authService.getRole();
+    this.userName = this.authService.getUsername();
   }
 
   private getDoctorById(): void {
