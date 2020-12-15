@@ -88,7 +88,13 @@ export class AppointmentCalendarComponent implements OnInit {
 
   }
 
-  getAppointments(): void {
+fixDate(dateToFix: Date): string
+  {
+    return moment(dateToFix).format('YYYY-MM-DD - HH:mm:ss');
+  }  
+
+
+getAppointments(): void {
     if (this.role !== 'Patient') {
       this.FromDate = moment()
         .date(this.WeekSelectorDateTime.day)

@@ -2,36 +2,36 @@
   <form [formGroup]="UpdateForm" (ngSubmit)="onSubmit()" *ngIf="Doctor$ | async">
     <h2>Edit Doctor: {{emailAddress.value}}</h2>
     <div class="form-group">
-      <label>First name</label>
+      <label>Doctor's First name</label>
       <input type="text" formControlName="firstName" class="form-control" required/>
       <div *ngIf="firstName.invalid && submitted" class="alert-danger">
         <div *ngIf="firstName.errors.required">A valid first name is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label>Last name</label>
+      <label>Doctor's Last name</label>
       <input type="text" formControlName="lastName" class="form-control" required/>
       <div *ngIf="lastName.invalid && submitted" class="alert-danger">
         <div *ngIf="lastName.errors.required">A valid last name is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label>Phone number</label>
+      <label>Doctor's Phone number</label>
       <input type="text" formControlName="phoneNumber" class="form-control" required/>
       <div *ngIf="phoneNumber.invalid && submitted" class="alert-danger">
         <div *ngIf="phoneNumber.errors.required">A valid phone number is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label>Password</label>
+      <label>Doctor's new Password</label>
       <input type="text" formControlName="password" class="form-control" required/>
       <div *ngIf="password.invalid && submitted" class="alert-danger">
         <div *ngIf="password.errors.required">password is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label>Administrator</label>
-      <input type="checkbox" formControlName="isAdmin" class="form-control"/>
+      <label>Is Administrator</label>
+      <input id="CheckBoxAlignment" type="checkbox" formControlName="isAdmin" class="form-control"/>
     </div>
     <div class="form-group">
       <button class="btn btn-primary margin-left">update</button>

@@ -6,6 +6,7 @@ import {AppointmentService} from '../shared/appointment.service';
 import {Appointment} from '../shared/Appointment';
 import {AuthService} from '../../shared/authentication/auth.service';
 import {Location} from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -44,6 +45,11 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void
   {
     this.subscription.unsubscribe();
+  }
+
+  fixDate(dateToFix: Date): string
+  {
+    return moment(dateToFix).format('YYYY-MM-DD - HH:mm:ss');
   }
 
   getAppointmentById(): void

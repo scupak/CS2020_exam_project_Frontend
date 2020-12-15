@@ -1,12 +1,13 @@
 <div class="col-md-6 col-md-offset-3">
 <div *ngIf ="patientObservable$ && doctorObservable$ | async else loading" >
-
+  <p style="line-height: 0px; margin-top: 20px">Choose date</p>
 <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
+<p style="line-height: 0px; margin-top: 20px">Choose Time</p>
 <ngb-timepicker [(ngModel)]="timeModel"></ngb-timepicker>
 
 <form [formGroup]="appointmentForm" (ngSubmit)="save()">
     <div class="form-group">
-      <label>DurationInMin</label>
+      <label>Duration In Minutes</label>
       <input type="number" formControlName="DurationInMin" class="form-control" required/>
       <div *ngIf="DurationInMin.invalid && submitted" class="alert-danger">
         <div *ngIf="DurationInMin.errors.required">DurationInMin is required</div>
@@ -18,7 +19,7 @@
           <div *ngIf="Description.errors.required">Description is required</div>
         </div>
         <div class="form-group" *ngIf="patientObservable$ | async else loading">
-          <label>FK_PatientCPR</label>
+          <label>Choose Patient</label>
           <br>
           <select formControlName="FK_PatientCPR" class="form-control">
             <option [ngValue]="null">Unassigned Patient</option>
@@ -31,7 +32,7 @@
             <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
           </div>
           <div class="form-group" *ngIf="doctorObservable$ | async else loading">
-            <label>FK_DoctorId</label>
+            <label>Choose Doctor</label>
             <br>
             <select formControlName="FK_DoctorId" class="form-control" required>
               <option [ngValue]="null">Unassigned Doctor</option>
@@ -48,7 +49,7 @@
       </div>
     </div>
   <div class="form-group">
-    <button class="btn btn-primary">Create</button>
+    <button class="btn btn-primary" style="margin-left: 855px">Create</button>
   </div>
 </form>
 </div>

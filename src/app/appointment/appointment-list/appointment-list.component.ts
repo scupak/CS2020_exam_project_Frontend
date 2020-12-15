@@ -90,6 +90,11 @@ appointment$: Observable<FilteredListModel<Appointment>>;
     }
   }
 
+  fixDate(dateToFix: Date): string
+  {
+    return moment(dateToFix).format('YYYY-MM-DD - HH:mm:ss');
+  }
+
   getAppointments(): void
   {
     this.appointment$ = this.appointmentservice.getAppointments(this.filter).pipe(

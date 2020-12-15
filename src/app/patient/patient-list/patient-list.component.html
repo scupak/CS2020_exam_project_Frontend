@@ -4,19 +4,19 @@
     <div class="parent">
       <div class="child inline-block-child margin-left">
         <div class="form-group">
-          <label>SearchText</label>
+          <label>Search Text</label>
           <input type="text" formControlName="searchText" class="form-control" />
         </div>
       </div>
       <div class="child inline-block-child margin-left">
         <div class="form-group">
-          <label>SearchField</label>
+          <label>Search Field</label>
           <br>
           <select formControlName="searchField" class="form-control">
-            <option [value]="'PatientFirstName'">FirstName</option>
-            <option [value]="'PatientLastName'">LastName</option>
+            <option [value]="'PatientFirstName'">First Name</option>
+            <option [value]="'PatientLastName'">Last Name</option>
             <option [value]="'PatientCpr'">CPR</option>
-            <option [value]="'PatientPhone'">PhoneNumber</option>
+            <option [value]="'PatientPhone'">Phone Number</option>
             <option [value]="'PatientEmail'">Email</option>
             <option [value]="''">Unassigned</option>
           </select>
@@ -26,13 +26,13 @@
     <div class="parent">
       <div class="child inline-block-child margin-left">
         <div class="form-group">
-          <label>OrderProperty</label>
+          <label>Order Property</label>
           <br>
           <select formControlName="orderProperty" class="form-control">
             <option [value]="'PatientCPR'">CPR</option>
-            <option [value]="'PatientFirstName'">FirstName</option>
-            <option [value]="'PatientLastName'">LastName</option>
-            <option [value]="'PatientPhone'">PhoneNumber</option>
+            <option [value]="'PatientFirstName'">First Name</option>
+            <option [value]="'PatientLastName'">Last Name</option>
+            <option [value]="'PatientPhone'">Phone Number</option>
             <option [value]="'PatientEmail'">Email</option>
             <option [value]="''">Unassigned</option>
           </select>
@@ -40,7 +40,7 @@
       </div>
       <div class="child inline-block-child margin-left">
         <div class="form-group">
-          <label>OrderDirection</label>
+          <label>Order Direction</label>
           <br>
           <select formControlName="orderDirection" class="form-control">
             <option [value]="'ASC'">Ascending</option>
@@ -49,7 +49,7 @@
           </select>
         </div>
       </div>
-      <div class="child inline-block-child margin-left">
+      <div class="child inline-block-child margin-left" style="position: relative; bottom: 2px">
         <button class="btn btn-primary" (click)="search()">Search</button>
       </div>
     </div>
@@ -57,7 +57,7 @@
 <div *ngIf="patients$ | async else loading">
   <ul >
   <li *ngFor=" let Patient of patientList"  >
-    <p><a routerLink="/patient-detail/{{Patient.patientCPR}}">{{  Patient.patientCPR }} , {{  Patient.patientFirstName }} {{  Patient.patientLastName }} ,{{  Patient.patientEmail }}, {{  Patient.patientPhone }} </a> </p>
+    <p><a routerLink="/patient-detail/{{Patient.patientCPR}}">{{  Patient.patientCPR }} - {{  Patient.patientFirstName }} {{  Patient.patientLastName }}, E-mail: {{  Patient.patientEmail }}, Phone: {{  Patient.patientPhone }} </a> </p>
   </li>
   </ul>
   <div [formGroup]="FilterForm">
@@ -90,7 +90,7 @@
     </div>
     <div>Showing page {{currentPage}} of {{maxPages}}</div>
     <label>
-      ItemsPrPage:
+      Items per page:
       <select (ngModelChange)="search(currentPage)" formControlName="itemsPrPage" class="form-group" >
         <option  [value]="5">5</option>
         <option  [value]="10">10</option>
