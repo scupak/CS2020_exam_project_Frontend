@@ -79,6 +79,7 @@ constructor(private appointmentService: AppointmentService,
       }),
       catchError(error => {
         this.error = error.error ?? error.message;
+        this.patients = this.patientFilteredList.list;
         return of(this.patientFilteredList);
       })
     );
@@ -91,6 +92,7 @@ constructor(private appointmentService: AppointmentService,
       }),
       catchError(error => {
         this.error = error.error ?? error.message;
+        this.doctors = this.doctorFilteredList.list;
         return of(this.doctorFilteredList);
       })
     );

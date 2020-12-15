@@ -15,6 +15,7 @@ import {DoctorService} from '../../doctor/shared/doctor.service';
 import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import validate = WebAssembly.validate;
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-appointment-update',
@@ -29,6 +30,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
   previousAppointment: Appointment;
   patientObservable$: Observable<FilteredListModel<Patient>>;
   doctorObservable$: Observable<FilteredListModel<Doctor>>;
+  return: string;
   doctorList: Doctor[];
   patientList: Patient[];
   Errorappointment: Appointment = {appointmentDateTime: new Date(),
@@ -60,6 +62,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
   error: any;
   subscription: Subscription;
   id: number;
+  role = '';
 
   constructor(private appointmentService: AppointmentService,
               private datePipe: DatePipe,
@@ -68,7 +71,8 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
               private patientService: PatientService,
               private doctorService: DoctorService,
               private formBuilder: FormBuilder,
-              private router: Router) { }
+              private router: Router,
+              private authService: AuthService) { }
 
 
 
@@ -80,9 +84,10 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
 
 
   ngOnInit(): void {
-
+    this.role = this.authService.getRole();
     this.dateModel = new NgbDate(2020 , 12, 9);
     this.timeModel = {hour: 13, minute: 30};
+    this.return = this.route.snapshot.paramMap.get('return');
 
     //  Initialize the form group
     this.appointmentForm = this.formBuilder.group({
@@ -101,6 +106,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
       }),
       catchError(error => {
         this.error = error.error ?? error.message;
+        this.patientList = this.PatientFilteredList.list;
         return of(this.PatientFilteredList);
       })
     );
@@ -113,6 +119,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
       } ),
       catchError(error => {
         this.error = error.error ?? error.message;
+        this.patientList = this.PatientFilteredList.list;
         return of(this.DoctorFilteredList);
     })
     );
@@ -156,7 +163,7 @@ export class AppointmentUpdateComponent implements OnInit , OnDestroy {
         this.error = undefined;
         this.loading = false;
         this.id = +this.route.snapshot.paramMap.get('id');
-        this.router.navigateByUrl('/appointment-detail/' + this.id);
+        this.router.navigateByUrl('/appointment-detail/' + this.id + '/' + this.return);
       } ,
       error => {
         this.error = error.error ?? error.message;
@@ -246,6 +253,6 @@ this.AppointmentObservable$ = this.route.paramMap.pipe(take(1),
 
   back(): void {
     this.id = +this.route.snapshot.paramMap.get('id');
-    this.router.navigateByUrl('/appointment-detail/' + this.id);
+    this.router.navigateByUrl('/appointment-detail/' + this.id + '/' + this.return);
   }
 }

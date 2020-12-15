@@ -26,6 +26,7 @@ import {LoginGuard} from './shared/authentication/_guards/Login.guard';
 import {DoctorGuard} from './shared/authentication/_guards/doctor.guard';
 import {AdminGuard} from './shared/authentication/_guards/admin.guard';
 import {AuthService} from './shared/authentication/auth.service';
+import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import {AuthService} from './shared/authentication/auth.service';
     AppointmentDetailComponent,
     AppointmentCreatorComponent,
     AppointmentUpdateComponent,
-    LoginScreenComponent
+    LoginScreenComponent,
+    AppointmentCalendarComponent
   ],
   imports: [
     BrowserModule,

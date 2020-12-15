@@ -59,6 +59,8 @@ export class DoctorListComponent implements OnInit {
         this.doctorLists = filteredList.list;
     }), catchError(error => {
         this.error = error.error ?? error.message;
+        this.count = this.filteredList.totalCount;
+        this.doctorLists = this.filteredList.list;
         return of(this.filteredList);
       }));
   }

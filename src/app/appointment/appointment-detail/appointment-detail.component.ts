@@ -5,6 +5,8 @@ import {take} from 'rxjs/operators';
 import {AppointmentService} from '../shared/appointment.service';
 import {Appointment} from '../shared/Appointment';
 import {AuthService} from '../../shared/authentication/auth.service';
+import {Location} from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -18,7 +20,7 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   id: number;
   role = '';
-  
+  return: string;
   errorAppointment: Appointment = {appointmentDateTime: new Date(),
     appointmentId: 1,
     description: 'Error',
@@ -30,17 +32,24 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private appointmentService: AppointmentService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private location: Location) { }
 
   ngOnInit(): void
   {
     this.getAppointmentById();
     this.role = this.authService.getRole();
+    this.return = this.route.snapshot.paramMap.get('return');
   }
 
   ngOnDestroy(): void
   {
     this.subscription.unsubscribe();
+  }
+
+  fixDate(dateToFix: Date): string
+  {
+    return moment(dateToFix).format('YYYY-MM-DD - HH:mm:ss');
   }
 
   getAppointmentById(): void
@@ -63,7 +72,7 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
     this.appointmentService.removeAppointment(this.appointment.appointmentId)
       .pipe(take(1)).subscribe( () => {
       this.error = undefined;
-      this.router.navigateByUrl('/appointment-list');
+      this.location.back();
     }, error => {
         this.error = error.error ?? error.message;
         return of(this.appointment);

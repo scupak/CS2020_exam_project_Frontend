@@ -1,22 +1,22 @@
 <div class="col-md-6 col-md-offset-3">
-  <h2>Appointment</h2>
+  <h2 style="padding-left: 10px">Appointment</h2>
 <div *ngIf="appointment else loading">
-  <p>
+  <p style="padding-left: 10px">
     Id: {{ appointment.appointmentId }} <br>
-    Date and time: {{ appointment.appointmentDateTime }} <br>
+    Date and time: {{ fixDate(appointment.appointmentDateTime) }} <br>
     Duration in minutes: {{ appointment.durationInMin }} <br>
-    Descrpition: {{ appointment.description }} <br>
+    Description: {{ appointment.description }} <br>
     Doctor email address: {{ appointment.doctorEmailAddress }} <br>
     Patient Cpr: {{ appointment.patientCpr }}</p>
-  <button class="btn btn-primary margin-left" routerLink="/appointment-update/{{appointment.appointmentId}}">Update</button>
-  <button class="btn btn-danger margin-left" (click)="deleteAppointment()">delete</button>
-  <button class="btn btn-secondary margin-left" routerLink="/appointment-list">back</button>
+  <button class="btn btn-primary margin-left" routerLink="/appointment-update/{{appointment.appointmentId}}/{{return}}">Update</button>
+  <button class="btn btn-danger margin-left" (click)="deleteAppointment()">Delete</button>
+  <button *ngIf="return == 'list'" class="btn btn-secondary margin-left" routerLink="/appointment-list">Back</button>
+  <button *ngIf="return == 'calendar'" class="btn btn-secondary margin-left" routerLink="/appointment-calendar">back</button>
 </div>
 <div class="alert-danger" *ngIf="error">{{error}}</div>
 
 <div>
-  <p *ngIf="appointment">{{ appointment.appointmentId }}">{{ appointment.appointmentDateTime }} , {{ appointment.durationInMin }} , {{ appointment.description }} , {{ appointment.doctorEmailAddress }} , {{ appointment.patientCpr }}<button  class="btn" routerLink="/appointment-update/{{appointment.appointmentId}}">Update</button> <button *ngIf=" role == 'Administrator'" class="btn btn-danger" (click)="deleteAppointment()">delete</button></p>
-  
+
 <ng-template #loading>
   <p>Loading data...</p> <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 </ng-template>

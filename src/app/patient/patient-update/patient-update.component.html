@@ -1,32 +1,32 @@
 <div class="col-md-6 col-md-offset-3">
 <form [formGroup]="UpdateForm" (ngSubmit)="onSubmit()" *ngIf="patient$ | async">
   <div class="form-group">
-    <label>patientFirstName</label>
+    <label>patient's First Name</label>
     <input type="text" formControlName="patientFirstName" class="form-control" required/>
     <div *ngIf="patientFirstName.invalid && submitted" class="alert-danger">
       <div *ngIf="patientFirstName.errors.required">patientFirstName is required</div>
     </div>
     <div class="form-group">
-      <label>patientLastName</label>
+      <label>patient's Last Name</label>
       <input type="text" formControlName="patientLastName" class="form-control" required/>
       <div *ngIf="patientLastName.invalid && submitted" class="alert-danger">
         <div *ngIf="patientLastName.errors.required">patientLastName is required</div>
       </div>
       <div class="form-group">
-        <label>patientPhone</label>
+        <label>patient's Phone</label>
         <input type="text" formControlName="patientPhone" class="form-control" required/>
         <div *ngIf="patientPhone.invalid && submitted" class="alert-danger">
           <div *ngIf="patientPhone.errors.required">patientPhone is required</div>
         </div>
         <div class="form-group">
-          <label>patientEmail</label>
+          <label>patient's Email</label>
           <input type="text" formControlName="patientEmail" class="form-control" required/>
           <div *ngIf="patientEmail.invalid && submitted" class="alert-danger">
             <div *ngIf="patientEmail.errors.required">patientEmail is required</div>
           </div>
         </div>
         <div class="form-group">
-          <label>password</label>
+          <label>Patient's new password</label>
           <input type="text" formControlName="password" class="form-control" required/>
           <div *ngIf="password.invalid && submitted" class="alert-danger">
             <div *ngIf="password.errors.required">password is required</div>
