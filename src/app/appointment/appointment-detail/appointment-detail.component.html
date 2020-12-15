@@ -9,7 +9,8 @@
     Doctor email address: {{ appointment.doctorEmailAddress }} <br>
     Patient Cpr: {{ appointment.patientCpr }}</p>
   <button class="btn btn-primary margin-left" routerLink="/appointment-update/{{appointment.appointmentId}}/{{return}}">Update</button>
-  <button class="btn btn-danger margin-left" (click)="deleteAppointment()">delete</button>
+  <button *ngIf="role == 'Patient' && appointment.patientCpr" class="btn btn-danger margin-left" (click)="cancelAppointment()">Cancel</button>
+  <button *ngIf="role != 'Patient'" class="btn btn-danger margin-left" (click)="deleteAppointment()">Delete</button>
   <button *ngIf="return == 'list'" class="btn btn-secondary margin-left" routerLink="/appointment-list">back</button>
   <button *ngIf="return == 'calendar'" class="btn btn-secondary margin-left" routerLink="/appointment-calendar">back</button>
 </div>

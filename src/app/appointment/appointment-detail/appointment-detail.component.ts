@@ -75,4 +75,19 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
 
   }
 
+  cancelAppointment(): void {
+    this.appointment.patientCpr = null;
+    this.appointment.patient = null;
+    this.appointmentService.updateAppointment(this.appointment).pipe(take(1)).subscribe(
+      success => {
+        this.error = undefined;
+        this.location.back();
+      } ,
+      error => {
+        this.error = error.error ?? error.message;
+        return of(this.appointment);
+      }
+    );
+
+  }
 }
