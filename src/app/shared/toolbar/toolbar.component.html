@@ -9,7 +9,7 @@
   <a  *ngIf="role == 'Administrator'" (click)="ActivateGenerator()"  >Activate Generator</a>
   <a  *ngIf="role == 'Administrator'" (click)="StopGenerator()"  >Deactivate Generator</a>
   <div >
-    
+
     <a id="login" *ngIf="UserName == null" routerLink="/login" routerLinkActive="active">login</a>
     <a id="login" *ngIf="UserName !== null" routerLink="/login" routerLinkActive="active">logout</a>
     <a id="detailLink" *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/doctor-detail/{{UserName}}" routerLinkActive="active">Your information</a>
