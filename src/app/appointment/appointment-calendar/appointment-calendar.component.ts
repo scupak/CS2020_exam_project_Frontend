@@ -58,6 +58,11 @@ export class AppointmentCalendarComponent implements OnInit {
     this.getAppointments();
   }
 
+  fixDate(dateToFix: Date): string
+  {
+    return moment(dateToFix).format('YYYY-MM-DD - HH:mm:ss');
+  }
+
   getAppointments(): void
   {
     this.FromDate = moment()

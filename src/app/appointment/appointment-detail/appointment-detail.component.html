@@ -1,16 +1,16 @@
 <div class="col-md-6 col-md-offset-3">
-  <h2>Appointment</h2>
+  <h2 style="padding-left: 10px">Appointment</h2>
 <div *ngIf="appointment else loading">
-  <p>
+  <p style="padding-left: 10px">
     Id: {{ appointment.appointmentId }} <br>
-    Date and time: {{ appointment.appointmentDateTime }} <br>
+    Date and time: {{ fixDate(appointment.appointmentDateTime) }} <br>
     Duration in minutes: {{ appointment.durationInMin }} <br>
-    Descrpition: {{ appointment.description }} <br>
+    Description: {{ appointment.description }} <br>
     Doctor email address: {{ appointment.doctorEmailAddress }} <br>
     Patient Cpr: {{ appointment.patientCpr }}</p>
   <button class="btn btn-primary margin-left" routerLink="/appointment-update/{{appointment.appointmentId}}/{{return}}">Update</button>
-  <button class="btn btn-danger margin-left" (click)="deleteAppointment()">delete</button>
-  <button *ngIf="return == 'list'" class="btn btn-secondary margin-left" routerLink="/appointment-list">back</button>
+  <button class="btn btn-danger margin-left" (click)="deleteAppointment()">Delete</button>
+  <button *ngIf="return == 'list'" class="btn btn-secondary margin-left" routerLink="/appointment-list">Back</button>
   <button *ngIf="return == 'calendar'" class="btn btn-secondary margin-left" routerLink="/appointment-calendar">back</button>
 </div>
 <div class="alert-danger" *ngIf="error">{{error}}</div>
