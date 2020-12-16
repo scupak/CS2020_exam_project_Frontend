@@ -1,0 +1,67 @@
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #336699;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a, h2 {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #3872AB;
+  color: white;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #2D5A87;
+  color: white;
+}
+
+#Name{
+  padding-right: 20px;
+  color: white;
+  line-height: 5px;
+  text-align: right;
+}
+
+#title {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#title:hover{
+  background-color: #336699;
+  overflow: hidden;
+}
+#login {
+  color: #f2f2f2;
+  float: right;
+
+}
+#detailLink {
+  color: #f2f2f2;
+  float: right;
+
+}
+
+
+
+
+
+
+
+
+

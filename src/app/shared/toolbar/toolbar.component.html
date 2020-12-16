@@ -1,0 +1,25 @@
+
+<div class="topnav">
+  <a id="title">Lægehuset Nr. Nebel</a>
+  <a routerLink="/home" routerLinkActive="active">Home</a>
+  <a routerLink="/doctor-list" routerLinkActive="active">Doctors</a>
+  <a *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/patient-list" routerLinkActive="active">Patients</a>
+  <a routerLink="/appointment-list" routerLinkActive="active">Appointments</a>
+  <a routerLink="/appointment-calendar" routerLinkActive="active">Calendar</a>
+  <a  *ngIf="role == 'Administrator'" (click)="ActivateGenerator()"  >Activate Generator</a>
+  <a  *ngIf="role == 'Administrator'" (click)="StopGenerator()"  >Deactivate Generator</a>
+  <div >
+
+    <a id="login" *ngIf="UserName == null" routerLink="/login" routerLinkActive="active">login</a>
+    <a id="login" *ngIf="UserName !== null" routerLink="/login" routerLinkActive="active">logout</a>
+    <a id="detailLink" *ngIf="role == 'Doctor' || role == 'Administrator'" routerLink="/doctor-detail/{{UserName}}" routerLinkActive="active">Your information</a>
+    <a id="detailLink" *ngIf="role == 'Patient'" routerLink="/patient-detail/{{UserName}}" routerLinkActive="active">Your information</a>
+
+  <p id="Name" style="padding-top: 12px;" >Hello {{firstName}}!</p>
+  <p id="Name">Your role is {{role}}</p>
+
+
+  </div>
+</div>
+
+<div *ngIf="role == 'Administrator'"  > <div class="alert-danger" *ngIf="error">{{error}}</div></div>
