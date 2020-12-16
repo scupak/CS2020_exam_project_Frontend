@@ -14,6 +14,7 @@ import {FilteredListModel} from '../../shared/filter/filteredListModel';
 import {FilterModel} from '../../shared/filter/filter.model';
 import {Router} from '@angular/router';
 import {Appointment} from '../shared/Appointment';
+import {AuthService} from '../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-appointment-creator',
@@ -28,6 +29,7 @@ export class AppointmentCreatorComponent implements OnInit {
   dateModel: NgbDateStruct;
   timeModel = {hour: 0, minute: 0};
   date: {year: number, month: number};
+  role = '';
   error: any;
   filter: FilterModel = {};
   patientFilteredList: FilteredListModel<Patient> = {
@@ -50,7 +52,7 @@ export class AppointmentCreatorComponent implements OnInit {
     DurationInMin: new FormControl('15', Validators.required),
     Description: new FormControl('' ),
     FK_PatientCPR: new FormControl('' ),
-    FK_DoctorId: new FormControl('', Validators.required)
+    FK_DoctorId: new FormControl('')
   });
   submitted = false;
 
@@ -59,7 +61,8 @@ constructor(private appointmentService: AppointmentService,
             private doctorService: DoctorService,
             private datePipe: DatePipe,
             private calendar: NgbCalendar,
-            private router: Router) { }
+            private router: Router,
+            private authService: AuthService) { }
 
 
 
@@ -71,6 +74,7 @@ constructor(private appointmentService: AppointmentService,
 
 
   ngOnInit(): void {
+    this.role = this.authService.getRole();
     this.patientObservable$ = this.patientService.getPatients().pipe(
 
       tap(filteredList => {
@@ -99,72 +103,143 @@ constructor(private appointmentService: AppointmentService,
   }
 
   save(): void {
-    this.submitted = true;
+    if (this.role === 'Administrator') {
+      this.submitted = true;
 
-    /*
-    console.log(this.dateModel);
-    console.log(this.timeModel);*/
-
-
-    // new Date ( year, month, date[, hour, minute, second, millisecond ])
-/*
-    console.log(this.dateModel.year);
-    console.log(this.dateModel.month);
-    console.log(this.dateModel.day);*/
-
-    // const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
-   // console.log(datetime + 'det er rigtig');
-/*
-    datetime.setFullYear(this.dateModel.year);
-    datetime.setMonth(this.dateModel.month);
-    datetime.setDate(this.dateModel.day);
-    console.log(datetime.getMonth());*/
+      /*
+      console.log(this.dateModel);
+      console.log(this.timeModel);*/
 
 
-    if (this.appointmentForm.invalid) {
-      return;
-    }
-    // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
+      // new Date ( year, month, date[, hour, minute, second, millisecond ])
+      /*
+          console.log(this.dateModel.year);
+          console.log(this.dateModel.month);
+          console.log(this.dateModel.day);*/
 
-   // const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);
-
-
-    // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
-    if (this.dateModel === undefined)
-    {
-      this.error = 'Appointment needs a date';
-      return;
-    }
-    const date = moment()
-      .date(this.dateModel.day)
-      .month(this.dateModel.month - 1)
-      .year(this.dateModel.year)
-      .hour(this.timeModel.hour + 1)
-      .minute(this.timeModel.minute)
-      .second(0)
-      .toDate();
-
-    const appointment = { appointmentId: 0,
-                          appointmentDateTime: date ,
-                          durationInMin: this.DurationInMin.value,
-                          description: this.Description.value,
-                          patientCpr: this.FK_PatientCPR.value,
-                          doctorEmailAddress: this.FK_DoctorId.value,
-                          doctor: null,
-                          patient: null};
+      // const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+      // console.log(datetime + 'det er rigtig');
+      /*
+          datetime.setFullYear(this.dateModel.year);
+          datetime.setMonth(this.dateModel.month);
+          datetime.setDate(this.dateModel.day);
+          console.log(datetime.getMonth());*/
 
 
-   // console.log(appointment.appointmentDateTime + 'date i appointment');
-    this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
-      success => {
-        this.error = undefined;
-        this.router.navigateByUrl('/appointment-list');
-      } ,
-      error => {
-        this.error = error.error ?? error.message;
-        return of(this.appointment);
+      if (this.appointmentForm.invalid) {
+        return;
       }
-    );
+      // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
+
+      // const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);
+
+
+      // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
+      if (this.dateModel === undefined) {
+        this.error = 'Appointment needs a date';
+        return;
+      }
+      const date = moment()
+        .date(this.dateModel.day)
+        .month(this.dateModel.month - 1)
+        .year(this.dateModel.year)
+        .hour(this.timeModel.hour + 1)
+        .minute(this.timeModel.minute)
+        .second(0)
+        .toDate();
+
+      const appointment = {
+        appointmentId: 0,
+        appointmentDateTime: date,
+        durationInMin: this.DurationInMin.value,
+        description: this.Description.value,
+        patientCpr: this.FK_PatientCPR.value,
+        doctorEmailAddress: this.FK_DoctorId.value,
+        doctor: null,
+        patient: null
+      };
+
+
+      // console.log(appointment.appointmentDateTime + 'date i appointment');
+      this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
+        success => {
+          this.error = undefined;
+          this.router.navigateByUrl('/appointment-list');
+        },
+        error => {
+          this.error = error.error ?? error.message;
+          return of(this.appointment);
+        }
+      );
+    }else{
+      this.submitted = true;
+
+      /*
+      console.log(this.dateModel);
+      console.log(this.timeModel);*/
+
+
+      // new Date ( year, month, date[, hour, minute, second, millisecond ])
+      /*
+          console.log(this.dateModel.year);
+          console.log(this.dateModel.month);
+          console.log(this.dateModel.day);*/
+
+      // const datetime = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour, this.timeModel.minute);
+      // console.log(datetime + 'det er rigtig');
+      /*
+          datetime.setFullYear(this.dateModel.year);
+          datetime.setMonth(this.dateModel.month);
+          datetime.setDate(this.dateModel.day);
+          console.log(datetime.getMonth());*/
+
+
+      if (this.appointmentForm.invalid) {
+        return;
+      }
+      // this.appointmentForm.value.AppointmentDateTime = this.datePipe.transform(this.AppointmentDateTime.value, 'yyyy-MM-dd');
+
+      // const datetime1 = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeModel.hour + 1, this.timeModel.minute);
+
+
+      // we write month -1 cause months start at 0. We write hour + 1 to get the correct time.
+      if (this.dateModel === undefined) {
+        this.error = 'Appointment needs a date';
+        return;
+      }
+      const date = moment()
+        .date(this.dateModel.day)
+        .month(this.dateModel.month - 1)
+        .year(this.dateModel.year)
+        .hour(this.timeModel.hour + 1)
+        .minute(this.timeModel.minute)
+        .second(0)
+        .toDate();
+
+      const appointment = {
+        appointmentId: 0,
+        appointmentDateTime: date,
+        durationInMin: this.DurationInMin.value,
+        description: this.Description.value,
+        patientCpr: this.FK_PatientCPR.value,
+        doctorEmailAddress: this.authService.getUsername(),
+        doctor: null,
+        patient: null
+      };
+
+
+      // console.log(appointment.appointmentDateTime + 'date i appointment');
+      this.appointmentService.addAppointment(appointment).pipe(take(1)).subscribe(
+        success => {
+          this.error = undefined;
+          this.router.navigateByUrl('/appointment-list');
+        },
+        error => {
+          this.error = error.error ?? error.message;
+          return of(this.appointment);
+        }
+      );
+    }
   }
 
 }

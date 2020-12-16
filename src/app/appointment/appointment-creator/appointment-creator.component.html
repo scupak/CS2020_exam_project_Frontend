@@ -12,12 +12,14 @@
       <div *ngIf="DurationInMin.invalid && submitted" class="alert-danger">
         <div *ngIf="DurationInMin.errors.required">DurationInMin is required</div>
       </div>
+    </div>
       <div class="form-group">
         <label>Description</label>
         <input type="text" formControlName="Description" class="form-control" />
         <div *ngIf="Description.invalid && submitted" class="alert-danger">
           <div *ngIf="Description.errors.required">Description is required</div>
         </div>
+      </div>
         <div class="form-group" *ngIf="patientObservable$ | async else loading">
           <label>Choose Patient</label>
           <br>
@@ -31,6 +33,8 @@
           <div *ngIf="FK_PatientCPR.invalid && submitted" class="alert-danger">
             <div *ngIf="FK_PatientCPR.errors.required">FK_PatientCPR is required</div>
           </div>
+        </div>
+          <div *ngIf="role == 'Administrator'">
           <div class="form-group" *ngIf="doctorObservable$ | async else loading">
             <label>Choose Doctor</label>
             <br>
@@ -44,10 +48,8 @@
             <div *ngIf="FK_DoctorId.invalid && submitted" class="alert-danger">
               <div *ngIf="FK_DoctorId.errors.required">doctor is required</div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </div>
+            </div>
   <div class="form-group">
     <button class="btn btn-primary" style="margin-left: 855px">Create</button>
   </div>
